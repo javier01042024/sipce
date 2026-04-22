@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\DiarioController;
 use Illuminate\Database\Eloquent\Model;
 
 class Paciente extends Model
@@ -18,4 +19,14 @@ class Paciente extends Model
     'diagnostico_preliminar',
     'prioridad'
 ];
+public function citas()
+{
+    return $this->hasMany(Cita::class);
 }
+
+public function diarios()
+{
+    return $this->hasMany(Diario::class);
+}
+}
+

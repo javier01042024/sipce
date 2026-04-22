@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PacienteController;
+use App\Http\Controllers\CitaController;
+use App\Http\Controllers\DiarioController;
 
 Route::resource('pacientes', PacienteController::class);
 Route::get('/', function () {
@@ -19,4 +21,27 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+Route::resource('citas', CitaController::class);
+
+Route::resource('diarios', DiarioController::class);
+
+// ===== RUTAS DE CONFIGURACIÓN (SOLO VISTAS INDEX) =====
+Route::middleware('auth')->group(function () {
+
+    // Usuarios y Roles
+    Route::get('/usuarios', function () {
+        return view('configuracion.usuarios.index');
+    })->name('usuarios.index');
+
+    // Respaldos
+    Route::get('/respaldos', function () {
+        return view('configuracion.respaldos.index');
+    })->name('respaldos.index');
+
+    // Bitácora
+    Route::get('/bitacora', function () {
+        return view('configuracion.bitacora.index');
+    })->name('bitacora.index');
+});
+
+require __DIR__ . '/auth.php';
