@@ -9,13 +9,18 @@ class Diario extends Model
     use HasFactory;
 
     protected $fillable = [
-        'paciente_id',
+        'user_id',  
         'fecha',
         'contenido'
     ];
 
-    public function paciente()
+    /**
+     * Relación con el usuario (dueño del diario)
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
     {
-        return $this->belongsTo(Paciente::class);
+        return $this->belongsTo(User::class);  // Cambiado de Paciente::class a User::class
     }
 }

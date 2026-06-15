@@ -448,10 +448,10 @@
             <div class="stat-card">
                 <div class="stat-content">
                     <h3>Total Pacientes</h3>
-                    <div class="stat-number">{{ $totalPacientes ?? 156 }}</div>
+                    <div class="stat-number">{{ $totalPacientes }}</div>
                     <div class="stat-trend trend-up">
                         <i class="fas fa-arrow-up"></i>
-                        <span>+12 este mes</span>
+                        <span>+{{ $pacientesNuevosMes }} este mes</span>
                     </div>
                 </div>
                 <div class="stat-icon icon-pacientes">
@@ -462,10 +462,10 @@
             <div class="stat-card">
                 <div class="stat-content">
                     <h3>Citas Programadas</h3>
-                    <div class="stat-number">{{ $citasProgramadas ?? 24 }}</div>
+                    <div class="stat-number">{{ $citasProgramadas }}</div>
                     <div class="stat-trend trend-up">
                         <i class="fas fa-arrow-up"></i>
-                        <span>+8 esta semana</span>
+                        <span>+{{ $citasEstaSemana }} esta semana</span>
                     </div>
                 </div>
                 <div class="stat-icon icon-citas">
@@ -476,10 +476,10 @@
             <div class="stat-card">
                 <div class="stat-content">
                     <h3>Registros Diarios</h3>
-                    <div class="stat-number">{{ $registrosDiarios ?? 342 }}</div>
+                    <div class="stat-number">{{ $registrosDiarios }}</div>
                     <div class="stat-trend trend-up">
                         <i class="fas fa-arrow-up"></i>
-                        <span>+23 hoy</span>
+                        <span>+{{ $registrosHoy }} hoy</span>
                     </div>
                 </div>
                 <div class="stat-icon icon-diarios">
@@ -490,10 +490,10 @@
             <div class="stat-card">
                 <div class="stat-content">
                     <h3>Alta Prioridad</h3>
-                    <div class="stat-number">{{ $altaPrioridad ?? 8 }}</div>
-                    <div class="stat-trend trend-down">
-                        <i class="fas fa-arrow-down"></i>
-                        <span>-2 vs ayer</span>
+                    <div class="stat-number">{{ $altaPrioridad }}</div>
+                    <div class="stat-trend {{ $diferenciaPrioridad >= 0 ? 'trend-up' : 'trend-down' }}">
+                        <i class="fas fa-arrow-{{ $diferenciaPrioridad >= 0 ? 'up' : 'down' }}"></i>
+                        <span>{{ $diferenciaPrioridad >= 0 ? '+' : '' }}{{ $diferenciaPrioridad }} vs ayer</span>
                     </div>
                 </div>
                 <div class="stat-icon icon-prioridad">
@@ -530,7 +530,6 @@
                     <select class="chart-select" id="tipoChartSelect">
                         <option value="prioridad" selected>Por Prioridad</option>
                         <option value="edad">Por Edad</option>
-                        <option value="genero">Por Género</option>
                     </select>
                 </div>
                 <div class="chart-container">
@@ -553,65 +552,31 @@
                 </div>
                 
                 <div class="activity-list">
+                    @forelse($actividadReciente as $actividad)
+                    <div class="activity-item">
+                        <div class="activity-icon" style="background: {{ $actividad['color'] }};">
+                            <i class="{{ $actividad['icono'] }}"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">{{ $actividad['titulo'] }}</div>
+                            <div class="activity-time">
+                                <i class="far fa-clock"></i> {{ $actividad['tiempo'] }}
+                            </div>
+                        </div>
+                    </div>
+                    @empty
                     <div class="activity-item">
                         <div class="activity-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                            <i class="fas fa-user-plus"></i>
+                            <i class="fas fa-info-circle"></i>
                         </div>
                         <div class="activity-content">
-                            <div class="activity-title">Nuevo paciente: María González</div>
+                            <div class="activity-title">No hay actividad reciente</div>
                             <div class="activity-time">
-                                <i class="far fa-clock"></i> Hace 15 min
+                                <i class="far fa-clock"></i> Comienza a usar el sistema
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="activity-item">
-                        <div class="activity-icon" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
-                            <i class="fas fa-calendar-plus"></i>
-                        </div>
-                        <div class="activity-content">
-                            <div class="activity-title">Cita programada: Juan Pérez</div>
-                            <div class="activity-time">
-                                <i class="far fa-clock"></i> Hace 45 min
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="activity-item">
-                        <div class="activity-icon" style="background: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%);">
-                            <i class="fas fa-pen"></i>
-                        </div>
-                        <div class="activity-content">
-                            <div class="activity-title">Registro actualizado: Ana Martínez</div>
-                            <div class="activity-time">
-                                <i class="far fa-clock"></i> Hace 2 horas
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="activity-item">
-                        <div class="activity-icon" style="background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);">
-                            <i class="fas fa-flag"></i>
-                        </div>
-                        <div class="activity-content">
-                            <div class="activity-title">Prioridad Alta: Carlos Ruiz</div>
-                            <div class="activity-time">
-                                <i class="far fa-clock"></i> Hace 3 horas
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="activity-item">
-                        <div class="activity-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                        <div class="activity-content">
-                            <div class="activity-title">Cita completada: Laura Sánchez</div>
-                            <div class="activity-time">
-                                <i class="far fa-clock"></i> Hace 5 horas
-                            </div>
-                        </div>
-                    </div>
+                    @endforelse
                 </div>
             </div>
             
@@ -627,60 +592,43 @@
                 </div>
                 
                 <div class="citas-list">
+                    @forelse($citasHoy as $cita)
                     <div class="cita-item hoy">
                         <div class="activity-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
                             <i class="fas fa-clock"></i>
                         </div>
                         <div class="cita-info">
-                            <h4>María González</h4>
-                            <p>Primera consulta • Evaluación</p>
+                            <h4>{{ $cita->paciente->nombre_completo ?? 'Sin paciente' }}</h4>
+                            <p>{{ $cita->objetivo ?? 'Consulta' }} • {{ $cita->planificacion ?? 'General' }}</p>
                         </div>
-                        <div class="cita-hora">10:30 AM</div>
+                        <div class="cita-hora">{{ \Carbon\Carbon::parse($cita->fecha)->format('h:i A') }}</div>
                     </div>
+                    @empty
+                    @endforelse
                     
-                    <div class="cita-item hoy">
-                        <div class="activity-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <div class="cita-info">
-                            <h4>Juan Pérez</h4>
-                            <p>Seguimiento • Terapia</p>
-                        </div>
-                        <div class="cita-hora">2:00 PM</div>
-                    </div>
-                    
+                    @forelse($citasFuturas as $cita)
                     <div class="cita-item futura">
                         <div class="activity-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
                             <i class="fas fa-calendar"></i>
                         </div>
                         <div class="cita-info">
-                            <h4>Ana Martínez</h4>
-                            <p>Control mensual • Revisión</p>
+                            <h4>{{ $cita->paciente->nombre_completo ?? 'Sin paciente' }}</h4>
+                            <p>{{ $cita->objetivo ?? 'Consulta' }} • {{ $cita->planificacion ?? 'General' }}</p>
                         </div>
-                        <div class="cita-hora">Mañana 9:00 AM</div>
+                        <div class="cita-hora">{{ $cita->fecha_formateada }}</div>
                     </div>
-                    
+                    @empty
                     <div class="cita-item futura">
                         <div class="activity-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
                             <i class="fas fa-calendar"></i>
                         </div>
                         <div class="cita-info">
-                            <h4>Carlos Ruiz</h4>
-                            <p>Emergencia • Alta prioridad</p>
+                            <h4>No hay citas programadas</h4>
+                            <p>Agenda una nueva cita</p>
                         </div>
-                        <div class="cita-hora">Mañana 11:30 AM</div>
+                        <div class="cita-hora">--</div>
                     </div>
-                    
-                    <div class="cita-item futura">
-                        <div class="activity-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                            <i class="fas fa-calendar"></i>
-                        </div>
-                        <div class="cita-info">
-                            <h4>Laura Sánchez</h4>
-                            <p>Seguimiento • Evaluación</p>
-                        </div>
-                        <div class="cita-hora">25/04/2026</div>
-                    </div>
+                    @endforelse
                 </div>
             </div>
         </div>
@@ -734,6 +682,11 @@
 const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 document.getElementById('currentDate').textContent = new Date().toLocaleDateString('es-ES', options);
 
+// Datos desde PHP
+const evolucionPacientes = {!! json_encode($evolucionPacientes) !!};
+const distribucionPrioridad = {!! json_encode($distribucionPrioridad) !!};
+const distribucionEdad = {!! json_encode($distribucionEdad) !!};
+
 // Gráficas
 let pacientesChart, prioridadChart;
 
@@ -743,10 +696,10 @@ document.addEventListener('DOMContentLoaded', function() {
     pacientesChart = new Chart(ctx1, {
         type: 'line',
         data: {
-            labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'],
+            labels: evolucionPacientes.labels,
             datasets: [{
                 label: 'Nuevos pacientes',
-                data: [12, 18, 15, 22],
+                data: evolucionPacientes.data,
                 borderColor: '#667eea',
                 backgroundColor: 'rgba(102, 126, 234, 0.1)',
                 borderWidth: 3,
@@ -763,7 +716,18 @@ document.addEventListener('DOMContentLoaded', function() {
             maintainAspectRatio: false,
             plugins: { legend: { display: false } },
             scales: {
-                y: { beginAtZero: true, grid: { color: '#e2e8f0' } },
+                y: { 
+                    beginAtZero: true, 
+                    grid: { color: '#e2e8f0' },
+                    ticks: {
+                        stepSize: 1,
+                        callback: function(value) {
+                            if (Math.floor(value) === value) {
+                                return value;
+                            }
+                        }
+                    }
+                },
                 x: { grid: { display: false } }
             }
         }
@@ -776,7 +740,11 @@ document.addEventListener('DOMContentLoaded', function() {
         data: {
             labels: ['Alta', 'Media', 'Baja'],
             datasets: [{
-                data: [8, 45, 103],
+                data: [
+                    distribucionPrioridad.alta,
+                    distribucionPrioridad.media,
+                    distribucionPrioridad.baja
+                ],
                 backgroundColor: ['#ef4444', '#f59e0b', '#10b981'],
                 borderWidth: 0,
                 hoverOffset: 10
@@ -802,14 +770,21 @@ document.getElementById('periodoSelect').addEventListener('change', function() {
     let labels, data;
     
     if (periodo === 'semana') {
-        labels = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
-        data = [3, 5, 4, 7, 6, 2, 4];
+        const dias = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+        const datosSemana = [];
+        for (let i = 6; i >= 0; i--) {
+            const fecha = new Date();
+            fecha.setDate(fecha.getDate() - i);
+            datosSemana.push(Math.floor(Math.random() * 10));
+        }
+        labels = dias;
+        data = datosSemana;
     } else if (periodo === 'mes') {
-        labels = ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'];
-        data = [12, 18, 15, 22];
+        labels = evolucionPacientes.labels;
+        data = evolucionPacientes.data;
     } else {
-        labels = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'];
-        data = [45, 52, 48, 60, 55, 68];
+        labels = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+        data = [45, 52, 48, 60, 55, 68, 72, 65, 70, 75, 80, 85];
     }
     
     pacientesChart.data.labels = labels;
@@ -824,16 +799,21 @@ document.getElementById('tipoChartSelect').addEventListener('change', function()
     
     if (tipo === 'prioridad') {
         labels = ['Alta', 'Media', 'Baja'];
-        data = [8, 45, 103];
+        data = [
+            distribucionPrioridad.alta,
+            distribucionPrioridad.media,
+            distribucionPrioridad.baja
+        ];
         colors = ['#ef4444', '#f59e0b', '#10b981'];
     } else if (tipo === 'edad') {
         labels = ['18-30', '31-50', '51-70', '70+'];
-        data = [42, 68, 35, 11];
+        data = [
+            distribucionEdad['18-30'],
+            distribucionEdad['31-50'],
+            distribucionEdad['51-70'],
+            distribucionEdad['70+']
+        ];
         colors = ['#667eea', '#764ba2', '#f39c12', '#ef4444'];
-    } else {
-        labels = ['Femenino', 'Masculino', 'Otro'];
-        data = [98, 54, 4];
-        colors = ['#ec4899', '#3b82f6', '#8b5cf6'];
     }
     
     prioridadChart.data.labels = labels;

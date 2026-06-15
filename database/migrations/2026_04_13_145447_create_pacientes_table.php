@@ -9,10 +9,11 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('pacientes', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable()->unique()->constrained('users')->onDelete('set null');
             $table->string('cedula_paciente');
             $table->string('nombre_completo', 100);
             $table->date('fecha_nacimiento');

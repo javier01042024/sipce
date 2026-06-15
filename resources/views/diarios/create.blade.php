@@ -98,8 +98,8 @@
     padding: 35px;
 }
 
-/* INFO DEL PACIENTE (SESIÓN) */
-.paciente-session-info {
+/* INFO DEL USUARIO (SESIÓN) */
+.usuario-session-info {
     background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
     padding: 20px;
     border-radius: 14px;
@@ -110,7 +110,7 @@
     border-left: 4px solid #667eea;
 }
 
-.paciente-avatar {
+.usuario-avatar {
     width: 60px;
     height: 60px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -124,14 +124,14 @@
     box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
 }
 
-.paciente-details h4 {
+.usuario-details h4 {
     margin: 0 0 5px 0;
     color: #1e293b;
     font-size: 18px;
     font-weight: 700;
 }
 
-.paciente-details p {
+.usuario-details p {
     margin: 0;
     color: #64748b;
     font-size: 14px;
@@ -141,7 +141,7 @@
     flex-wrap: wrap;
 }
 
-.paciente-details p i {
+.usuario-details p i {
     margin-right: 5px;
     color: #667eea;
 }
@@ -388,12 +388,12 @@
         padding: 25px 20px;
     }
     
-    .paciente-session-info {
+    .usuario-session-info {
         flex-direction: column;
         text-align: center;
     }
     
-    .paciente-details p {
+    .usuario-details p {
         justify-content: center;
     }
     
@@ -427,7 +427,7 @@
                 <i class="fas fa-book-medical me-2"></i>
                 Nuevo Registro Diario
             </h1>
-            <p>Documenta el seguimiento emocional y terapéutico</p>
+            <p>Documenta tu seguimiento emocional y terapéutico</p>
         </div>
 
         <a href="{{ route('diarios.index') }}" class="btn-volver">
@@ -453,52 +453,32 @@
             <form method="POST" action="{{ route('diarios.store') }}" id="diarioForm">
                 @csrf
 
-                <!-- PACIENTE DE LA SESIÓN (OCULTO) -->
+                <!-- USUARIO DE LA SESIÓN (OCULTO) -->
                 @php
-                    $pacienteActual = auth()->user()->paciente ?? null;
-                    // Si no hay paciente en sesión, usar el primero de la lista
-                    if(!$pacienteActual && isset($pacientes) && $pacientes->count() > 0) {
-                        $pacienteActual = $pacientes->first();
-                    }
+                    $usuarioActual = auth()->user();
                 @endphp
 
-                @if($pacienteActual)
-                    <input type="hidden" name="paciente_id" value="{{ $pacienteActual->id }}">
-                    
-                    <!-- INFO DEL PACIENTE (SOLO LECTURA) -->
-                    <div class="paciente-session-info">
-                        <div class="paciente-avatar">
-                            {{ strtoupper(substr($pacienteActual->nombre_completo, 0, 1)) }}
-                        </div>
-                        <div class="paciente-details">
-                            <h4>{{ $pacienteActual->nombre_completo }}</h4>
-                            <p>
-                                <span>
-                                    <i class="fas fa-hashtag"></i>
-                                    Exp: #{{ $pacienteActual->numero_expediente }}
-                                </span>
-                                <span>
-                                    <i class="fas fa-id-card"></i>
-                                    Cédula: {{ $pacienteActual->cedula_paciente }}
-                                </span>
-                            </p>
-                        </div>
+                <input type="hidden" name="user_id" value="{{ $usuarioActual->id }}">
+                
+                <!-- INFO DEL USUARIO (SOLO LECTURA) -->
+                <div class="usuario-session-info">
+                    <div class="usuario-avatar">
+                        {{ strtoupper(substr($usuarioActual->name, 0, 1)) }}
                     </div>
-                @else
-                    <!-- FALLBACK: SELECTOR DE PACIENTE -->
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-user"></i>
-                            Seleccionar paciente
-                        </label>
-                        <select name="paciente_id" class="form-select" required style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px;">
-                            <option value="">Seleccione un paciente...</option>
-                            @foreach($pacientes as $p)
-                                <option value="{{ $p->id }}">{{ $p->nombre_completo }}</option>
-                            @endforeach
-                        </select>
+                    <div class="usuario-details">
+                        <h4>{{ $usuarioActual->name }}</h4>
+                        <p>
+                            <span>
+                                <i class="fas fa-envelope"></i>
+                                {{ $usuarioActual->email }}
+                            </span>
+                            <span>
+                                <i class="fas fa-id-badge"></i>
+                                ID: #{{ $usuarioActual->id }}
+                            </span>
+                        </p>
                     </div>
-                @endif
+                </div>
 
                 <!-- FECHA DEL DISPOSITIVO -->
                 @php
@@ -562,7 +542,7 @@
                                   id="contenido" 
                                   rows="8" 
                                   class="textarea-custom"
-                                  placeholder="Describe cómo ha sido el día de hoy, emociones, pensamientos, situaciones relevantes..."
+                                  placeholder="Describe cómo ha sido el día de hoy, tus emociones, pensamientos, situaciones relevantes..."
                                   required></textarea>
                     </div>
 
@@ -576,8 +556,8 @@
                         <span class="suggestion-badge" onclick="agregarSugerencia('Hoy me he sentido ')">
                             <i class="far fa-smile"></i> Emociones
                         </span>
-                        <span class="suggestion-badge" onclick="agregarSugerencia('Durante la sesión trabajamos ')">
-                            <i class="fas fa-comments"></i> Sesión
+                        <span class="suggestion-badge" onclick="agregarSugerencia('Durante el día trabajé en ')">
+                            <i class="fas fa-comments"></i> Actividades
                         </span>
                         <span class="suggestion-badge" onclick="agregarSugerencia('He notado mejoría en ')">
                             <i class="fas fa-chart-line"></i> Progreso

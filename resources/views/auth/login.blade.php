@@ -217,20 +217,6 @@
             box-shadow: 0 8px 20px rgba(79,70,229,0.3);
         }
 
-        .register {
-            text-align: center;
-            font-size: 0.9rem;
-            color: #4b5563;
-        }
-
-        .register a {
-            color: #7c3aed;
-            font-weight: 700;
-            text-decoration: none;
-        }
-
-        .register a:hover { text-decoration: underline; }
-
         .error-alert {
             background: #fef2f2;
             border-left: 4px solid #ef4444;
@@ -323,10 +309,6 @@
                 <button type="submit">
                     <i class="fas fa-sign-in-alt"></i> Iniciar sesión
                 </button>
-
-                <div class="register">
-                    ¿Sin cuenta? <a href="{{ route('register') }}">Regístrate ahora</a>
-                </div>
             </form>
         </div>
     </div>

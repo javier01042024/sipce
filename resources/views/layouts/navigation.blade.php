@@ -22,50 +22,72 @@
             <span>Inicio</span>
         </a>
 
+        {{-- Pacientes --}}
+        @if(auth()->user()->hasPermission('pacientes.index'))
         <a href="{{ route('pacientes.index') }}"
             class="nav-item {{ request()->routeIs('pacientes.*') ? 'active' : '' }}">
             <i class="fas fa-users"></i>
             <span>Pacientes</span>
         </a>
+        @endif
 
-        <a href="{{ route('citas.index') }}" 
+        {{-- Citas --}}
+        @if(auth()->user()->hasPermission('citas.index'))
+        <a href="{{ route('citas.index') }}"
             class="nav-item {{ request()->routeIs('citas.*') ? 'active' : '' }}">
             <i class="fas fa-calendar-alt"></i>
             <span>Citas</span>
         </a>
+        @endif
 
-        <a href="{{ route('diarios.index') }}" 
+        {{-- Diarios --}}
+        @if(auth()->user()->hasPermission('diarios.index'))
+        <a href="{{ route('diarios.index') }}"
             class="nav-item {{ request()->routeIs('diarios.*') ? 'active' : '' }}">
             <i class="fas fa-book-open"></i>
             <span>Diario</span>
         </a>
+        @endif
 
-        <!-- CONFIGURACIÓN CON SUBMENÚ -->
+        {{-- CONFIGURACIÓN CON SUBMENÚ --}}
+        @if(auth()->user()->hasPermission('usuarios.index') ||
+            auth()->user()->hasPermission('respaldos.index') ||
+            auth()->user()->hasPermission('bitacora.index'))
         <div class="nav-item has-submenu" onclick="toggleSubmenu(this)">
             <i class="fas fa-cog"></i>
             <span>Configuración</span>
             <i class="fas fa-chevron-down submenu-arrow"></i>
         </div>
-        
+
         <div class="submenu">
-            <a href="{{ route('usuarios.index') }}" 
-                class="submenu-item {{ request()->routeIs('usuarios.*') ? 'active' : '' }}">
+            {{-- Usuarios y Roles --}}
+            @if(auth()->user()->hasPermission('usuarios.index'))
+            <a href="{{ route('usuarios.index') }}"
+                class="submenu-item {{ request()->routeIs('usuarios.*') || request()->routeIs('roles.*') ? 'active' : '' }}">
                 <i class="fas fa-user-shield"></i>
                 <span>Usuarios y Roles</span>
             </a>
-            
-            <a href="{{ route('respaldos.index') }}" 
-                class="submenu-item {{ request()->routeIs('respaldos.*') ? 'active' : '' }}">
+            @endif
+
+            {{-- Respaldos --}}
+            @if(auth()->user()->hasPermission('respaldos.index'))
+            <a href="{{ route('configuracion.respaldos.index') }}"
+                class="submenu-item {{ request()->routeIs('configuracion.respaldos.*') ? 'active' : '' }}">
                 <i class="fas fa-database"></i>
                 <span>Respaldos</span>
             </a>
-            
-            <a href="{{ route('bitacora.index') }}" 
-                class="submenu-item {{ request()->routeIs('bitacora.*') ? 'active' : '' }}">
+            @endif
+
+            {{-- Bitácora --}}
+            @if(auth()->user()->hasPermission('bitacora.index'))
+            <a href="{{ route('configuracion.bitacora.index') }}"
+                class="submenu-item {{ request()->routeIs('configuracion.bitacora.*') ? 'active' : '' }}">
                 <i class="fas fa-history"></i>
                 <span>Bitácora</span>
             </a>
+            @endif
         </div>
+        @endif
     </nav>
 
     <!-- FOOTER -->
@@ -78,36 +100,43 @@
 
 </div>
 
-<!-- MODAL -->
-<div id="logoutModal" class="modal">
-    <div class="modal-box">
-        <div class="modal-icon">
-            <i class="fas fa-question-circle"></i>
+<!-- MODAL DE CONFIRMACIÓN DE CIERRE DE SESIÓN -->
+<div id="logoutModal" class="logout-modal-overlay">
+    <div class="logout-modal-box">
+        <div class="logout-modal-icon">
+            <i class="fas fa-sign-out-alt"></i>
         </div>
         <h3>Cerrar sesión</h3>
-        <p>¿Seguro que deseas salir del sistema?</p>
-
-        <div class="modal-actions">
-            <button onclick="closeLogoutModal()" class="btn ghost">Cancelar</button>
-
-            <form method="POST" action="{{ route('logout') }}">
+        <p>¿Estás seguro que deseas salir del sistema?</p>
+        <div class="logout-modal-actions">
+            <button class="logout-btn logout-btn-ghost" onclick="closeLogoutModal()">
+                Cancelar
+            </button>
+            <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                 @csrf
-                <button class="btn danger">Cerrar sesión</button>
+                <button type="submit" class="logout-btn logout-btn-danger">
+                    Cerrar sesión
+                </button>
             </form>
         </div>
     </div>
 </div>
 
 <style>
-    /* BASE - mismo gradiente que login */
-    body {
-        font-family: 'Inter', sans-serif;
-        background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    /* RESET */
+    * {
         margin: 0;
         padding: 0;
+        box-sizing: border-box;
     }
 
-    /* SIDEBAR - mismo estilo corporativo */
+    body {
+        font-family: 'Inter', sans-serif;
+        background: #f8fafc;
+        overflow-x: hidden;
+    }
+
+    /* SIDEBAR - fija */
     .sidebar {
         width: 260px;
         height: 100vh;
@@ -124,6 +153,7 @@
         top: 0;
         z-index: 1000;
         overflow-y: auto;
+        overflow-x: hidden;
     }
 
     /* Scrollbar personalizada */
@@ -148,17 +178,21 @@
         margin-bottom: 24px;
         padding-bottom: 16px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        min-height: 52px;
+        transition: all 0.3s ease;
     }
 
     .brand {
         display: flex;
         align-items: center;
         gap: 12px;
+        transition: all 0.3s ease;
     }
 
     .brand-icon {
         width: 36px;
         height: 36px;
+        min-width: 36px;
         background: linear-gradient(145deg, #4f46e5, #7c3aed);
         border-radius: 10px;
         display: flex;
@@ -180,6 +214,8 @@
         background-clip: text;
         -webkit-background-clip: text;
         color: transparent;
+        white-space: nowrap;
+        transition: all 0.3s ease;
     }
 
     .toggle {
@@ -189,11 +225,16 @@
         cursor: pointer;
         width: 32px;
         height: 32px;
+        min-width: 32px;
         border-radius: 8px;
         display: flex;
         align-items: center;
         justify-content: center;
         transition: all 0.2s;
+        position: absolute;
+        right: 16px;
+        top: 20px;
+        z-index: 2;
     }
 
     .toggle:hover {
@@ -201,11 +242,7 @@
         color: white;
     }
 
-    .toggle i {
-        font-size: 1rem;
-    }
-
-    /* NAV - items mejorados */
+    /* NAV */
     .nav {
         display: flex;
         flex-direction: column;
@@ -235,6 +272,7 @@
     .nav-item i {
         width: 20px;
         font-size: 1.1rem;
+        text-align: center;
     }
 
     .nav-item:hover {
@@ -248,7 +286,23 @@
         box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
     }
 
-    /* Submenu arrow */
+    /* FOOTER */
+    .sidebar-bottom {
+        margin-top: auto;
+        padding-top: 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logout {
+        color: #f87171;
+    }
+
+    .logout:hover {
+        background: rgba(239, 68, 68, 0.15);
+        color: #fecaca;
+    }
+
+    /* SUBMENU */
     .has-submenu {
         justify-content: flex-start;
     }
@@ -263,7 +317,6 @@
         transform: rotate(180deg);
     }
 
-    /* SUBMENU */
     .submenu {
         display: none;
         flex-direction: column;
@@ -306,31 +359,28 @@
         box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
     }
 
-    /* FOOTER - logout */
-    .sidebar-bottom {
-        margin-top: auto;
-        padding-top: 16px;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .logout {
-        color: #f87171;
-    }
-
-    .logout:hover {
-        background: rgba(239, 68, 68, 0.15);
-        color: #fecaca;
-    }
-
-    /* COLLAPSE - sidebar reducido */
+    /* SIDEBAR COLAPSADA - VERSIÓN 1: Apilado vertical */
     .sidebar.collapsed {
         width: 80px;
     }
 
+    .sidebar.collapsed .sidebar-top {
+        flex-direction: column;
+        gap: 16px;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 20px;
+    }
+
+    .sidebar.collapsed .brand {
+        justify-content: center;
+        width: 100%;
+    }
+
     .sidebar.collapsed .brand-text,
     .sidebar.collapsed .nav-item span,
-    .sidebar.collapsed .submenu-arrow,
-    .sidebar.collapsed .submenu {
+    .sidebar.collapsed .submenu,
+    .sidebar.collapsed .submenu-arrow {
         display: none;
     }
 
@@ -344,16 +394,32 @@
         font-size: 1.2rem;
     }
 
-    .sidebar.collapsed .brand {
-        justify-content: center;
+    .sidebar.collapsed .toggle {
+        position: relative;
+        right: auto;
+        top: auto;
+        margin: 0 auto;
     }
 
     .sidebar.collapsed .toggle i {
         transform: rotate(180deg);
     }
 
-    /* MODAL - mismo estilo que login */
-    .modal {
+    /* CONTENIDO PRINCIPAL */
+    .main-content {
+        min-height: 100vh;
+        transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        padding: 20px;
+        background: #f8fafc;
+        margin-left: 260px;
+    }
+
+    .main-content.sidebar-collapsed {
+        margin-left: 80px;
+    }
+
+    /* MODAL LOGOUT */
+    .logout-modal-overlay {
         position: fixed;
         inset: 0;
         background: rgba(0, 0, 0, 0.7);
@@ -361,15 +427,15 @@
         display: none;
         align-items: center;
         justify-content: center;
-        z-index: 2000;
+        z-index: 999999;
     }
 
-    .modal.show {
+    .logout-modal-overlay.show {
         display: flex;
-        animation: fadeInModal 0.2s ease;
+        animation: fadeInLogoutModal 0.2s ease;
     }
 
-    @keyframes fadeInModal {
+    @keyframes fadeInLogoutModal {
         from {
             opacity: 0;
             transform: scale(0.95);
@@ -380,7 +446,7 @@
         }
     }
 
-    .modal-box {
+    .logout-modal-box {
         background: white;
         padding: 2rem;
         border-radius: 24px;
@@ -390,7 +456,7 @@
         text-align: center;
     }
 
-    .modal-icon {
+    .logout-modal-icon {
         width: 60px;
         height: 60px;
         background: linear-gradient(145deg, #4f46e5, #7c3aed);
@@ -401,32 +467,31 @@
         margin: 0 auto 1rem;
     }
 
-    .modal-icon i {
+    .logout-modal-icon i {
         font-size: 2rem;
         color: white;
     }
 
-    .modal-box h3 {
+    .logout-modal-box h3 {
         font-size: 1.3rem;
         font-weight: 700;
         color: #1f2937;
         margin-bottom: 0.5rem;
     }
 
-    .modal-box p {
+    .logout-modal-box p {
         color: #6b7280;
         font-size: 0.85rem;
         margin-bottom: 1.5rem;
     }
 
-    .modal-actions {
+    .logout-modal-actions {
         display: flex;
         gap: 12px;
         justify-content: center;
     }
 
-    /* BUTTONS - mismo estilo */
-    .btn {
+    .logout-btn {
         padding: 10px 20px;
         border-radius: 12px;
         border: none;
@@ -436,64 +501,38 @@
         transition: all 0.2s;
     }
 
-    .btn.ghost {
+    .logout-btn-ghost {
         background: #f1f5f9;
         color: #475569;
     }
 
-    .btn.ghost:hover {
+    .logout-btn-ghost:hover {
         background: #e2e8f0;
         transform: translateY(-1px);
     }
 
-    .btn.danger {
+    .logout-btn-danger {
         background: linear-gradient(105deg, #ef4444, #dc2626);
         color: white;
     }
 
-    .btn.danger:hover {
+    .logout-btn-danger:hover {
         transform: translateY(-1px);
         box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-    }
-
-    /* Ajuste para el contenido principal */
-    .main-content {
-        margin-left: 260px;
-        transition: margin-left 0.3s ease;
-        padding: 20px;
-    }
-
-    .sidebar.collapsed~.main-content {
-        margin-left: 80px;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-        .sidebar {
-            transform: translateX(-100%);
-        }
-        
-        .sidebar.mobile-open {
-            transform: translateX(0);
-        }
-        
-        .main-content {
-            margin-left: 0 !important;
-        }
     }
 </style>
 
 <script>
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
         sidebar.classList.toggle('collapsed');
-        
-        // Guardar estado en localStorage
-        const isCollapsed = sidebar.classList.contains('collapsed');
-        localStorage.setItem('sidebarCollapsed', isCollapsed);
+        if (mainContent) {
+            mainContent.classList.toggle('sidebar-collapsed');
+        }
+        localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
     }
-    
-    // Toggle submenu
+
     function toggleSubmenu(element) {
         element.classList.toggle('active-submenu');
         const submenu = element.nextElementSibling;
@@ -508,21 +547,29 @@
         document.getElementById('logoutModal').classList.remove('show');
     }
 
-    // Cerrar modal al hacer clic fuera
-    document.getElementById('logoutModal')?.addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeLogoutModal();
-        }
-    });
-    
-    // Restaurar estado del sidebar
     document.addEventListener('DOMContentLoaded', function() {
-        const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-        if (isCollapsed) {
-            document.getElementById('sidebar').classList.add('collapsed');
-        }
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
         
-        // Abrir submenu si hay una ruta activa dentro
+        if (sidebar && mainContent) {
+            const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+            if (isCollapsed) {
+                sidebar.classList.add('collapsed');
+                mainContent.classList.add('sidebar-collapsed');
+            }
+        }
+
+        // Cerrar modal al hacer clic fuera
+        const logoutModal = document.getElementById('logoutModal');
+        if (logoutModal) {
+            logoutModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeLogoutModal();
+                }
+            });
+        }
+
+        // Abrir submenú si hay una ruta activa dentro
         const activeSubmenuItem = document.querySelector('.submenu-item.active');
         if (activeSubmenuItem) {
             const submenu = activeSubmenuItem.closest('.submenu');
@@ -533,7 +580,7 @@
             }
         }
     });
-    
+
     // Cerrar con tecla ESC
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
@@ -541,6 +588,3 @@
         }
     });
 </script>
-
-<!-- Font Awesome - necesario para los íconos -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">

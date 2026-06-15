@@ -1,413 +1,397 @@
 @extends('layouts.app')
 
 @section('content')
-
-<style>
-/* CONTENEDOR PRINCIPAL */
-.citas-form-wrapper {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 30px 20px;
-}
-
-/* HEADER COLORIDO */
-.form-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 30px 35px;
-    border-radius: 14px;
-    margin-bottom: 35px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.form-header h2 {
-    font-weight: 700;
-    color: white;
-    margin: 0;
-    font-size: 28px;
-}
-
-.form-header p {
-    color: rgba(255, 255, 255, 0.9);
-    margin: 8px 0 0 0;
-    font-size: 15px;
-}
-
-.btn-volver {
-    background: white;
-    color: #667eea;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 25px;
-    font-weight: 600;
-    font-size: 14px;
-    transition: all 0.3s;
-    text-decoration: none;
-    display: inline-block;
-}
-
-.btn-volver:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    color: #764ba2;
-}
-
-/* CARD PRINCIPAL */
-.form-card {
-    background: white;
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.12);
-    border: 1px solid rgba(102, 126, 234, 0.08);
-}
-
-.card-header-custom {
-    background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
-    color: white;
-    padding: 22px 35px;
-}
-
-.card-header-custom h5 {
-    margin: 0;
-    font-weight: 600;
-    font-size: 18px;
-}
-
-.card-header-custom h5 i {
-    margin-right: 10px;
-    color: #a8edea;
-}
-
-/* FORMULARIO CON MÁS ESPACIO */
-.form-section {
-    padding: 40px 35px;
-}
-
-.form-label {
-    font-weight: 600;
-    color: #2d3748;
-    margin-bottom: 12px;
-    font-size: 15px;
-}
-
-.form-label i {
-    margin-right: 8px;
-    color: #667eea;
-}
-
-/* INPUTS CON MÁS ESPACIO */
-.form-select-custom, .form-input-custom {
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 14px 18px;
-    font-size: 15px;
-    transition: all 0.3s;
-    background: white;
-    margin-bottom: 5px;
-}
-
-.form-select-custom:focus, .form-input-custom:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.08);
-    outline: none;
-}
-
-/* TEXTAREA CON MÁS ESPACIO */
-.textarea-card {
-    background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
-    border-radius: 14px;
-    padding: 20px;
-    border: none;
-    margin-top: 8px;
-}
-
-.textarea-custom {
-    border: none !important;
-    background: transparent !important;
-    resize: none;
-    font-size: 15px;
-    color: #2d3748;
-    padding: 0 !important;
-    line-height: 1.6;
-}
-
-.textarea-custom:focus {
-    outline: none;
-    box-shadow: none !important;
-}
-
-.textarea-custom::placeholder {
-    color: #94a3b8;
-    font-style: italic;
-}
-
-/* ESPACIADO ENTRE FILAS */
-.row.g-4 {
-    --bs-gutter-y: 2rem !important;
-}
-
-/* BOTONES SEPARADOS */
-.buttons-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 2px solid #f1f5f9;
-    padding-top: 30px;
-    margin-top: 20px;
-}
-
-.btn-cancel {
-    background: white;
-    color: #64748b;
-    border: 2px solid #e2e8f0;
-    padding: 14px 30px;
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 15px;
-    transition: all 0.3s;
-    text-decoration: none;
-}
-
-.btn-cancel:hover {
-    background: #f8fafc;
-    border-color: #cbd5e1;
-    color: #475569;
-    transform: translateY(-1px);
-}
-
-.btn-submit {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    padding: 14px 40px;
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 15px;
-    transition: all 0.3s;
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.25);
-}
-
-.btn-submit:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.35);
-    color: white;
-}
-
-.btn-submit i {
-    margin-right: 8px;
-}
-
-/* ANIMACIONES */
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(25px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.form-card {
-    animation: slideIn 0.6s ease-out;
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-    .form-header {
-        flex-direction: column;
-        text-align: center;
-        gap: 20px;
-        padding: 25px 20px;
-    }
-    
-    .form-section {
-        padding: 25px 20px;
-    }
-    
-    .card-header-custom {
-        padding: 18px 25px;
-    }
-    
-    .buttons-container {
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .btn-cancel, .btn-submit {
-        width: 100%;
-        text-align: center;
-    }
-}
-
-/* ICONOS */
-.input-icon-wrapper {
-    position: relative;
-}
-
-.input-icon {
-    position: absolute;
-    left: 18px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #667eea;
-    z-index: 10;
-    font-size: 16px;
-}
-
-.input-with-icon {
-    padding-left: 48px !important;
-}
-
-/* MEJORA VISUAL PARA SELECT */
-select.form-select-custom {
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23667eea' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 18px center;
-    background-size: 16px;
-    padding-right: 45px !important;
-}
-</style>
+<link href="{{ asset('css/citas-create.css') }}" rel="stylesheet">
 
 <div class="citas-form-wrapper">
-
-    <!-- HEADER COLORIDO -->
     <div class="form-header">
         <div>
             <h2>
                 <i class="fas fa-calendar-plus me-2"></i>
-                Nueva Cita
+                @if(isset($reprogramando) && $reprogramando)
+                    Reprogramar Cita
+                @else
+                    Nueva Cita
+                @endif
             </h2>
-            <p>Programación de atención clínica del paciente</p>
+            <p>
+                @if(isset($reprogramando) && $reprogramando)
+                    La cita anterior ha sido cancelada. Programa una nueva fecha (diferente a la original).
+                @else
+                    Programación de atención clínica del paciente
+                @endif
+            </p>
         </div>
-
         <a href="{{ route('citas.index') }}" class="btn-volver">
             <i class="fas fa-arrow-left me-2"></i>
             Volver al calendario
         </a>
     </div>
 
-    <!-- CARD PRINCIPAL -->
+    @if(isset($reprogramando) && $reprogramando && $citaOriginal)
+        <div class="alert-warning">
+            <i class="fas fa-info-circle me-2" style="color: #f59e0b;"></i>
+            <strong>Reprogramando cita</strong><br>
+            Cita original del paciente <strong>{{ $citaOriginal->paciente->nombre_completo ?? 'N/A' }}</strong> 
+            programada para el <strong>{{ $citaOriginal->fecha->format('d/m/Y') }}</strong> fue cancelada.
+            <br><small>Motivo: {{ $citaOriginal->motivo_cancelacion ?? 'No especificado' }}</small>
+            <br><small class="text-danger">
+                <i class="fas fa-exclamation-triangle"></i> 
+                <strong>Importante:</strong> Debes seleccionar una fecha diferente a la original.
+            </small>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert-danger">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            {{ session('error') }}
+        </div>
+    @endif
+
     <div class="row justify-content-center">
         <div class="col-12">
-
             <div class="form-card">
-
-                <!-- HEADER CARD -->
                 <div class="card-header-custom">
                     <h5>
                         <i class="fas fa-calendar-check"></i>
-                        Agendado de citas
+                        @if(isset($reprogramando) && $reprogramando)
+                            Reprogramar cita
+                        @else
+                            Agendado de citas
+                        @endif
                     </h5>
                 </div>
-
-                <!-- FORMULARIO -->
                 <div class="form-section">
-
-                    <form method="POST" action="{{ route('citas.store') }}">
+                    <form method="POST" action="{{ route('citas.store') }}" id="formCita">
                         @csrf
+                        
+                        @if(isset($reprogramando) && $reprogramando && $citaOriginal)
+                            <input type="hidden" name="cita_original_id" value="{{ $citaOriginal->id }}">
+                            <input type="hidden" id="fecha_original" value="{{ $citaOriginal->fecha->format('Y-m-d') }}">
+                        @endif
 
                         <div class="row g-4">
-
-                            <!-- PACIENTE Y FECHA EN LA MISMA FILA -->
                             <div class="col-md-6">
                                 <label class="form-label">
                                     <i class="fas fa-user"></i>
                                     Paciente
                                 </label>
-
                                 <div class="input-icon-wrapper">
                                     <i class="fas fa-user-circle input-icon"></i>
-                                    <select name="paciente_id"
-                                            class="form-select-custom w-100 input-with-icon"
-                                            required>
+                                    <select name="paciente_id" id="paciente_id" class="form-select-custom w-100 input-with-icon" required>
                                         <option value="">Seleccionar paciente...</option>
                                         @foreach($pacientes as $paciente)
-                                            <option value="{{ $paciente->id }}">
+                                            <option value="{{ $paciente->id }}" 
+                                                {{ (isset($citaOriginal) && $citaOriginal->paciente_id == $paciente->id) ? 'selected' : '' }}
+                                                {{ old('paciente_id') == $paciente->id ? 'selected' : '' }}>
                                                 {{ $paciente->nombre_completo }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
+                                @error('paciente_id')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
 
                             <div class="col-md-6">
                                 <label class="form-label">
                                     <i class="fas fa-calendar"></i>
-                                    Fecha de cita
+                                    Nueva fecha de cita
                                 </label>
-
                                 <div class="input-icon-wrapper">
                                     <i class="fas fa-calendar-alt input-icon"></i>
                                     <input type="date"
                                            name="fecha"
+                                           id="fecha_cita"
                                            class="form-input-custom w-100 input-with-icon"
                                            required
-                                           min="{{ date('Y-m-d') }}">
+                                           min="{{ isset($citaOriginal) ? date('Y-m-d', strtotime($citaOriginal->fecha->format('Y-m-d') . ' +1 day')) : date('Y-m-d') }}"
+                                           value="{{ old('fecha') }}">
                                 </div>
+                                
+                                <div id="cupos-disponibles" class="mt-2" style="font-size: 13px;">
+                                    <i class="fas fa-info-circle"></i>
+                                    Selecciona un paciente y una fecha para verificar disponibilidad
+                                </div>
+                                
+                                @error('fecha')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
 
-                            <!-- OBJETIVO -->
                             <div class="col-12">
                                 <label class="form-label">
                                     <i class="fas fa-bullseye"></i>
                                     Objetivo terapéutico
                                 </label>
-
                                 <div class="textarea-card">
                                     <textarea name="objetivo"
                                               rows="3"
                                               class="textarea-custom w-100"
-                                              placeholder="Definir el objetivo principal de la sesión..."></textarea>
+                                              placeholder="Definir el objetivo principal de la sesión...">{{ old('objetivo', $citaOriginal->objetivo ?? '') }}</textarea>
                                 </div>
+                                @error('objetivo')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
 
-                            <!-- PLANIFICACIÓN -->
                             <div class="col-12">
                                 <label class="form-label">
                                     <i class="fas fa-tasks"></i>
                                     Planificación de la sesión
                                 </label>
-
                                 <div class="textarea-card">
                                     <textarea name="planificacion"
                                               rows="5"
                                               class="textarea-custom w-100"
-                                              placeholder="Estrategia, técnicas o enfoque terapéutico que se utilizarán durante la consulta..."></textarea>
+                                              placeholder="Estrategia, técnicas o enfoque terapéutico que se utilizarán durante la consulta...">{{ old('planificacion', $citaOriginal->planificacion ?? '') }}</textarea>
                                 </div>
+                                @error('planificacion')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
-
                         </div>
 
-                        <!-- BOTONES SEPARADOS -->
                         <div class="buttons-container">
                             <a href="{{ route('citas.index') }}" class="btn-cancel">
                                 <i class="fas fa-times me-2"></i>
                                 Cancelar
                             </a>
-
-                            <button type="submit" class="btn-submit">
+                            <button type="submit" class="btn-submit" id="btnSubmit">
                                 <i class="fas fa-check-circle"></i>
-                                Crear cita
+                                @if(isset($reprogramando) && $reprogramando)
+                                    Reprogramar cita
+                                @else
+                                    Crear cita
+                                @endif
                             </button>
                         </div>
-
                     </form>
-
                 </div>
             </div>
-
         </div>
     </div>
 </div>
 
-<!-- AGREGAR FONT AWESOME -->
 @push('styles')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+@endpush
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log("DOM cargado - iniciando validación");
+        
+        var pacienteSelect = document.getElementById('paciente_id');
+        var fechaInput = document.getElementById('fecha_cita');
+        var cuposDiv = document.getElementById('cupos-disponibles');
+        var btnSubmit = document.getElementById('btnSubmit');
+        var fechaOriginalInput = document.getElementById('fecha_original');
+        
+        // Verificar si es reprogramación - ¡LÍNEA CORREGIDA!
+        var esReprogramacion = @json(isset($reprogramando) && $reprogramando);
+        var fechaOriginal = fechaOriginalInput ? fechaOriginalInput.value : null;
+        
+        if (!pacienteSelect || !fechaInput) {
+            console.log("Elementos no encontrados");
+            return;
+        }
+        
+        function formatearFecha(fecha) {
+            if (!fecha) return '';
+            var partes = fecha.split('-');
+            return partes[2] + '/' + partes[1] + '/' + partes[0];
+        }
+        
+        function validarCita() {
+            var fecha = fechaInput.value;
+            var pacienteId = pacienteSelect.value;
+            
+            if (!fecha || !pacienteId) {
+                if (cuposDiv) {
+                    cuposDiv.innerHTML = '<div style="background:#f0fdf4; padding:10px; border-radius:8px;">Selecciona paciente y fecha</div>';
+                }
+                if (btnSubmit) {
+                    btnSubmit.disabled = false;
+                }
+                return;
+            }
+            
+            // VALIDACIÓN: REPROGRAMACIÓN NO PUEDE SER MISMO DÍA
+            if (esReprogramacion && fechaOriginal && fecha === fechaOriginal) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Fecha no permitida',
+                    html: 'No puedes reprogramar la cita para el <strong>mismo dia</strong> de la cita original cancelada.<br><br>' +
+                          'Fecha original: <strong>' + formatearFecha(fechaOriginal) + '</strong><br>' +
+                          'Por favor, selecciona una fecha diferente.',
+                    confirmButtonColor: '#ef4444',
+                    confirmButtonText: 'Entendido',
+                    backdrop: true,
+                    allowOutsideClick: false
+                });
+                
+                if (cuposDiv) {
+                    cuposDiv.innerHTML = '<div style="background:#fee2e2; color:#991b1b; padding:10px; border-radius:8px;">❌ No puedes seleccionar la misma fecha de la cita cancelada</div>';
+                }
+                if (btnSubmit) {
+                    btnSubmit.disabled = true;
+                }
+                return;
+            }
+            
+            if (cuposDiv) {
+                cuposDiv.innerHTML = '<div style="background:#e0f2fe; padding:10px; border-radius:8px;">Verificando...</div>';
+            }
+            
+            // Construir URL con parámetros
+            var url = '/citas/verificar?fecha=' + fecha + '&paciente_id=' + pacienteId;
+            if (esReprogramacion && fechaOriginalInput) {
+                url += '&cita_original_id=' + fechaOriginalInput.value;
+            }
+            
+            fetch(url)
+                .then(function(r) { 
+                    return r.json(); 
+                })
+                .then(function(data) {
+                    console.log("Respuesta:", data);
+                    
+                    // Verificar si es la misma fecha original (respuesta del servidor)
+                    if (data.misma_fecha_original) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Fecha no permitida',
+                            html: 'No puedes reprogramar la cita para el <strong>mismo dia</strong> de la cita original cancelada.<br><br>' +
+                                  'Fecha original: <strong>' + formatearFecha(fechaOriginal) + '</strong>',
+                            confirmButtonColor: '#ef4444',
+                            confirmButtonText: 'Entendido'
+                        });
+                        
+                        if (cuposDiv) {
+                            cuposDiv.innerHTML = '<div style="background:#fee2e2; color:#991b1b; padding:10px; border-radius:8px;">❌ No puedes seleccionar la misma fecha de la cita cancelada</div>';
+                        }
+                        if (btnSubmit) {
+                            btnSubmit.disabled = true;
+                        }
+                        return;
+                    }
+                    
+                    if (data.tiene_cita) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Paciente ya tiene cita',
+                            text: 'Este paciente ya tiene una cita programada para el dia ' + formatearFecha(fecha) + '. No puede tener dos citas el mismo dia.',
+                            confirmButtonColor: '#ef4444',
+                            confirmButtonText: 'Entendido',
+                            backdrop: true,
+                            timer: 4000,
+                            showConfirmButton: true
+                        });
+                        
+                        if (cuposDiv) {
+                            cuposDiv.innerHTML = '<div style="background:#fee2e2; color:#991b1b; padding:10px; border-radius:8px;">❌ Este paciente YA tiene cita para esta fecha</div>';
+                        }
+                        if (btnSubmit) {
+                            btnSubmit.disabled = true;
+                        }
+                    } 
+                    else if (data.cupos_disponibles > 0) {
+                        if (cuposDiv) {
+                            cuposDiv.innerHTML = '<div style="background:#d1fae5; color:#065f46; padding:10px; border-radius:8px;">✅ Cupos disponibles: ' + data.cupos_disponibles + ' de 4</div>';
+                        }
+                        if (btnSubmit) {
+                            btnSubmit.disabled = false;
+                        }
+                    } 
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Cupos agotados',
+                            text: 'No hay cupos disponibles para el dia ' + formatearFecha(fecha) + '. Ya hay ' + data.citas_agendadas + ' de 4 citas agendadas.',
+                            confirmButtonColor: '#ef4444',
+                            confirmButtonText: 'Entendido',
+                            backdrop: true,
+                            timer: 4000,
+                            showConfirmButton: true
+                        });
+                        
+                        if (cuposDiv) {
+                            cuposDiv.innerHTML = '<div style="background:#fee2e2; color:#991b1b; padding:10px; border-radius:8px;">❌ No hay cupos disponibles</div>';
+                        }
+                        if (btnSubmit) {
+                            btnSubmit.disabled = true;
+                        }
+                    }
+                })
+                .catch(function(error) {
+                    console.error("Error:", error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error de conexion',
+                        text: 'No se pudo verificar la disponibilidad. Intenta nuevamente.',
+                        confirmButtonColor: '#ef4444'
+                    });
+                    if (cuposDiv) {
+                        cuposDiv.innerHTML = '<div style="background:#fee2e2; padding:10px;">Error al conectar</div>';
+                    }
+                });
+        }
+        
+        // Asignar eventos
+        pacienteSelect.onchange = validarCita;
+        fechaInput.onchange = validarCita;
+        
+        // Validar al enviar el formulario
+        var formCita = document.getElementById('formCita');
+        if (formCita) {
+            formCita.onsubmit = function(e) {
+                // Validación extra antes de enviar
+                if (esReprogramacion && fechaOriginal && fechaInput.value === fechaOriginal) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'No se puede reprogramar',
+                        text: 'No puedes reprogramar la cita para el mismo dia de la cita original cancelada.',
+                        confirmButtonColor: '#ef4444',
+                        confirmButtonText: 'Entendido'
+                    });
+                    return false;
+                }
+                
+                if (btnSubmit.disabled) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'No se puede agendar',
+                        text: 'Verifica que la fecha tenga cupos disponibles y que el paciente no tenga otra cita ese dia.',
+                        confirmButtonColor: '#f59e0b',
+                        confirmButtonText: 'Entendido'
+                    });
+                    return false;
+                }
+            };
+        }
+        
+        // Validación inicial si ya hay valores seleccionados
+        if (fechaInput.value && pacienteSelect.value) {
+            validarCita();
+        }
+        
+        console.log("✅ Validacion de citas activada correctamente");
+        
+        if (esReprogramacion) {
+            console.log("Modo reprogramacion activado - Fecha original:", fechaOriginal);
+        }
+    });
+</script>
+@endpush
 @endpush
 
 @endsection

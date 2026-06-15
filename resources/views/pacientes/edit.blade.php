@@ -331,7 +331,6 @@ select.input-field {
     }
 }
 
-/* CAMPO SOLO LECTURA */
 .input-field[readonly] {
     background: #f8fafc;
     color: #64748b;
@@ -341,7 +340,6 @@ select.input-field {
 
 <div class="editar-paciente-wrapper">
 
-    <!-- HEADER COLORIDO -->
     <div class="page-header">
         <div>
             <h1>
@@ -357,10 +355,7 @@ select.input-field {
         </a>
     </div>
 
-    <!-- CARD PRINCIPAL -->
     <div class="form-card">
-
-        <!-- HEADER CARD -->
         <div class="card-header-custom">
             <h2>
                 <i class="fas fa-edit"></i>
@@ -369,10 +364,8 @@ select.input-field {
             <p>Modifique los campos que desea actualizar</p>
         </div>
 
-        <!-- BODY -->
         <div class="card-body-custom">
 
-            <!-- INFO DEL PACIENTE -->
             <div class="paciente-info-badge">
                 <div class="paciente-avatar">
                     {{ strtoupper(substr($paciente->nombre_completo, 0, 1)) }}
@@ -389,7 +382,6 @@ select.input-field {
                 </div>
             </div>
 
-            <!-- ERRORES -->
             @if ($errors->any())
                 <div class="alert-error">
                     <i class="fas fa-exclamation-triangle me-2"></i>
@@ -402,12 +394,10 @@ select.input-field {
                 </div>
             @endif
 
-            <!-- FORMULARIO -->
             <form action="{{ route('pacientes.update', $paciente) }}" method="POST" class="form-grid">
                 @csrf
                 @method('PUT')
 
-                <!-- EXPEDIENTE -->
                 <div class="field">
                     <label>
                         <i class="fas fa-hashtag"></i>
@@ -415,7 +405,7 @@ select.input-field {
                     </label>
                     <div class="input-wrapper">
                         <i class="fas fa-folder input-icon"></i>
-                        <input type="number" 
+                        <input type="text" 
                                name="numero_expediente"
                                value="{{ old('numero_expediente', $paciente->numero_expediente) }}"
                                class="input-field"
@@ -423,24 +413,34 @@ select.input-field {
                     </div>
                 </div>
 
-                <!-- CÉDULA -->
-                <div class="field">
+                <!-- CÉDULA CON NACIONALIDAD (V/E + números) -->
+                <div class="field full-width">
                     <label>
                         <i class="fas fa-id-card"></i>
                         Cédula
                     </label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-credit-card input-icon"></i>
-                        <input type="text"
-                               name="cedula_paciente"
-                               value="{{ old('cedula_paciente', $paciente->cedula_paciente) }}"
-                               class="input-field"
-                               oninput="this.value=this.value.replace(/[^0-9]/g,'')"
-                               required>
+                    <div style="display: flex; gap: 0; position: relative; flex-wrap: wrap;">
+                        <i class="fas fa-id-card" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #64748b; z-index: 2;"></i>
+                        <select id="nacionalidad_select" class="input-field" required
+                            style="width: 80px; border-right: none; border-radius: 10px 0 0 10px; padding-left: 40px; background: #f8fafc; font-weight: 600; color: #334155; cursor: pointer;">
+                            <option value="V" {{ substr($paciente->cedula_paciente, 0, 1) == 'V' ? 'selected' : '' }}>V</option>
+                            <option value="E" {{ substr($paciente->cedula_paciente, 0, 1) == 'E' ? 'selected' : '' }}>E</option>
+                        </select>
+                        <input type="text" 
+                               id="cedula_numero" 
+                               value="{{ substr($paciente->cedula_paciente, 1) }}"
+                               class="input-field" 
+                               required
+                               maxlength="8"
+                               style="border-radius: 0 10px 10px 0; border-left: 1px solid #e2e8f0; flex: 1;"
+                               oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                        <input type="hidden" name="cedula_paciente" id="cedula_completa">
                     </div>
+                    <small class="text-muted" style="margin-top: 5px;">
+                        <i class="fas fa-info-circle"></i> Ingrese 8 dígitos numéricos
+                    </small>
                 </div>
 
-                <!-- NOMBRE COMPLETO -->
                 <div class="field">
                     <label>
                         <i class="fas fa-user"></i>
@@ -457,7 +457,6 @@ select.input-field {
                     </div>
                 </div>
 
-                <!-- FECHA NACIMIENTO -->
                 <div class="field">
                     <label>
                         <i class="fas fa-calendar"></i>
@@ -472,7 +471,6 @@ select.input-field {
                     </div>
                 </div>
 
-                <!-- TELÉFONO -->
                 <div class="field">
                     <label>
                         <i class="fas fa-phone"></i>
@@ -488,7 +486,6 @@ select.input-field {
                     </div>
                 </div>
 
-                <!-- EMAIL -->
                 <div class="field">
                     <label>
                         <i class="fas fa-envelope"></i>
@@ -503,7 +500,6 @@ select.input-field {
                     </div>
                 </div>
 
-                <!-- PRIORIDAD -->
                 <div class="field">
                     <label>
                         <i class="fas fa-flag"></i>
@@ -520,7 +516,6 @@ select.input-field {
                     </div>
                 </div>
 
-                <!-- DIRECCIÓN -->
                 <div class="field full-width">
                     <label>
                         <i class="fas fa-map-marker-alt"></i>
@@ -532,7 +527,6 @@ select.input-field {
                               placeholder="Calle, número, colonia, ciudad...">{{ old('direccion', $paciente->direccion) }}</textarea>
                 </div>
 
-                <!-- MOTIVO DE CONSULTA -->
                 <div class="field full-width">
                     <label>
                         <i class="fas fa-notes-medical"></i>
@@ -544,7 +538,6 @@ select.input-field {
                               placeholder="Describa el motivo de la consulta...">{{ old('motivo_consulta', $paciente->motivo_consulta) }}</textarea>
                 </div>
 
-                <!-- DIAGNÓSTICO PRELIMINAR -->
                 <div class="field full-width">
                     <label>
                         <i class="fas fa-stethoscope"></i>
@@ -556,7 +549,6 @@ select.input-field {
                               placeholder="Diagnóstico inicial o impresión clínica...">{{ old('diagnostico_preliminar', $paciente->diagnostico_preliminar) }}</textarea>
                 </div>
 
-                <!-- BOTONES -->
                 <div class="form-actions">
                     <a href="{{ route('pacientes.index') }}" class="btn btn-cancel">
                         <i class="fas fa-times"></i>
@@ -575,9 +567,28 @@ select.input-field {
     </div>
 </div>
 
-<!-- FONT AWESOME -->
 @push('styles')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 @endpush
+
+<script>
+    function actualizarCedulaCompleta() {
+        const nacionalidad = document.getElementById('nacionalidad_select').value;
+        const numero = document.getElementById('cedula_numero').value;
+        const cedulaCompleta = document.getElementById('cedula_completa');
+        if (cedulaCompleta) {
+            cedulaCompleta.value = nacionalidad + numero;
+        }
+    }
+    
+    const nacionalidadSelect = document.getElementById('nacionalidad_select');
+    const cedulaNumero = document.getElementById('cedula_numero');
+    
+    if (nacionalidadSelect && cedulaNumero) {
+        nacionalidadSelect.addEventListener('change', actualizarCedulaCompleta);
+        cedulaNumero.addEventListener('input', actualizarCedulaCompleta);
+        actualizarCedulaCompleta(); // Inicializar
+    }
+</script>
 
 @endsection

@@ -1,0 +1,382 @@
+/* CONTENEDOR PRINCIPAL */
+.citas-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 15px;
+}
+
+/* HEADER MEJORADO */
+.citas-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 25px 30px;
+    border-radius: 16px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+}
+
+.citas-header h3 {
+    font-weight: 700;
+    color: white;
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.btn-nueva-cita {
+    background: white;
+    color: #667eea;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.btn-nueva-cita:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    color: #764ba2;
+}
+
+/* SECCIONES */
+.citas-section {
+    margin-bottom: 35px;
+}
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title.hoy {
+    color: #f59e0b;
+    border-color: #f59e0b;
+}
+
+.section-title.hoy i {
+    font-size: 1.3rem;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.section-title.proximas {
+    color: #0083b0;
+    border-color: #0083b0;
+}
+
+/* GRID 2 COLUMNAS */
+.citas-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+/* TARJETA REDISEÑADA - MÁS GRANDE */
+.cita-card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 180px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    position: relative;
+    overflow: hidden;
+    border-left: 5px solid;
+}
+
+/* BORDES POR TIPO */
+.cita-card.hoy {
+    border-left-color: #f59e0b;
+    background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
+}
+
+.cita-card.hoy:hover {
+    box-shadow: 0 8px 25px rgba(245, 158, 11, 0.2);
+}
+
+.cita-card.proxima {
+    border-left-color: #0083b0;
+    background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
+}
+
+.cita-card.proxima:hover {
+    box-shadow: 0 8px 25px rgba(0, 131, 176, 0.2);
+}
+
+.cita-card:hover {
+    transform: translateY(-3px);
+}
+
+/* CABECERA DE TARJETA */
+.cita-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.cita-paciente-info {
+    flex: 1;
+}
+
+.cita-nombre {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cita-nombre i {
+    color: #667eea;
+    font-size: 18px;
+}
+
+.cita-hora {
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.badge-hoy {
+    background: #f59e0b;
+    color: white;
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    animation: pulse 2s infinite;
+}
+
+/* OBJETIVO */
+.cita-objetivo {
+    background: #f8fafc;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    color: #475569;
+    line-height: 1.5;
+    flex: 1;
+    border: 1px solid #e2e8f0;
+}
+
+.cita-objetivo i {
+    color: #667eea;
+    margin-right: 8px;
+}
+
+/* BOTONES DE ACCIÓN - SOLO 3 */
+.cita-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: auto;
+}
+
+.cita-actions button {
+    font-size: 12px;
+    padding: 10px 8px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    letter-spacing: 0.5px;
+}
+
+.btn-asistio { 
+    background: linear-gradient(135deg, #10b981, #059669);
+    box-shadow: 0 3px 10px rgba(16, 185, 129, 0.3);
+}
+
+.btn-no-asistio { 
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    box-shadow: 0 3px 10px rgba(245, 158, 11, 0.3);
+}
+
+.btn-cancelar { 
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    box-shadow: 0 3px 10px rgba(239, 68, 68, 0.3);
+}
+
+.cita-actions button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.cita-actions button:active {
+    transform: translateY(0);
+}
+
+/* ESTADOS */
+.cita-card.atendida {
+    opacity: 0.8;
+    border-left-color: #94a3b8;
+    background: linear-gradient(135deg, #f1f5f9 0%, #ffffff 100%);
+}
+
+.cita-card.atendida::after {
+    content: '✓ ATENDIDA';
+    position: absolute;
+    top: 15px;
+    right: -30px;
+    background: #10b981;
+    color: white;
+    padding: 5px 40px;
+    font-size: 10px;
+    font-weight: 700;
+    transform: rotate(45deg);
+    letter-spacing: 1px;
+}
+
+.cita-card.cancelada {
+    opacity: 0.65;
+    border-left-color: #ef4444;
+    background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
+}
+
+.cita-card.cancelada::after {
+    content: '✕ CANCELADA';
+    position: absolute;
+    top: 15px;
+    right: -30px;
+    background: #ef4444;
+    color: white;
+    padding: 5px 40px;
+    font-size: 10px;
+    font-weight: 700;
+    transform: rotate(45deg);
+    letter-spacing: 1px;
+}
+
+.cita-card.no-asistio {
+    opacity: 0.75;
+    border-left-color: #f59e0b;
+    background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
+}
+
+.cita-card.no-asistio::after {
+    content: '✕ NO ASISTIÓ';
+    position: absolute;
+    top: 15px;
+    right: -30px;
+    background: #d97706;
+    color: white;
+    padding: 5px 40px;
+    font-size: 10px;
+    font-weight: 700;
+    transform: rotate(45deg);
+    letter-spacing: 1px;
+}
+
+/* ESTADO VACÍO */
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.empty-state i {
+    font-size: 60px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 15px;
+}
+
+.empty-state p {
+    color: #64748b;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .citas-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .cita-card {
+        min-height: 160px;
+        padding: 15px;
+    }
+    
+    .cita-actions {
+        gap: 8px;
+    }
+    
+    .cita-actions button {
+        font-size: 11px;
+        padding: 8px 5px;
+    }
+    
+    .citas-header {
+        padding: 20px;
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+}/* Estilo para botones deshabilitados */
+.cita-actions button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Mejora del toast */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}

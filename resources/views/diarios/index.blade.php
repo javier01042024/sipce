@@ -1,6 +1,11 @@
+{{-- resources/views/diarios/index.blade.php --}}
 @extends('layouts.app')
 
 @section('content')
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <style>
 /* CONTENEDOR PRINCIPAL */
@@ -47,6 +52,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    cursor: pointer;
 }
 
 .btn-nuevo:hover {
@@ -164,14 +170,8 @@
 }
 
 @keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .diario-card:hover {
@@ -188,13 +188,13 @@
     align-items: center;
 }
 
-.paciente-info {
+.user-info {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-.paciente-avatar-small {
+.user-avatar-small {
     width: 45px;
     height: 45px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -207,14 +207,14 @@
     font-size: 18px;
 }
 
-.paciente-detalle h4 {
+.user-detalle h4 {
     margin: 0 0 3px 0;
     font-size: 16px;
     font-weight: 700;
     color: #1e293b;
 }
 
-.paciente-detalle .fecha-badge {
+.user-detalle .fecha-badge {
     font-size: 12px;
     color: #64748b;
     display: flex;
@@ -296,6 +296,8 @@
     color: white;
     text-decoration: none;
     transition: all 0.3s;
+    border: none;
+    cursor: pointer;
 }
 
 .btn-icon-small.view {
@@ -304,6 +306,10 @@
 
 .btn-icon-small.edit {
     background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+}
+
+.btn-icon-small.delete {
+    background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
 }
 
 .btn-icon-small:hover {
@@ -363,7 +369,7 @@
         text-align: center;
     }
     
-    .paciente-info {
+    .user-info {
         flex-direction: column;
     }
     
@@ -386,9 +392,11 @@
         <div class="header-content">
             <h1>
                 <i class="fas fa-book-open me-2"></i>
-                Diario de Pacientes
+                {{ Auth::id() == 1 ? 'Diario de Pacientes' : 'Mi Diario Personal' }}
             </h1>
-            <p>Registro diario emocional y seguimiento terapéutico</p>
+            <p>
+                {{ Auth::id() == 1 ? 'Registro diario emocional y seguimiento terapéutico' : 'Registro diario de mis pensamientos y emociones' }}
+            </p>
         </div>
 
         <a href="{{ route('diarios.create') }}" class="btn-nuevo">
@@ -436,14 +444,16 @@
 
     <!-- FILTROS -->
     <div class="filtros-container">
-        <select class="filtro-select" id="filtroPaciente">
-            <option value="">Todos los pacientes</option>
-            @foreach($diarios->unique('paciente_id') as $diario)
-                <option value="{{ $diario->paciente_id }}">
-                    {{ $diario->paciente->nombre_completo }}
+        @if(Auth::id() == 1)
+        <select class="filtro-select" id="filtroUsuario">
+            <option value="">Todos los usuarios</option>
+            @foreach($diarios->unique('user_id') as $diario)
+                <option value="{{ $diario->user_id }}">
+                    {{ $diario->user->name }}
                 </option>
             @endforeach
         </select>
+        @endif
 
         <select class="filtro-select" id="filtroFecha">
             <option value="">Todas las fechas</option>
@@ -465,34 +475,37 @@
         <div class="diarios-grid">
             @foreach($diarios as $diario)
                 @php
-                    // Determinar emoción basada en el contenido (ejemplo)
                     $emocion = 'neutral';
                     $emocionIcon = '😐';
                     $emocionTexto = 'Neutral';
                     
                     if(str_contains(strtolower($diario->contenido), 'bien') || 
                        str_contains(strtolower($diario->contenido), 'feliz') ||
-                       str_contains(strtolower($diario->contenido), 'contento')) {
+                       str_contains(strtolower($diario->contenido), 'contento') ||
+                       str_contains(strtolower($diario->contenido), 'alegre') ||
+                       str_contains(strtolower($diario->contenido), 'agradecido')) {
                         $emocion = 'positivo';
                         $emocionIcon = '😊';
                         $emocionTexto = 'Positivo';
                     } elseif(str_contains(strtolower($diario->contenido), 'mal') || 
                              str_contains(strtolower($diario->contenido), 'triste') ||
-                             str_contains(strtolower($diario->contenido), 'ansioso')) {
+                             str_contains(strtolower($diario->contenido), 'ansioso') ||
+                             str_contains(strtolower($diario->contenido), 'deprimido') ||
+                             str_contains(strtolower($diario->contenido), 'enojado')) {
                         $emocion = 'negativo';
                         $emocionIcon = '😔';
                         $emocionTexto = 'Negativo';
                     }
                 @endphp
 
-                <div class="diario-card" data-paciente="{{ $diario->paciente_id }}" data-fecha="{{ $diario->fecha }}" data-emocion="{{ $emocion }}">
+                <div class="diario-card" data-usuario="{{ $diario->user_id }}" data-fecha="{{ $diario->fecha }}" data-emocion="{{ $emocion }}" id="diario-row-{{ $diario->id }}">
                     <div class="diario-header-card">
-                        <div class="paciente-info">
-                            <div class="paciente-avatar-small">
-                                {{ strtoupper(substr($diario->paciente->nombre_completo, 0, 1)) }}
+                        <div class="user-info">
+                            <div class="user-avatar-small">
+                                {{ strtoupper(substr($diario->user->name, 0, 1)) }}
                             </div>
-                            <div class="paciente-detalle">
-                                <h4>{{ $diario->paciente->nombre_completo }}</h4>
+                            <div class="user-detalle">
+                                <h4>{{ $diario->user->name }}</h4>
                                 <span class="fecha-badge">
                                     <i class="far fa-calendar-alt"></i>
                                     {{ \Carbon\Carbon::parse($diario->fecha)->format('d/m/Y') }}
@@ -527,12 +540,18 @@
                             </div>
 
                             <div class="diario-actions">
-                                <a href="#" class="btn-icon-small view" title="Ver detalles">
+                                <a href="{{ route('diarios.show', $diario) }}" class="btn-icon-small view" title="Ver detalles">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a href="#" class="btn-icon-small edit" title="Editar">
+                                <a href="{{ route('diarios.edit', $diario) }}" class="btn-icon-small edit" title="Editar">
                                     <i class="fas fa-pen"></i>
                                 </a>
+                                <button class="btn-icon-small delete btn-eliminar-diario" 
+                                        data-id="{{ $diario->id }}" 
+                                        data-fecha="{{ \Carbon\Carbon::parse($diario->fecha)->format('d/m/Y') }}" 
+                                        title="Eliminar">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -544,8 +563,12 @@
             <div class="empty-icon">
                 <i class="fas fa-book"></i>
             </div>
-            <h3>No hay registros en el diario</h3>
-            <p>Comienza registrando el primer seguimiento emocional de tus pacientes</p>
+            <h3>
+                {{ Auth::id() == 1 ? 'No hay registros en el diario' : 'No tienes registros en tu diario' }}
+            </h3>
+            <p>
+                {{ Auth::id() == 1 ? 'Comienza registrando el primer seguimiento emocional de tus pacientes' : 'Comienza escribiendo tu primer registro para hacer seguimiento de tus emociones' }}
+            </p>
             <a href="{{ route('diarios.create') }}" class="btn-nuevo" style="display: inline-flex;">
                 <i class="fas fa-plus-circle"></i>
                 Crear primer registro
@@ -555,33 +578,54 @@
 
 </div>
 
-<!-- FONT AWESOME -->
-@push('styles')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-@endpush
-
-<!-- JAVASCRIPT PARA FILTROS -->
 <script>
+// Pasar variables de PHP a JavaScript (FUERA de cualquier función)
+var sessionSuccess = @json(session('success'));
+var sessionError = @json(session('error'));
+
 document.addEventListener('DOMContentLoaded', function() {
-    const filtroPaciente = document.getElementById('filtroPaciente');
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+    
+    // ===== MOSTRAR MENSAJES DE SESIÓN =====
+    if (sessionSuccess) {
+        Swal.fire({
+            icon: 'success',
+            title: '¡Éxito!',
+            text: sessionSuccess,
+            timer: 3000,
+            showConfirmButton: false,
+            toast: true,
+            position: 'top-end'
+        });
+    }
+    
+    if (sessionError) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: sessionError,
+            confirmButtonColor: '#667eea'
+        });
+    }
+    
+    // ===== FILTROS =====
+    const filtroUsuario = document.getElementById('filtroUsuario');
     const filtroFecha = document.getElementById('filtroFecha');
     const filtroEmocion = document.getElementById('filtroEmocion');
     const cards = document.querySelectorAll('.diario-card');
 
     function aplicarFiltros() {
-        const pacienteSeleccionado = filtroPaciente.value;
-        const fechaSeleccionada = filtroFecha.value;
-        const emocionSeleccionada = filtroEmocion.value;
+        const usuarioSeleccionado = filtroUsuario ? filtroUsuario.value : '';
+        const fechaSeleccionada = filtroFecha ? filtroFecha.value : '';
+        const emocionSeleccionada = filtroEmocion ? filtroEmocion.value : '';
 
         cards.forEach(card => {
             let mostrar = true;
 
-            // Filtrar por paciente
-            if (pacienteSeleccionado && card.dataset.paciente !== pacienteSeleccionado) {
+            if (filtroUsuario && usuarioSeleccionado && card.dataset.usuario !== usuarioSeleccionado) {
                 mostrar = false;
             }
 
-            // Filtrar por fecha
             if (mostrar && fechaSeleccionada) {
                 const fechaCard = new Date(card.dataset.fecha);
                 const hoy = new Date();
@@ -608,7 +652,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
 
-            // Filtrar por emoción
             if (mostrar && emocionSeleccionada && card.dataset.emocion !== emocionSeleccionada) {
                 mostrar = false;
             }
@@ -617,9 +660,74 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    filtroPaciente.addEventListener('change', aplicarFiltros);
-    filtroFecha.addEventListener('change', aplicarFiltros);
-    filtroEmocion.addEventListener('change', aplicarFiltros);
+    if (filtroUsuario) filtroUsuario.addEventListener('change', aplicarFiltros);
+    if (filtroFecha) filtroFecha.addEventListener('change', aplicarFiltros);
+    if (filtroEmocion) filtroEmocion.addEventListener('change', aplicarFiltros);
+
+    // ===== ELIMINAR DIARIO =====
+    document.querySelectorAll('.btn-eliminar-diario').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const diarioId = this.getAttribute('data-id');
+            const fecha = this.getAttribute('data-fecha');
+            
+            Swal.fire({
+                title: '¿Estás seguro?',
+                html: 'Se eliminará el registro del <strong>' + fecha + '</strong><br><small style="color: #64748b;">Esta acción no se puede deshacer</small>',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: '<i class="fas fa-trash me-2"></i>Sí, eliminar',
+                cancelButtonText: '<i class="fas fa-times me-2"></i>Cancelar',
+                reverseButtons: true
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        const response = await fetch('/diarios/' + diarioId, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': csrfToken,
+                                'Accept': 'application/json'
+                            }
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (!response.ok) {
+                            throw new Error(data.message || 'Error al eliminar');
+                        }
+                        
+                        if (data.success) {
+                            const row = document.getElementById('diario-row-' + diarioId);
+                            if (row) {
+                                row.style.transition = 'all 0.3s';
+                                row.style.opacity = '0';
+                                row.style.transform = 'scale(0.95)';
+                                setTimeout(function() { row.remove(); }, 300);
+                            }
+                            
+                            await Swal.fire({
+                                icon: 'success',
+                                title: '¡Eliminado!',
+                                text: data.message || 'El registro ha sido eliminado correctamente',
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                            
+                            setTimeout(function() { window.location.reload(); }, 1500);
+                        }
+                    } catch (error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: error.message || 'No se pudo eliminar el registro',
+                            confirmButtonColor: '#667eea'
+                        });
+                    }
+                }
+            });
+        });
+    });
 });
 </script>
 

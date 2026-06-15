@@ -1,0 +1,437 @@
+
+.ficha-paciente-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+
+/* CARD PRINCIPAL */
+.info-card {
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.12);
+    border: 1px solid rgba(102, 126, 234, 0.08);
+    margin-bottom: 30px;
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card-header-custom {
+    background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+    color: white;
+    padding: 22px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-header-custom h2 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.card-header-custom h2 i {
+    margin-right: 10px;
+    color: #a8edea;
+}
+
+/* BADGE DE PRIORIDAD */
+.prioridad-badge {
+    padding: 8px 20px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 14px;
+    color: white;
+}
+
+.prioridad-badge.Alta {
+    background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+}
+
+.prioridad-badge.Media {
+    background: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%);
+}
+
+.prioridad-badge.Baja {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+/* PERFIL DEL PACIENTE */
+.paciente-profile {
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.paciente-avatar-large {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 36px;
+    font-weight: bold;
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+.paciente-name h3 {
+    margin: 0 0 5px 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.paciente-name p {
+    margin: 0;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.paciente-name p i {
+    margin-right: 5px;
+    color: #667eea;
+}
+
+/* GRID DE INFORMACIÓN */
+.info-grid {
+    padding: 30px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.info-item {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
+    padding: 18px;
+    border-radius: 12px;
+    transition: all 0.3s;
+}
+
+.info-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+}
+
+.info-label {
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.info-label i {
+    color: #667eea;
+    font-size: 14px;
+}
+
+.info-value {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.info-full {
+    grid-column: span 2;
+}
+
+/* SECCIONES DE TEXTO */
+.text-section {
+    padding: 0 30px 30px 30px;
+}
+
+.text-section h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 12px;
+}
+
+.text-section h4 i {
+    margin-right: 8px;
+    color: #667eea;
+}
+
+.text-box {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
+    padding: 18px;
+    border-radius: 12px;
+    color: #334155;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+/* BOTONES DE ACCIÓN */
+.action-buttons {
+    padding: 25px 30px;
+    border-top: 2px solid #f1f5f9;
+    display: flex;
+    gap: 15px;
+}
+
+.btn {
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-edit {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+}
+
+.btn-edit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    color: white;
+}
+
+.btn-back {
+    background: white;
+    color: #64748b;
+    border: 2px solid #e2e8f0;
+}
+
+.btn-back:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #475569;
+    transform: translateY(-2px);
+}
+
+/* HISTORIAL DE CITAS */
+.historial-card {
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.12);
+    border: 1px solid rgba(102, 126, 234, 0.08);
+}
+
+.historial-header {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: white;
+    padding: 20px 30px;
+}
+
+.historial-header h3 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.historial-header h3 i {
+    margin-right: 10px;
+}
+
+.historial-body {
+    padding: 0;
+}
+
+.citas-timeline {
+    padding: 20px 30px;
+}
+
+.cita-item {
+    display: flex;
+    align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.cita-item:last-child {
+    border-bottom: none;
+}
+
+.cita-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 18px;
+    color: white;
+    font-size: 20px;
+}
+
+.cita-icon.completada {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.cita-icon.pendiente {
+    background: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%);
+}
+
+.cita-icon.cancelada {
+    background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+}
+
+.cita-icon.programada {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.cita-content {
+    flex: 1;
+}
+
+.cita-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.cita-fecha {
+    font-weight: 700;
+    color: #1e293b;
+    font-size: 15px;
+}
+
+.cita-estado {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    color: white;
+}
+
+.cita-estado.completada {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.cita-estado.pendiente {
+    background: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%);
+}
+
+.cita-estado.cancelada {
+    background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+}
+
+.cita-estado.programada {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.cita-objetivo {
+    color: #64748b;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.cita-objetivo i {
+    margin-right: 5px;
+    color: #667eea;
+}
+
+.empty-citas {
+    text-align: center;
+    padding: 50px 30px;
+    color: #94a3b8;
+}
+
+.empty-citas i {
+    font-size: 48px;
+    margin-bottom: 15px;
+    opacity: 0.5;
+}
+
+.btn-nueva-cita {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s;
+}
+
+.btn-nueva-cita:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(17, 153, 142, 0.3);
+    color: white;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+        padding: 25px 20px;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+    
+    .info-full {
+        grid-column: span 1;
+    }
+    
+    .paciente-profile {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .card-header-custom {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .cita-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .cita-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .cita-icon {
+        margin: 0 0 15px 0;
+    }
+}

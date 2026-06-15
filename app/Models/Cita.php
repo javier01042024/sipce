@@ -16,11 +16,14 @@ class Cita extends Model
         'fecha',
         'estado',
         'objetivo',
-        'planificacion'
+        'planificacion',
+        'motivo_cancelacion'
     ];
 
     protected $casts = [
         'fecha' => 'date',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     /*
@@ -36,7 +39,7 @@ class Cita extends Model
 
     /*
     |--------------------------------------------------------------------------
-    | SCOPES (Útiles luego)
+    | SCOPES
     |--------------------------------------------------------------------------
     */
 
@@ -48,5 +51,50 @@ class Cita extends Model
     public function scopeHoy($query)
     {
         return $query->whereDate('fecha', now()->toDateString());
+    }
+    
+    public function scopeFuturas($query)
+    {
+        return $query->whereDate('fecha', '>', now()->toDateString());
+    }
+    
+    public function scopePasadas($query)
+    {
+        return $query->whereDate('fecha', '<', now()->toDateString());
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | MUTATORS & ACCESSORS
+    |--------------------------------------------------------------------------
+    */
+
+    public function getFechaFormateadaAttribute()
+    {
+        return $this->fecha ? $this->fecha->format('d/m/Y') : 'N/A';
+    }
+    
+    public function getEstadoTextoAttribute()
+    {
+        $estados = [
+            'pendiente' => 'Pendiente',
+            'atendida' => 'Atendida',
+            'cancelada' => 'Cancelada',
+            'no_asistio' => 'No Asistió'
+        ];
+        
+        return $estados[$this->estado] ?? 'Desconocido';
+    }
+    
+    public function getEstadoColorAttribute()
+    {
+        $colores = [
+            'pendiente' => '#f59e0b',
+            'atendida' => '#10b981',
+            'cancelada' => '#ef4444',
+            'no_asistio' => '#6b7280'
+        ];
+        
+        return $colores[$this->estado] ?? '#6b7280';
     }
 }

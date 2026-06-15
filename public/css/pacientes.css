@@ -1,0 +1,534 @@
+/* CONTENEDOR PRINCIPAL */
+.pacientes-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+/* HEADER */
+.pacientes-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 30px 35px;
+    border-radius: 14px;
+    margin-bottom: 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pacientes-header h1 {
+    font-weight: 700;
+    color: white;
+    margin: 0;
+    font-size: 28px;
+}
+
+.pacientes-header p {
+    color: rgba(255, 255, 255, 0.9);
+    margin: 8px 0 0 0;
+    font-size: 15px;
+}
+
+.btn-nuevo {
+    background: white;
+    color: #667eea;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.btn-nuevo:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    color: #764ba2;
+}
+
+/* ALERTA */
+.alert-success {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    font-weight: 500;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* CARD Y TABLA */
+.card {
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.12);
+    border: 1px solid rgba(102, 126, 234, 0.08);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+}
+
+th {
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 16px;
+    text-align: left;
+}
+
+td {
+    padding: 16px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+    font-size: 14px;
+}
+
+tbody tr {
+    transition: all 0.2s;
+}
+
+tbody tr:hover {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
+}
+
+/* BADGES */
+.badge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.badge.Alta {
+    background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+    color: white;
+}
+
+.badge.Media {
+    background: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%);
+    color: white;
+}
+
+.badge.Baja {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: white;
+}
+
+/* BOTONES DE ACCIÓN */
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-icon:hover {
+    transform: translateY(-2px);
+}
+
+.btn-view {
+    background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%);
+    box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
+}
+
+.btn-edit {
+    background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+    box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+}
+
+.btn-delete {
+    background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+}
+
+.btn-icon svg {
+    width: 18px;
+    height: 18px;
+    stroke: white;
+    stroke-width: 2;
+    fill: none;
+}
+
+/* MODALES */
+.modal-paciente {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 9999999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-paciente.show {
+    display: flex;
+}
+
+.modal-paciente-box {
+    width: 100%;
+    max-width: 650px;
+    max-height: 90vh;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+    animation: modalSlideIn 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-paciente-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.modal-paciente-header h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.modal-paciente-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 28px;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.modal-paciente-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.modal-paciente-body {
+    padding: 25px;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+}
+
+.modal-paciente-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-paciente-body::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+
+.modal-paciente-body::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.modal-paciente-body::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* FORMULARIO */
+.grid-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.input-group {
+    position: relative;
+}
+
+.input-group.full-width {
+    grid-column: span 2;
+}
+
+.input-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #667eea;
+    font-size: 16px;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.input-field {
+    width: 100%;
+    padding: 12px 12px 12px 42px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: all 0.3s;
+    background: white;
+}
+
+.input-field:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    outline: none;
+}
+
+textarea.input-field {
+    padding: 12px 12px 12px 42px;
+    resize: vertical;
+    min-height: 80px;
+}
+
+select.input-field {
+    padding-left: 42px;
+    cursor: pointer;
+}
+
+/* CHECKBOX para acceso al sistema */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border-radius: 12px;
+    border: 1px solid #bae6fd;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #667eea;
+}
+
+.checkbox-group label {
+    font-weight: 600;
+    color: #1e293b;
+    cursor: pointer;
+}
+
+.checkbox-group small {
+    display: block;
+    font-weight: normal;
+    color: #64748b;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* Campos de usuario (ocultos por defecto) */
+.user-fields {
+    margin-top: 15px;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    display: none;
+}
+
+.user-fields.show {
+    display: block;
+}
+
+.user-fields .input-icon {
+    color: #10b981;
+}
+
+/* BOTONES MODAL */
+.modal-paciente-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 20px 25px;
+    border-top: 2px solid #f1f5f9;
+    flex-shrink: 0;
+    background: white;
+}
+
+.btn-paciente {
+    padding: 12px 24px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-paciente-cancel {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.btn-paciente-cancel:hover {
+    background: #e2e8f0;
+}
+
+.btn-paciente-save {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(17, 153, 142, 0.3);
+}
+
+.btn-paciente-save:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(17, 153, 142, 0.4);
+}
+
+.btn-paciente-delete {
+    background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+.btn-paciente-delete:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+}
+
+/* MODAL DELETE */
+.delete-box {
+    text-align: center;
+}
+
+.danger-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 10px auto 20px;
+    box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+}
+
+.delete-box h3 {
+    color: #1e293b;
+    margin-bottom: 10px;
+}
+
+.delete-box p {
+    color: #64748b;
+    margin-bottom: 30px;
+}
+
+.empty-message {
+    text-align: center;
+    padding: 50px;
+    color: #94a3b8;
+    font-size: 16px;
+}
+
+.strong {
+    font-weight: 700;
+    color: #667eea;
+}
+
+.text-muted {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 5px;
+    display: block;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .pacientes-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+        padding: 25px 20px;
+    }
+
+    .grid-form {
+        grid-template-columns: 1fr;
+    }
+
+    .input-group.full-width {
+        grid-column: span 1;
+    }
+
+    .modal-paciente-footer {
+        flex-direction: column;
+    }
+
+    .btn-paciente {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .card {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 800px;
+    }
+
+    .modal-paciente-box {
+        max-height: 95vh;
+    }
+}

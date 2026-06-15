@@ -101,7 +101,7 @@
         }
 
         /* Botones - mismo estilo que login */
-        .btn-login, .btn-register, .btn-dashboard {
+        .btn-login, .btn-dashboard {
             width: 100%;
             border: none;
             border-radius: 14px;
@@ -127,19 +127,6 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
             color: white;
-        }
-
-        .btn-register {
-            background: transparent;
-            color: #7c3aed;
-            border: 2px solid #7c3aed;
-            margin-bottom: 0;
-        }
-
-        .btn-register:hover {
-            background: #7c3aed;
-            color: white;
-            transform: translateY(-2px);
         }
 
         .btn-dashboard {
@@ -204,12 +191,6 @@
                 <a href="{{ route('login') }}" class="btn-login">
                     <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
                 </a>
-                
-                @if (Route::has('register'))
-                    <a href="{{ route('register') }}" class="btn-register">
-                        <i class="fas fa-user-plus"></i> Crear Cuenta
-                    </a>
-                @endif
             @endauth
         @endif
 

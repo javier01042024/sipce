@@ -14,7 +14,7 @@ return new class extends Migration
     Schema::create('diarios', function (Blueprint $table) {
         $table->id();
 
-        $table->foreignId('paciente_id')
+        $table->foreignId('user_id')
             ->constrained()
             ->onDelete('cascade');
 
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('diario_pacientes');
+        Schema::dropIfExists('diarios');
     }
 };
