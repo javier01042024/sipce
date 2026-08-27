@@ -14,11 +14,15 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'permission' => CheckPermission::class,
             'patient' => CheckPatientRole::class,
         ]);
+
+        // Detrás de un proxy TLS (Render, Cloudflare, etc.): confiar en los
+        // encabezados X-Forwarded-Proto para generar URLs https (assets, forms).
+        $middleware->trustProxies(at: '*');
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
