@@ -185,7 +185,7 @@
         @if (Route::has('login'))
             @auth
                 <a href="{{ url('/dashboard') }}" class="btn-dashboard">
-                    <i class="fas fa-arrow-right"></i> Ir al Dashboard
+                    <i class="fas fa-arrow-right"></i> Ir al Panel de Control
                 </a>
             @else
                 <a href="{{ route('login') }}" class="btn-login">

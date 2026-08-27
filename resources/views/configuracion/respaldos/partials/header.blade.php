@@ -4,11 +4,18 @@
             <i class="fas fa-database me-2"></i>
             Respaldos del Sistema
         </h1>
-        <p>Gestión de copias de seguridad y restauración de datos</p>
+        <p>Gestión de copias de seguridad, restauración e importación de datos</p>
     </div>
 
-    <button class="btn-backup" id="btnBackup">
-        <i class="fas fa-plus-circle"></i>
-        Crear Respaldo
-    </button>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <button class="btn-backup" id="btnBackup">
+            <i class="fas fa-plus-circle"></i>
+            Crear Respaldo
+        </button>
+
+        <button class="btn-backup" id="btnImportSql" style="background: #667eea; color: white;">
+            <i class="fas fa-upload"></i>
+            Importar SQL
+        </button>
+    </div>
 </div>

@@ -49,10 +49,30 @@
         </a>
         @endif
 
+        {{-- Planes de Tratamiento --}}
+        @if(auth()->user()->hasPermission('pacientes.show'))
+        <a href="{{ route('tratamiento.index') }}"
+            class="nav-item {{ request()->routeIs('tratamiento.*') ? 'active' : '' }}">
+            <i class="fas fa-clipboard-list"></i>
+            <span>Planes</span>
+        </a>
+        @endif
+
+        {{-- Reportes --}}
+        @if(auth()->user()->hasPermission('pacientes.index'))
+        <a href="{{ route('reportes.index') }}"
+            class="nav-item {{ request()->routeIs('reportes.*') ? 'active' : '' }}">
+            <i class="fas fa-chart-bar"></i>
+            <span>Reportes</span>
+        </a>
+        @endif
+
         {{-- CONFIGURACIÓN CON SUBMENÚ --}}
         @if(auth()->user()->hasPermission('usuarios.index') ||
-            auth()->user()->hasPermission('respaldos.index') ||
-            auth()->user()->hasPermission('bitacora.index'))
+        auth()->user()->hasPermission('roles.index') ||
+        auth()->user()->hasPermission('respaldos.index') ||
+        auth()->user()->hasPermission('estados.index') ||
+        auth()->user()->hasPermission('bitacora.index'))
         <div class="nav-item has-submenu" onclick="toggleSubmenu(this)">
             <i class="fas fa-cog"></i>
             <span>Configuración</span>
@@ -61,7 +81,7 @@
 
         <div class="submenu">
             {{-- Usuarios y Roles --}}
-            @if(auth()->user()->hasPermission('usuarios.index'))
+            @if(auth()->user()->hasPermission('usuarios.index') || auth()->user()->hasPermission('roles.index'))
             <a href="{{ route('usuarios.index') }}"
                 class="submenu-item {{ request()->routeIs('usuarios.*') || request()->routeIs('roles.*') ? 'active' : '' }}">
                 <i class="fas fa-user-shield"></i>
@@ -75,6 +95,14 @@
                 class="submenu-item {{ request()->routeIs('configuracion.respaldos.*') ? 'active' : '' }}">
                 <i class="fas fa-database"></i>
                 <span>Respaldos</span>
+            </a>
+            @endif
+            {{-- Estados --}}
+            @if(auth()->user()->hasPermission('estados.index'))
+            <a href="{{ route('configuracion.estados.index') }}"
+                class="submenu-item {{ request()->routeIs('configuracion.estados.*') ? 'active' : '' }}">
+                <i class="fas fa-tag"></i>
+                <span>Estados</span>
             </a>
             @endif
 
@@ -92,6 +120,22 @@
 
     <!-- FOOTER -->
     <div class="sidebar-bottom">
+        <a href="{{ route('notificaciones.index') }}"
+           class="nav-item notif-bell {{ request()->routeIs('notificaciones.*') ? 'active' : '' }}"
+           title="Notificaciones">
+            <i class="fas fa-bell"></i>
+            <span>Notificaciones</span>
+            @php $noLeidas = \App\Models\Notificacion::where('user_id', auth()->id())->where('leida', false)->count(); @endphp
+            @if($noLeidas > 0)
+                <span class="notif-badge">{{ $noLeidas > 99 ? '99+' : $noLeidas }}</span>
+            @endif
+        </a>
+
+        <div class="wifi-status" id="wifiStatus" title="Verificando conexión...">
+            <i class="fas fa-wifi" id="wifiIcon"></i>
+            <span id="wifiLabel">Verificando...</span>
+        </div>
+
         <button onclick="openLogoutModal()" class="nav-item logout">
             <i class="fas fa-sign-out-alt"></i>
             <span>Cerrar sesión</span>
@@ -302,6 +346,27 @@
         color: #fecaca;
     }
 
+    /* NOTIFICATION BELL */
+    .notif-bell {
+        position: relative;
+    }
+    .notif-badge {
+        position: absolute;
+        top: 4px;
+        right: 12px;
+        min-width: 18px;
+        height: 18px;
+        line-height: 18px;
+        padding: 0 5px;
+        background: #ef4444;
+        color: white;
+        font-size: 0.65rem;
+        font-weight: 700;
+        border-radius: 9px;
+        text-align: center;
+        pointer-events: none;
+    }
+
     /* SUBMENU */
     .has-submenu {
         justify-content: flex-start;
@@ -440,6 +505,7 @@
             opacity: 0;
             transform: scale(0.95);
         }
+
         to {
             opacity: 1;
             transform: scale(1);
@@ -520,6 +586,64 @@
         transform: translateY(-1px);
         box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
     }
+
+    /* WIFI STATUS */
+    .wifi-status {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        border-radius: 10px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        cursor: default;
+        margin-bottom: 4px;
+    }
+
+    .wifi-status i {
+        font-size: 1.05rem;
+        transition: color 0.3s ease;
+    }
+
+    /* Verde: conectado + internet */
+    .wifi-status.online {
+        color: #22c55e;
+    }
+
+    .wifi-status.online i {
+        color: #22c55e;
+        text-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+    }
+
+    /* Rojo: conectado pero sin internet */
+    .wifi-status.offline {
+        color: #ef4444;
+    }
+
+    .wifi-status.offline i {
+        color: #ef4444;
+        text-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+    }
+
+    /* Gris: sin conexión de red */
+    .wifi-status.disconnected {
+        color: #64748b;
+    }
+
+    .wifi-status.disconnected i {
+        color: #64748b;
+    }
+
+    /* Sidebar colapsada */
+    .sidebar.collapsed .wifi-status span {
+        display: none;
+    }
+
+    .sidebar.collapsed .wifi-status {
+        justify-content: center;
+        padding: 10px;
+    }
 </style>
 
 <script>
@@ -550,7 +674,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         const sidebar = document.getElementById('sidebar');
         const mainContent = document.getElementById('mainContent');
-        
+
         if (sidebar && mainContent) {
             const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
             if (isCollapsed) {
@@ -587,4 +711,82 @@
             closeLogoutModal();
         }
     });
+
+    // =============================================
+    // INDICADOR DE CONEXIÓN WiFi
+    // =============================================
+    (function() {
+        const icon = document.getElementById('wifiIcon');
+        const label = document.getElementById('wifiLabel');
+        const status = document.getElementById('wifiStatus');
+        if (!icon || !label || !status) return;
+
+        const ENDPOINT = '{{ url("up") }}';
+        const TIMEOUT_MS = 4000;
+
+        function setOnline() {
+            status.className = 'wifi-status online';
+            icon.className = 'fas fa-wifi';
+            label.textContent = 'Conectado';
+            status.title = 'Conexión estable';
+        }
+
+        function setOffline() {
+            status.className = 'wifi-status offline';
+            icon.className = 'fas fa-wifi';
+            label.textContent = 'Sin internet';
+            status.title = 'Conectado pero sin acceso a internet';
+        }
+
+        function setDisconnected() {
+            status.className = 'wifi-status disconnected';
+            icon.className = 'fas fa-wifi';
+            label.textContent = 'Sin conexión';
+            status.title = 'No hay conexión de red';
+        }
+
+        async function checkConnection() {
+            // Primer nivel: verificar navigator.onLine
+            if (!navigator.onLine) {
+                setDisconnected();
+                return;
+            }
+
+            // Segundo nivel: intentar hacer fetch al health check del servidor
+            try {
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
+                const resp = await fetch(ENDPOINT, {
+                    method: 'HEAD',
+                    signal: controller.signal,
+                    cache: 'no-store'
+                });
+                clearTimeout(timeout);
+
+                if (resp.ok) {
+                    setOnline();
+                } else {
+                    setOffline();
+                }
+            } catch (e) {
+                // Fetch falló = hay red local pero no internet/servidor
+                setOffline();
+            }
+        }
+
+        // Verificar al cargar
+        checkConnection();
+
+        // Escuchar eventos de red del navegador
+        window.addEventListener('online', () => {
+            checkConnection();
+        });
+
+        window.addEventListener('offline', () => {
+            setDisconnected();
+        });
+
+        // Polling cada 15 segundos como respaldo
+        setInterval(checkConnection, 15000);
+    })();
 </script>

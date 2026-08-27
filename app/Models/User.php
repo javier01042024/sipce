@@ -7,9 +7,10 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne; // ← AGREGAR
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\Role;
 
 /**
@@ -39,7 +40,7 @@ use App\Models\Role;
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -99,11 +100,26 @@ class User extends Authenticatable
         return $this->hasMany(Diario::class, 'user_id');
     }
 
-    /**
-     * NUEVA RELACIÓN: Un usuario puede ser un paciente (1 a 1)
-     *
-     * @return HasOne
-     */
+    public function notificaciones(): HasMany
+    {
+        return $this->hasMany(Notificacion::class);
+    }
+
+    public function planesTratamiento(): HasMany
+    {
+        return $this->hasMany(PlanTratamiento::class);
+    }
+
+    public function sesiones(): HasMany
+    {
+        return $this->hasMany(Sesion::class);
+    }
+
+    public function activityLog(): HasMany
+    {
+        return $this->hasMany(PatientActivityLog::class);
+    }
+
     public function paciente(): HasOne
     {
         return $this->hasOne(Paciente::class);

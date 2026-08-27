@@ -1,297 +1,375 @@
-<div class="card">
-    <div class="card-header-custom">
-        <h3>
-            <i class="fas fa-list"></i>
-            Listado de Pacientes
-        </h3>
-        <div style="display: flex; gap: 10px;">
-            <!-- Botones de exportación -->
-            <button id="exportExcelBtn" class="btn-export-excel" style="background: #10b981; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer;">
-                <i class="fas fa-file-excel"></i> Excel
-            </button>
-            <button id="exportPdfBtn" class="btn-export-pdf" style="background: #ef4444; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer;">
-                <i class="fas fa-file-pdf"></i> PDF
-            </button>
-            <button id="printBtn" class="btn-print" style="background: #4a5568; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer;">
-                <i class="fas fa-print"></i> Imprimir
-            </button>
-            <button id="copyBtn" class="btn-copy" style="background: #667eea; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer;">
-                <i class="fas fa-copy"></i> Copiar
+<div class="sipce-table-card">
+    <div class="sipce-table-header">
+        <div>
+            <h3>
+                <i class="fas fa-list"></i>
+                Listado de Pacientes
+            </h3>
+            <p>Total: {{ $pacientes->total() }} pacientes registrados</p>
+        </div>
+        <div class="sipce-table-header-actions">
+            <div class="export-buttons">
+                <button id="exportExcelBtn" class="btn-export btn-export-excel">
+                    <i class="fas fa-file-excel"></i> Excel
+                </button>
+                <button id="exportPdfBtn" class="btn-export btn-export-pdf">
+                    <i class="fas fa-file-pdf"></i> PDF
+                </button>
+                <button id="printBtn" class="btn-export btn-export-print">
+                    <i class="fas fa-print"></i> Imprimir
+                </button>
+                <button id="copyBtn" class="btn-export btn-export-copy">
+                    <i class="fas fa-copy"></i> Copiar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="export-filters">
+        <div class="filters-body">
+            <div class="filter-group">
+                <label for="exportFechaDesde"><i class="far fa-calendar-alt"></i> Desde</label>
+                <input type="date" id="exportFechaDesde" class="filter-input">
+            </div>
+            <div class="filter-group">
+                <label for="exportFechaHasta"><i class="far fa-calendar-alt"></i> Hasta</label>
+                <input type="date" id="exportFechaHasta" class="filter-input">
+            </div>
+            <button id="exportPorFechaBtn" class="btn-filter">
+                <i class="fas fa-filter"></i> Filtrar por fecha
             </button>
         </div>
     </div>
 
-    <div class="table-responsive">
+    <div class="table-container">
         <table id="pacientesTable" class="display" style="width:100%">
             <thead>
                 <tr>
-                    <th><input type="checkbox" id="selectAll"></th>
-                    <th><i class="fas fa-hashtag me-1"></i> Expediente</th>
-                    <th><i class="fas fa-user me-1"></i> Nombre completo</th>
-                    <th><i class="fas fa-phone me-1"></i> Teléfono</th>
-                    <th><i class="fas fa-envelope me-1"></i> Email</th>
-                    <th><i class="fas fa-flag me-1"></i> Prioridad</th>
-                    <th><i class="fas fa-calendar me-1"></i> Registro</th>
-                    <th><i class="fas fa-cog me-1"></i> Acciones</th>
+                    <th class="col-checkbox"><input type="checkbox" id="selectAll"></th>
+                    <th class="col-expediente">Expediente</th>
+                    <th class="col-nombre">Paciente</th>
+                    <th class="col-tipo">Tipo</th>
+                    <th class="col-atencion">Atención</th>
+                    <th class="col-prioridad">Prioridad</th>
+                    <th class="col-estado">Estado</th>
+                    <th class="col-fecha">Registro</th>
+                    <th class="col-acciones">Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($pacientes as $paciente)
-                <tr id="row-{{ $paciente->id }}">
-                    <td><input type="checkbox" class="selectRow" value="{{ $paciente->id }}"></td>
-                    <td class="strong">#{{ $paciente->numero_expediente }}</td>
-                    <td>
-                        <i class="fas fa-user-circle me-2" style="color: #667eea;"></i>
-                        {{ $paciente->nombre_completo }}
-                        @if($paciente->user)
-                            <span style="background: #10b98120; color: #059669; font-size: 10px; padding: 2px 8px; border-radius: 20px; margin-left: 8px;">
-                                <i class="fas fa-check-circle"></i> Con acceso
-                            </span>
+                @forelse ($pacientes as $paciente)
+                <tr id="row-{{ $paciente->id }}" class="paciente-row">
+                    <td class="col-checkbox" onclick="event.stopPropagation();">
+                        <input type="checkbox" class="selectRow" value="{{ $paciente->id }}">
+                    </td>
+                    <td class="col-expediente">
+                        <a href="{{ route('pacientes.show', $paciente) }}" class="expediente-link">
+                            <span class="expediente-number">#{{ $paciente->numero_expediente }}</span>
+                        </a>
+                    </td>
+                    <td class="col-nombre">
+                        @php
+                            $nombreCompleto = 'Sin nombre';
+                            $inicial = 'P';
+                            
+                            if ($paciente->detalle) {
+                                $nombreCompleto = $paciente->detalle->nombre . ' ' . $paciente->detalle->apellido;
+                                $inicial = strtoupper(substr($paciente->detalle->nombre, 0, 1));
+                            } elseif ($paciente->paciente_detalle_type && $paciente->paciente_detalle_id) {
+                                try {
+                                    $detalle = app($paciente->paciente_detalle_type)->find($paciente->paciente_detalle_id);
+                                    if ($detalle) {
+                                        $nombreCompleto = $detalle->nombre . ' ' . $detalle->apellido;
+                                        $inicial = strtoupper(substr($detalle->nombre, 0, 1));
+                                    }
+                                } catch (\Exception $e) {
+                                    // Silencioso
+                                }
+                            }
+                        @endphp
+                        <a href="{{ route('pacientes.show', $paciente) }}" class="paciente-nombre-link">
+                            <div class="paciente-nombre">
+                                <div class="paciente-avatar-small">
+                                    {{ $inicial }}
+                                </div>
+                                <div class="paciente-info-cell">
+                                    <span class="nombre-text">{{ $nombreCompleto }}</span>
+                                    @if($paciente->user)
+                                    <span class="badge-acceso" title="Tiene acceso al sistema">
+                                        <i class="fas fa-key"></i>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+                        </a>
+                    </td>
+                    <td class="col-tipo">
+                        @if($paciente->tipo_paciente === 'adulto')
+                        <span class="badge-tipo badge-tipo-adulto"><i class="fas fa-user-tie"></i> Adulto</span>
+                        @elseif($paciente->tipo_paciente === 'adolescente')
+                        <span class="badge-tipo badge-tipo-adolescente"><i class="fas fa-user"></i> Adolescente</span>
+                        @else
+                        <span class="badge-tipo badge-tipo-nino"><i class="fas fa-child"></i> Niño</span>
                         @endif
                     </td>
-                    <td>
-                        <i class="fas fa-phone-alt me-2" style="color: #10b981;"></i>
-                        {{ $paciente->telefono ?? 'No registrado' }}
+                    <td class="col-atencion">
+                        @if($paciente->tipo_atencion === 'privado')
+                        <span class="badge-atencion badge-privado"><i class="fas fa-building"></i> Privado</span>
+                        @else
+                        <span class="badge-atencion badge-publico"><i class="fas fa-hospital"></i> Público</span>
+                        @endif
                     </td>
-                    <td>{{ $paciente->email ?? 'No registrado' }}</td>
-                    <td>
-                        <span class="badge {{ $paciente->prioridad }}">
-                            {{ $paciente->prioridad ?? 'No definida' }}
-                        </span>
+                    <td class="col-prioridad">
+                        @if($paciente->prioridad === 'urgencia')
+                        <span class="badge-pri badge-urgencia"><i class="fas fa-exclamation-circle"></i> Urgencia</span>
+                        @elseif($paciente->prioridad === 'alta')
+                        <span class="badge-pri badge-alta"><i class="fas fa-arrow-up"></i> Alta</span>
+                        @elseif($paciente->prioridad === 'media')
+                        <span class="badge-pri badge-media"><i class="fas fa-minus"></i> Media</span>
+                        @else
+                        <span class="badge-pri badge-baja"><i class="fas fa-arrow-down"></i> Baja</span>
+                        @endif
                     </td>
-                    <td>{{ $paciente->created_at ? $paciente->created_at->format('d/m/Y') : 'N/A' }}</td>
-                    <td class="actions">
-                        <a href="{{ route('pacientes.show', $paciente) }}" class="btn-icon btn-view" title="Ver detalles">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                                <circle cx="12" cy="12" r="3" />
-                            </svg>
-                        </a>
-
-                        <a href="{{ route('pacientes.edit', $paciente) }}" class="btn-icon btn-edit" title="Editar">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34" />
-                                <polygon points="18 2 22 6 12 16 8 16 8 12 18 2" />
-                            </svg>
-                        </a>
-
-                        <button type="button" class="btn-icon btn-delete" onclick="openDeleteModalPaciente(this)" title="Eliminar">
-                            <svg viewBox="0 0 24 24">
-                                <polyline points="3 6 5 6 21 6" />
-                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                                <line x1="10" y1="11" x2="10" y2="17" />
-                                <line x1="14" y1="11" x2="14" y2="17" />
-                            </svg>
-                        </button>
+                    <td class="col-estado">
+                        @if($paciente->estado)
+                        <span class="estado-badge">{{ $paciente->estado->tipo }}</span>
+                        @else
+                        <span class="no-data">-</span>
+                        @endif
+                    </td>
+                    <td class="col-fecha">
+                        {{ $paciente->created_at ? $paciente->created_at->format('d/m/Y') : '-' }}
+                    </td>
+                    <td class="col-acciones">
+                        <div class="actions">
+                            <a href="{{ route('pacientes.edit', $paciente) }}" class="btn-icon btn-edit" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form action="{{ route('pacientes.destroy', $paciente) }}" method="POST" style="display: inline;" class="delete-form">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="btn-icon btn-delete" onclick="confirmarEliminarPaciente(this)" title="Eliminar">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
-                @endforeach
+                @empty
+                <tr>
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td>
+                        <div class="sipce-empty">
+                            <i class="fas fa-user-slash sipce-empty-icon"></i>
+                            <p class="sipce-empty-title">No hay pacientes registrados</p>
+                            <p class="sipce-empty-text">Comienza agregando un nuevo paciente</p>
+                        </div>
+                    </td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
-
-    <!-- Selector de exportación por rango de fechas -->
-    <div class="export-filters" style="padding: 15px; border-top: 1px solid #e2e8f0; display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
-        <span style="font-weight: 600;">Exportar por fecha:</span>
-        <div style="display: flex; gap: 10px; align-items: center;">
-            <label>Desde:</label>
-            <input type="date" id="exportFechaDesde" class="form-control" style="padding: 5px 10px; border: 1px solid #e2e8f0; border-radius: 6px;">
-        </div>
-        <div style="display: flex; gap: 10px; align-items: center;">
-            <label>Hasta:</label>
-            <input type="date" id="exportFechaHasta" class="form-control" style="padding: 5px 10px; border: 1px solid #e2e8f0; border-radius: 6px;">
-        </div>
-        <button id="exportPorFechaBtn" class="btn-export-fecha" style="background: #11998e; color: white; border: none; padding: 6px 15px; border-radius: 6px; cursor: pointer;">
-            <i class="fas fa-filter"></i> Exportar por rango
-        </button>
-        <button id="exportSeleccionadosBtn" class="btn-export-seleccionados" style="background: #667eea; color: white; border: none; padding: 6px 15px; border-radius: 6px; cursor: pointer;">
-            <i class="fas fa-check-square"></i> Exportar seleccionados
-        </button>
-        <button id="exportTodosBtn" class="btn-export-todos" style="background: #4a5568; color: white; border: none; padding: 6px 15px; border-radius: 6px; cursor: pointer;">
-            <i class="fas fa-database"></i> Exportar todos
-        </button>
-    </div>
+    
 </div>
 
 <script>
-$(document).ready(function() {
-    // Inicializar DataTable
-    const table = $('#pacientesTable').DataTable({
-        language: {
-            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json'
-        },
-        pageLength: 10,
-        lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "Todos"]],
-        order: [[1, 'asc']],
-        columnDefs: [
-            { orderable: false, targets: [0, 7] } // Deshabilitar orden en checkbox y acciones
-        ]
-    });
-    
-    // Seleccionar todos los checkboxes
-    $('#selectAll').on('click', function() {
-        const isChecked = $(this).prop('checked');
-        $('.selectRow').prop('checked', isChecked);
-    });
-    
-    // Función para exportar datos
-    function exportarDatos(filas, nombreArchivo) {
-        const data = [];
-        
-        // Cabeceras
-        data.push(['Expediente', 'Nombre Completo', 'Teléfono', 'Email', 'Prioridad', 'Fecha Registro']);
-        
-        // Datos
-        filas.each(function() {
-            const row = $(this);
-            data.push([
-                row.find('td:eq(1)').text().trim(),
-                row.find('td:eq(2)').text().trim().replace(/Con acceso/g, '').trim(),
-                row.find('td:eq(3)').text().trim(),
-                row.find('td:eq(4)').text().trim(),
-                row.find('td:eq(5)').text().trim(),
-                row.find('td:eq(6)').text().trim()
-            ]);
-        });
-        
-        // Crear hoja de trabajo
-        const ws = XLSX.utils.aoa_to_sheet(data);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'Pacientes');
-        
-        // Descargar Excel
-        XLSX.writeFile(wb, `${nombreArchivo}.xlsx`);
-    }
-    
-    // Exportar todos los datos
-    $('#exportTodosBtn').on('click', function() {
-        const todasFilas = $('#pacientesTable tbody tr');
-        exportarDatos(todasFilas, 'pacientes_todos');
-        Swal.fire({
-            icon: 'success',
-            title: 'Exportado',
-            text: 'Todos los pacientes fueron exportados a Excel',
-            timer: 2000,
-            showConfirmButton: false
-        });
-    });
-    
-    // Exportar seleccionados
-    $('#exportSeleccionadosBtn').on('click', function() {
-        const seleccionados = $('.selectRow:checked');
-        const filasSeleccionadas = [];
-        
-        seleccionados.each(function() {
-            const id = $(this).val();
-            const row = $(`#row-${id}`);
-            if (row.length) filasSeleccionadas.push(row);
-        });
-        
-        if (filasSeleccionadas.length === 0) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Seleccione pacientes',
-                text: 'Debe seleccionar al menos un paciente para exportar',
-                confirmButtonColor: '#f59e0b'
-            });
-            return;
+function confirmarEliminarPaciente(button) {
+    const form = button.closest('form');
+    const row = button.closest('tr');
+    const nombreElement = row ? row.querySelector('.nombre-text') : null;
+    const nombrePaciente = nombreElement ? nombreElement.textContent.trim() : 'Paciente desconocido';
+    const expedienteElement = row ? row.querySelector('.expediente-number') : null;
+    const expediente = expedienteElement ? expedienteElement.textContent.trim() : '';
+
+    const detalle = 'Estás a punto de eliminar a <strong>' + nombrePaciente + '</strong>' +
+        (expediente ? ' <span style="color:#667eea;">(' + expediente + ')</span>' : '') +
+        '<br><br><small style="color:#64748b;">Esta acción no se puede deshacer. Se eliminarán todos los datos asociados.</small>';
+
+    SIPCE_ALERT.confirmDelete({
+        html: detalle
+    }).then(function(result) {
+        if (result.isConfirmed) {
+            SIPCE_ALERT.loading('Eliminando...', 'Por favor espera');
+            form.submit();
         }
-        
-        exportarDatos($(filasSeleccionadas), 'pacientes_seleccionados');
-        Swal.fire({
-            icon: 'success',
-            title: 'Exportado',
-            text: `${filasSeleccionadas.length} pacientes exportados`,
-            timer: 2000,
-            showConfirmButton: false
-        });
     });
-    
-    // Exportar por rango de fechas
-    $('#exportPorFechaBtn').on('click', function() {
-        const desde = $('#exportFechaDesde').val();
-        const hasta = $('#exportFechaHasta').val();
-        
-        if (!desde || !hasta) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Seleccione rango',
-                text: 'Debe seleccionar una fecha de inicio y fin',
-                confirmButtonColor: '#f59e0b'
-            });
-            return;
-        }
-        
-        const filasFiltradas = [];
-        $('#pacientesTable tbody tr').each(function() {
-            const fechaTexto = $(this).find('td:eq(6)').text().trim();
-            const [dia, mes, anio] = fechaTexto.split('/');
-            const fechaFila = `${anio}-${mes}-${dia}`;
+}
+
+// Hacer que toda la fila sea clickeable (excepto acciones)
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.paciente-row').forEach(row => {
+        row.addEventListener('click', function(e) {
+            // No redirigir si se hizo clic en checkbox, botón o formulario
+            if (e.target.closest('.col-checkbox') || 
+                e.target.closest('.col-acciones') || 
+                e.target.closest('button') || 
+                e.target.closest('form') ||
+                e.target.closest('input')) {
+                return;
+            }
             
-            if (fechaFila >= desde && fechaFila <= hasta) {
-                filasFiltradas.push($(this));
+            // Buscar el enlace del nombre y navegar
+            const link = row.querySelector('.paciente-nombre-link');
+            if (link) {
+                window.location.href = link.getAttribute('href');
             }
         });
         
-        if (filasFiltradas.length === 0) {
-            Swal.fire({
-                icon: 'info',
-                title: 'Sin resultados',
-                text: 'No hay pacientes en el rango de fechas seleccionado',
-                confirmButtonColor: '#667eea'
-            });
-            return;
-        }
-        
-        exportarDatos($(filasFiltradas), `pacientes_${desde}_a_${hasta}`);
-        Swal.fire({
-            icon: 'success',
-            title: 'Exportado',
-            text: `${filasFiltradas.length} pacientes exportados`,
-            timer: 2000,
-            showConfirmButton: false
-        });
+        // Efecto hover: cursor pointer
+        row.style.cursor = 'pointer';
     });
-    
-    // Exportar a Excel usando DataTables
-    $('#exportExcelBtn').on('click', function() {
-        table.button('.buttons-excel').trigger();
-    });
-    
-    // Exportar a PDF
-    $('#exportPdfBtn').on('click', function() {
-        table.button('.buttons-pdf').trigger();
-    });
-    
-    // Imprimir
-    $('#printBtn').on('click', function() {
-        table.button('.buttons-print').trigger();
-    });
-    
-    // Copiar
-    $('#copyBtn').on('click', function() {
-        table.button('.buttons-copy').trigger();
-        Swal.fire({
-            icon: 'success',
-            title: 'Copiado',
-            text: 'Datos copiados al portapapeles',
-            timer: 1500,
-            showConfirmButton: false
-        });
-    });
-    
-    // Agregar botones de DataTables (ocultos pero funcionales)
-    new $.fn.dataTable.Buttons(table, {
-        buttons: [
-            { extend: 'excel', text: 'Excel', className: 'd-none' },
-            { extend: 'pdf', text: 'PDF', className: 'd-none' },
-            { extend: 'print', text: 'Imprimir', className: 'd-none' },
-            { extend: 'copy', text: 'Copiar', className: 'd-none' }
-        ]
-    });
-    table.buttons().container().appendTo('body').hide();
 });
 </script>
 
-<!-- Incluir SheetJS para exportar a Excel -->
-<script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+<style>
+    /* Enlaces de paciente */
+    .paciente-nombre-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+
+    .paciente-nombre-link:hover .nombre-text {
+        color: #667eea;
+        text-decoration: underline;
+    }
+
+    .paciente-nombre-link:hover .paciente-avatar-small {
+        transform: scale(1.1);
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+    }
+
+    .expediente-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .expediente-link:hover .expediente-number {
+        color: #4f46e5;
+        text-decoration: underline;
+    }
+
+    /* Fila clickeable */
+    .paciente-row {
+        transition: background-color 0.2s;
+    }
+
+    .paciente-row:hover {
+        background-color: #f8fafc !important;
+    }
+
+    /* Avatar animación */
+    .paciente-avatar-small {
+        transition: all 0.2s ease;
+    }
+
+    .nombre-text {
+        transition: color 0.2s;
+    }
+
+    .badge-tipo {
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        color: white;
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    .badge-tipo-adulto { background: #667eea; }
+    .badge-tipo-adolescente { background: #f59e0b; }
+    .badge-tipo-nino { background: #10b981; }
+
+    .badge-atencion {
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    .badge-privado { background: #f0f9ff; color: #0ea5e9; border: 1px solid #bae6fd; }
+    .badge-publico { background: #fef3c7; color: #d97706; border: 1px solid #fcd34d; }
+
+    .badge-pri {
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        color: white;
+        display: inline-block;
+        white-space: nowrap;
+        line-height: 1;
+    }
+
+    .badge-urgencia { background: #ef4444; }
+    .badge-alta { background: #f59e0b; }
+    .badge-media { background: #667eea; }
+    .badge-baja { background: #10b981; }
+
+    .estado-badge {
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        color: white;
+        background: #64748b;
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    .badge-acceso {
+        background: #11998e;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 10px;
+        margin-left: 5px;
+    }
+
+    .paciente-nombre {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .paciente-avatar-small {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #667eea;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    .paciente-info-cell {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .nombre-text {
+        font-weight: 600;
+        color: #1e293b;
+        font-size: 14px;
+    }
+
+    .no-data {
+        color: #94a3b8;
+        font-size: 13px;
+    }
+
+    .expediente-number {
+        font-weight: 700;
+        color: #667eea;
+        font-size: 13px;
+    }
+</style>

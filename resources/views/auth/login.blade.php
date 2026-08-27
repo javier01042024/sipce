@@ -17,10 +17,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 2rem;
+            padding: 1rem;
         }
 
-        /* Fondo con patrón sutil */
         body::before {
             content: '';
             position: fixed;
@@ -30,28 +29,27 @@
             pointer-events: none;
         }
 
-        /* Tarjeta ANCHA para PC - máximo ancho 1000px */
         .login-card {
             background: white;
-            border-radius: 28px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
             width: 100%;
-            max-width: 1000px;
+            max-width: 800px;
             display: flex;
             overflow: hidden;
-            animation: fadeInUp 0.5s ease;
+            animation: fadeInUp 0.4s ease;
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Lado izquierdo - Branding visual */
+        /* Lado izquierdo - Branding */
         .brand-side {
             flex: 1;
             background: linear-gradient(145deg, #4f46e5, #7c3aed);
-            padding: 3rem;
+            padding: 2rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -59,86 +57,141 @@
         }
 
         .brand-icon {
-            font-size: 4rem;
-            margin-bottom: 1.5rem;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
         }
 
         .brand-side h2 {
-            font-size: 2.2rem;
+            font-size: 1.6rem;
             font-weight: 700;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
             letter-spacing: -0.5px;
         }
 
         .brand-side p {
-            font-size: 1rem;
-            line-height: 1.5;
+            font-size: 0.8rem;
+            line-height: 1.4;
             opacity: 0.9;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .feature-list {
             list-style: none;
-            margin-top: 1rem;
+            margin-top: 0.5rem;
         }
 
         .feature-list li {
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.6rem;
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 0.9rem;
+            gap: 8px;
+            font-size: 0.8rem;
         }
 
         .feature-list li i {
-            font-size: 1.1rem;
+            font-size: 0.9rem;
+            width: 18px;
+            text-align: center;
         }
 
         /* Lado derecho - Formulario */
         .form-side {
             flex: 1;
-            padding: 3rem;
+            padding: 2rem;
             background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .form-side h1 {
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             font-weight: 700;
             color: #1f2937;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
         }
 
         .form-side .sub {
             color: #6b7280;
-            margin-bottom: 2rem;
-            font-size: 0.9rem;
+            margin-bottom: 1.2rem;
+            font-size: 0.8rem;
             border-left: 3px solid #7c3aed;
-            padding-left: 12px;
+            padding-left: 10px;
         }
 
         .input-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         label {
             display: block;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             font-weight: 600;
             color: #374151;
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.25rem;
         }
 
         label i {
-            margin-right: 6px;
+            margin-right: 5px;
+            color: #7c3aed;
+        }
+
+        .password-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-wrapper input {
+            width: 100%;
+            padding: 0.6rem 2.5rem 0.6rem 0.8rem;
+            font-size: 0.85rem;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 10px;
+            transition: all 0.2s;
+            background: #fafbfc;
+        }
+
+        .password-wrapper input:focus {
+            outline: none;
+            border-color: #7c3aed;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+        }
+
+        .password-wrapper input.is-invalid {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 5px;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: auto;
+        }
+
+        .toggle-password:hover {
             color: #7c3aed;
         }
 
         input {
             width: 100%;
-            padding: 0.85rem 1rem;
-            font-size: 0.95rem;
+            padding: 0.6rem 0.8rem;
+            font-size: 0.85rem;
             border: 1.5px solid #e5e7eb;
-            border-radius: 14px;
+            border-radius: 10px;
             transition: all 0.2s;
             background: #fafbfc;
         }
@@ -157,31 +210,31 @@
 
         .invalid-feedback {
             color: #ef4444;
-            font-size: 0.75rem;
-            margin-top: 0.3rem;
+            font-size: 0.7rem;
+            margin-top: 0.2rem;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
 
         .options {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin: 1rem 0 1.5rem;
-            font-size: 0.85rem;
+            margin: 0.75rem 0 1rem;
+            font-size: 0.75rem;
         }
 
         .checkbox {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             cursor: pointer;
         }
 
         .checkbox input {
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             margin: 0;
             accent-color: #7c3aed;
         }
@@ -194,57 +247,87 @@
 
         .forgot:hover { text-decoration: underline; }
 
-        button {
+        button[type="submit"] {
             width: 100%;
             background: linear-gradient(105deg, #4f46e5, #7c3aed);
             border: none;
-            padding: 0.9rem;
-            border-radius: 14px;
-            font-weight: 700;
-            font-size: 1rem;
+            padding: 0.65rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
             color: white;
             cursor: pointer;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 1.2rem;
+            gap: 8px;
         }
 
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(79,70,229,0.3);
+        button[type="submit"]:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(79,70,229,0.3);
+        }
+
+        button[type="submit"]:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
         }
 
         .error-alert {
             background: #fef2f2;
-            border-left: 4px solid #ef4444;
-            padding: 0.8rem;
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-            font-size: 0.85rem;
+            border-left: 3px solid #ef4444;
+            padding: 0.5rem 0.7rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.75rem;
             color: #b91c1c;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
-        /* Responsive para cuando la pantalla es más pequeña que 800px */
-        @media (max-width: 800px) {
+        .success-alert {
+            background: #f0fdf4;
+            border-left: 3px solid #10b981;
+            padding: 0.5rem 0.7rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.75rem;
+            color: #065f46;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        @media (max-width: 700px) {
             .login-card {
                 flex-direction: column;
-                max-width: 550px;
+                max-width: 400px;
             }
-            .brand-side { padding: 2rem; text-align: center; }
-            .feature-list { text-align: left; }
-            .form-side { padding: 2rem; }
+            .brand-side { 
+                padding: 1.5rem; 
+                text-align: center; 
+            }
+            .feature-list { 
+                text-align: left; 
+                display: inline-block;
+            }
+            .form-side { 
+                padding: 1.5rem; 
+            }
+        }
+
+        @media (max-width: 400px) {
+            body { padding: 0.5rem; }
+            .brand-side { padding: 1.2rem; }
+            .form-side { padding: 1.2rem; }
         }
     </style>
 </head>
 <body>
     <div class="login-card">
-        <!-- Lado izquierdo: presentación corporativa -->
+        <!-- Lado izquierdo -->
         <div class="brand-side">
             <div class="brand-icon">
                 <i class="fas fa-brain"></i>
@@ -258,7 +341,7 @@
             </ul>
         </div>
 
-        <!-- Lado derecho: formulario de acceso -->
+        <!-- Lado derecho -->
         <div class="form-side">
             <h1>Bienvenido de vuelta</h1>
             <div class="sub">Ingresa con tus credenciales</div>
@@ -267,11 +350,21 @@
                 <div class="error-alert">
                     <i class="fas fa-exclamation-triangle"></i>
                     <span>
-                        @if ($errors->has('email')) {{ $errors->first('email') }}
-                        @elseif ($errors->has('password')) {{ $errors->first('password') }}
-                        @else Credenciales incorrectas. Intenta nuevamente.
+                        @if ($errors->has('email')) 
+                            {{ $errors->first('email') }}
+                        @elseif ($errors->has('password')) 
+                            {{ $errors->first('password') }}
+                        @else 
+                            Credenciales incorrectas. Intenta nuevamente.
                         @endif
                     </span>
+                </div>
+            @endif
+
+            @if (session('status'))
+                <div class="success-alert">
+                    <i class="fas fa-check-circle"></i>
+                    <span>{{ session('status') }}</span>
                 </div>
             @endif
 
@@ -282,7 +375,7 @@
                     <label><i class="fas fa-envelope"></i> Correo electrónico</label>
                     <input type="email" name="email" value="{{ old('email') }}" 
                            class="@error('email') is-invalid @enderror"
-                           placeholder="ejemplo@empresa.com">
+                           placeholder="ejemplo@empresa.com" autocomplete="email">
                     @error('email')
                         <div class="invalid-feedback"><i class="fas fa-circle-info"></i> {{ $message }}</div>
                     @enderror
@@ -290,9 +383,14 @@
 
                 <div class="input-group">
                     <label><i class="fas fa-lock"></i> Contraseña</label>
-                    <input type="password" name="password" 
-                           class="@error('password') is-invalid @enderror"
-                           placeholder="••••••••">
+                    <div class="password-wrapper">
+                        <input type="password" name="password" id="password"
+                               class="@error('password') is-invalid @enderror"
+                               placeholder="••••••••" autocomplete="current-password">
+                        <button type="button" class="toggle-password" onclick="togglePassword()">
+                            <i class="far fa-eye" id="toggleIcon"></i>
+                        </button>
+                    </div>
                     @error('password')
                         <div class="invalid-feedback"><i class="fas fa-circle-info"></i> {{ $message }}</div>
                     @enderror
@@ -306,45 +404,66 @@
                     <a href="{{ route('password.request') }}" class="forgot">¿Olvidaste tu contraseña?</a>
                 </div>
 
-                <button type="submit">
+                <button type="submit" id="submitBtn">
                     <i class="fas fa-sign-in-alt"></i> Iniciar sesión
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- Pequeño script para evitar doble submit y validación mínima -->
     <script>
+        // Toggle password visibility
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('toggleIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Form validation
         const form = document.getElementById('loginForm');
+        const submitBtn = document.getElementById('submitBtn');
+        
         if(form) {
             form.addEventListener('submit', function(e) {
                 const email = form.querySelector('input[name="email"]');
                 const pass = form.querySelector('input[name="password"]');
                 let hasErr = false;
                 
-                // Limpiar errores visuales previos
+                // Limpiar errores previos
                 document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
-                document.querySelectorAll('.invalid-feedback').forEach(el => { if(!el.classList.contains('server-feedback')) el.remove(); });
+                document.querySelectorAll('.invalid-feedback').forEach(el => { 
+                    if(!el.classList.contains('server-error')) el.remove(); 
+                });
                 
+                // Validar email
                 if(!email.value.trim()) {
-                    markError(email, 'El correo es obligatorio');
+                    markError(email, 'El correo electrónico es obligatorio');
                     hasErr = true;
                 } else if(!email.value.includes('@')) {
-                    markError(email, 'Ingresa un correo válido');
+                    markError(email, 'Ingresa un correo electrónico válido');
                     hasErr = true;
                 }
                 
-                if(!pass.value) {
-                    markError(pass, 'La contraseña es requerida');
+                // Validar contraseña
+                if(!pass.value.trim()) {
+                    markError(pass, 'La contraseña es obligatoria');
                     hasErr = true;
                 }
                 
                 if(hasErr) {
                     e.preventDefault();
                 } else {
-                    const btn = form.querySelector('button');
-                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Validando...';
-                    btn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Iniciando sesión...';
+                    submitBtn.disabled = true;
                 }
             });
             

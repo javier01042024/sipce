@@ -4,14 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasUuid;
 
 class Cita extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuid;
 
     protected $table = 'citas';
 
     protected $fillable = [
+        'uuid',
         'paciente_id',
         'fecha',
         'estado',

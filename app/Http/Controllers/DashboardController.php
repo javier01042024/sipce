@@ -11,65 +11,58 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    /**
-     * Muestra el panel de control principal con estadísticas,
-     * gráficas y actividad reciente del sistema.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
         // ============================================
         // ESTADÍSTICAS PRINCIPALES
         // ============================================
         
-        // Total de pacientes registrados en el sistema
+        // ✅ REACTIVADO - Pacientes
         $totalPacientes = Paciente::count();
-        
-        // Pacientes nuevos en el mes actual
         $pacientesNuevosMes = Paciente::whereMonth('created_at', Carbon::now()->month)
             ->whereYear('created_at', Carbon::now()->year)
             ->count();
         
-        // Citas programadas pendientes por atender
+        // ✅ Citas
         $citasProgramadas = Cita::pendientes()->count();
-        
-        // Citas programadas para esta semana
         $citasEstaSemana = Cita::whereBetween('fecha', [
-            Carbon::now()->startOfWeek(), // Inicio de la semana (lunes)
-            Carbon::now()->endOfWeek()    // Fin de la semana (domingo)
+            Carbon::now()->startOfWeek(), 
+            Carbon::now()->endOfWeek()    
         ])->count();
         
-        // Total de registros en el diario
+        // ✅ Diario
         $registrosDiarios = Diario::count();
-        
-        // Registros creados en el día de hoy
         $registrosHoy = Diario::whereDate('created_at', Carbon::today())->count();
         
-        // Pacientes clasificados con prioridad alta
-        $altaPrioridad = Paciente::where('prioridad', 'alta')->count();
-        
-        // Comparativa con el día anterior para calcular tendencia
-        $altaPrioridadAyer = Paciente::where('prioridad', 'alta')
+        // ✅ REACTIVADO - Prioridad
+        $altaPrioridad = Paciente::where('prioridad', 'alta')
+            ->orWhere('prioridad', 'urgencia')
+            ->count();
+            
+        $altaPrioridadAyer = Paciente::where(function($q) {
+                $q->where('prioridad', 'alta')
+                  ->orWhere('prioridad', 'urgencia');
+            })
             ->whereDate('created_at', Carbon::yesterday())
             ->count();
+            
         $diferenciaPrioridad = $altaPrioridad - $altaPrioridadAyer;
 
         // ============================================
         // DATOS PARA GRÁFICAS
         // ============================================
         
-        // Evolución de pacientes en los últimos 6 meses
+        // ✅ REACTIVADO
         $evolucionPacientes = $this->getEvolucionPacientes();
         
-        // Distribución de pacientes por nivel de prioridad
+        // ✅ REACTIVADO
         $distribucionPrioridad = [
-            'alta' => Paciente::where('prioridad', 'alta')->count(),
+            'alta' => Paciente::where('prioridad', 'alta')->orWhere('prioridad', 'urgencia')->count(),
             'media' => Paciente::where('prioridad', 'media')->count(),
             'baja' => Paciente::where('prioridad', 'baja')->count(),
         ];
         
-        // Distribución de pacientes por rangos de edad
+        // ✅ REACTIVADO
         $distribucionEdad = $this->getDistribucionEdad();
 
         // ============================================
@@ -81,22 +74,20 @@ class DashboardController extends Controller
         // PRÓXIMAS CITAS
         // ============================================
         
-        // Citas programadas para el día de hoy
-        $citasHoy = Cita::with('paciente')
-            ->pendientes() // Solo citas en estado pendiente
-            ->hoy()        // Solo las de hoy
+        // ✅ REACTIVADO - Ahora con relación paciente
+        $citasHoy = Cita::with('paciente.detalle')
+            ->pendientes()
+            ->hoy()        
             ->orderBy('fecha')
             ->get();
         
-        // Próximas 5 citas futuras (después de hoy)
-        $citasFuturas = Cita::with('paciente')
+        $citasFuturas = Cita::with('paciente.detalle')
             ->pendientes()
-            ->futuras()    // Solo citas futuras
+            ->futuras()    
             ->orderBy('fecha')
-            ->take(5)      // Limitar a 5 resultados
+            ->take(5)      
             ->get();
 
-        // Retornar la vista del dashboard con todas las variables
         return view('dashboard', compact(
             'totalPacientes',
             'pacientesNuevosMes',
@@ -116,62 +107,52 @@ class DashboardController extends Controller
     }
 
     /**
-     * Obtiene la evolución de pacientes nuevos por mes.
-     * Calcula los datos de los últimos 6 meses para la gráfica.
-     * 
-     * @return array Arreglo con etiquetas (labels) y datos (data)
+     * Obtener evolución de pacientes por mes (últimos 6 meses)
      */
     private function getEvolucionPacientes()
     {
-        $meses = []; // Etiquetas de los meses
-        $datos = []; // Cantidad de pacientes por mes
+        $labels = [];
+        $data = [];
         
-        // Recorrer los últimos 6 meses (del más antiguo al actual)
         for ($i = 5; $i >= 0; $i--) {
             $fecha = Carbon::now()->subMonths($i);
-            $meses[] = $fecha->translatedFormat('M'); // Nombre del mes traducido (Ene, Feb...)
-            $datos[] = Paciente::whereMonth('created_at', $fecha->month)
+            $labels[] = $fecha->translatedFormat('M');
+            
+            $data[] = Paciente::whereMonth('created_at', $fecha->month)
                 ->whereYear('created_at', $fecha->year)
                 ->count();
         }
         
-        return [
-            'labels' => $meses, // Etiquetas para el eje X
-            'data' => $datos    // Valores para el eje Y
-        ];
+        return ['labels' => $labels, 'data' => $data];
     }
 
     /**
-     * Calcula la distribución de pacientes por rangos de edad.
-     * Agrupa a los pacientes en 4 categorías según su edad.
-     * 
-     * @return array Cantidad de pacientes por cada rango de edad
+     * Obtener distribución de pacientes por rango de edad
      */
     private function getDistribucionEdad()
     {
-        // Obtener solo pacientes con fecha de nacimiento registrada
-        $pacientes = Paciente::whereNotNull('fecha_nacimiento')->get();
+        $pacientes = Paciente::with('detalle')->get();
         
-        // Inicializar contadores por rango
         $rangos = [
-            '18-30' => 0,  // Jóvenes adultos
-            '31-50' => 0,  // Adultos
-            '51-70' => 0,  // Adultos mayores
-            '70+' => 0     // Tercera edad
+            '18-30' => 0,
+            '31-50' => 0,
+            '51-70' => 0,
+            '70+' => 0,
         ];
         
-        // Clasificar cada paciente según su edad
         foreach ($pacientes as $paciente) {
-            $edad = Carbon::parse($paciente->fecha_nacimiento)->age;
-            
-            if ($edad <= 30) {
-                $rangos['18-30']++;
-            } elseif ($edad <= 50) {
-                $rangos['31-50']++;
-            } elseif ($edad <= 70) {
-                $rangos['51-70']++;
-            } else {
-                $rangos['70+']++;
+            if ($paciente->detalle && $paciente->detalle->fecha_nacimiento) {
+                $edad = Carbon::parse($paciente->detalle->fecha_nacimiento)->age;
+                
+                if ($edad >= 18 && $edad <= 30) {
+                    $rangos['18-30']++;
+                } elseif ($edad >= 31 && $edad <= 50) {
+                    $rangos['31-50']++;
+                } elseif ($edad >= 51 && $edad <= 70) {
+                    $rangos['51-70']++;
+                } elseif ($edad > 70) {
+                    $rangos['70+']++;
+                }
             }
         }
         
@@ -179,46 +160,51 @@ class DashboardController extends Controller
     }
 
     /**
-     * Obtiene la actividad reciente del sistema.
-     * Combina diferentes tipos de eventos: nuevos pacientes, citas,
-     * registros diarios y citas completadas.
-     * 
-     * @return \Illuminate\Support\Collection Colección de actividades ordenadas por fecha
+     * Obtener actividad reciente del sistema
      */
     private function getActividadReciente()
     {
         $actividades = collect();
         
-        // Obtener los últimos 3 pacientes creados
-        $ultimosPacientes = Paciente::latest()
+        // ✅ REACTIVADO - Nuevos pacientes
+        $ultimosPacientes = Paciente::with('detalle')
+            ->latest()
             ->take(3)
             ->get()
             ->map(function ($paciente) {
+                $nombre = $paciente->detalle 
+                    ? $paciente->detalle->nombre . ' ' . $paciente->detalle->apellido 
+                    : 'Paciente ' . $paciente->numero_expediente;
+                    
                 return [
-                    'icono' => 'fas fa-user-plus', // Icono de Font Awesome
-                    'color' => 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', // Color púrpura
-                    'titulo' => "Nuevo paciente: {$paciente->nombre_completo}",
-                    'tiempo' => $paciente->created_at->diffForHumans(), // Ej: "hace 2 horas"
+                    'icono' => 'fas fa-user-plus',
+                    'color' => 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    'titulo' => "Nuevo paciente: {$nombre}",
+                    'tiempo' => $paciente->created_at->diffForHumans(),
                     'fecha' => $paciente->created_at
                 ];
             });
         
-        // Obtener las últimas 3 citas creadas
-        $ultimasCitas = Cita::with('paciente')
+        // ✅ Citas nuevas
+        $ultimasCitas = Cita::with('paciente.detalle')
             ->latest()
             ->take(3)
             ->get()
             ->map(function ($cita) {
+                $nombre = $cita->paciente && $cita->paciente->detalle 
+                    ? $cita->paciente->detalle->nombre . ' ' . $cita->paciente->detalle->apellido 
+                    : 'Paciente';
+                    
                 return [
                     'icono' => 'fas fa-calendar-plus',
-                    'color' => 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)', // Color verde
-                    'titulo' => "Cita programada: " . ($cita->paciente->nombre_completo ?? 'Sin paciente'),
-                    'tiempo' => $cita->created_at->diffForHumans(),
+                    'color' => 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)', 
+                    'titulo' => "Cita programada: {$nombre}",
+                    'tiempo' => $cita->created_at->diffForHumans(), 
                     'fecha' => $cita->created_at
                 ];
             });
         
-        // Obtener los últimos 2 registros del diario
+        // ✅ Registros del diario
         $ultimosDiarios = Diario::with('user')
             ->latest()
             ->take(2)
@@ -226,37 +212,39 @@ class DashboardController extends Controller
             ->map(function ($diario) {
                 return [
                     'icono' => 'fas fa-pen',
-                    'color' => 'linear-gradient(135deg, #f39c12 0%, #f1c40f 100%)', // Color naranja
+                    'color' => 'linear-gradient(135deg, #f39c12 0%, #f1c40f 100%)', 
                     'titulo' => "Registro actualizado: " . ($diario->user->name ?? 'Usuario'),
                     'tiempo' => $diario->created_at->diffForHumans(),
                     'fecha' => $diario->created_at
                 ];
             });
         
-        // Obtener las últimas 2 citas completadas (atendidas)
-        $citasCompletadas = Cita::with('paciente')
+        // ✅ Citas completadas
+        $citasCompletadas = Cita::with('paciente.detalle')
             ->where('estado', 'atendida')
             ->latest()
             ->take(2)
             ->get()
             ->map(function ($cita) {
+                $nombre = $cita->paciente && $cita->paciente->detalle 
+                    ? $cita->paciente->detalle->nombre . ' ' . $cita->paciente->detalle->apellido 
+                    : 'Paciente';
+                    
                 return [
                     'icono' => 'fas fa-check-circle',
-                    'color' => 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', // Color azul
-                    'titulo' => "Cita completada: " . ($cita->paciente->nombre_completo ?? 'Sin paciente'),
+                    'color' => 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', 
+                    'titulo' => "Cita completada: {$nombre}",
                     'tiempo' => $cita->updated_at->diffForHumans(),
                     'fecha' => $cita->updated_at
                 ];
             });
         
-        // Combinar todas las actividades, ordenar por fecha descendente
-        // y limitar a los 8 eventos más recientes
         return $actividades->concat($ultimosPacientes)
             ->concat($ultimasCitas)
             ->concat($ultimosDiarios)
             ->concat($citasCompletadas)
-            ->sortByDesc('fecha') // Ordenar del más reciente al más antiguo
-            ->take(8)             // Solo mostrar 8 actividades
-            ->values();           // Reiniciar los índices de la colección
+            ->sortByDesc('fecha')
+            ->take(8)
+            ->values();
     }
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class RoleController extends Controller
 {
@@ -61,6 +62,13 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        // Solo administradores pueden crear roles
+        if (!Auth::user()->isAdmin()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Solo los administradores pueden crear roles'
+            ], 403);
+        }
         // Validar los datos del formulario
         $validated = $request->validate([
             'name' => 'required|string|max:50|unique:roles,name',         // Nombre único del rol
@@ -96,6 +104,14 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Solo administradores pueden actualizar roles
+        if (!Auth::user()->isAdmin()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Solo los administradores pueden modificar roles'
+            ], 403);
+        }
+
         // Buscar el rol o lanzar error 404
         $role = Role::findOrFail($id);
         
@@ -141,6 +157,14 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
+        // Solo administradores pueden eliminar roles
+        if (!Auth::user()->isAdmin()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Solo los administradores pueden eliminar roles'
+            ], 403);
+        }
+
         // Buscar el rol o lanzar error 404
         $role = Role::findOrFail($id);
         
@@ -262,10 +286,71 @@ class RoleController extends Controller
             // Módulo: Configuración del sistema
             [
                 'group' => 'Configuración',
-                'icon' => 'fa-cog', // Icono de engranaje
+                'icon' => 'fa-cog',
                 'permissions' => [
-                    ['name' => 'Ver respaldos', 'slug' => 'respaldos.index'],  // Acceso a gestión de respaldos
-                    ['name' => 'Ver bitácora', 'slug' => 'bitacora.index'],    // Acceso a bitácora del sistema
+                    ['name' => 'Ver estados', 'slug' => 'estados.index'],
+                    ['name' => 'Crear estados', 'slug' => 'estados.create'],
+                    ['name' => 'Ver detalle de estado', 'slug' => 'estados.show'],
+                    ['name' => 'Editar estados', 'slug' => 'estados.edit'],
+                    ['name' => 'Eliminar estados', 'slug' => 'estados.destroy'],
+                    ['name' => 'Ver respaldos', 'slug' => 'respaldos.index'],
+                    ['name' => 'Crear respaldos', 'slug' => 'respaldos.create'],
+                    ['name' => 'Descargar respaldos', 'slug' => 'respaldos.download'],
+                    ['name' => 'Restaurar respaldos', 'slug' => 'respaldos.restore'],
+                    ['name' => 'Eliminar respaldos', 'slug' => 'respaldos.delete'],
+                    ['name' => 'Importar SQL', 'slug' => 'respaldos.import'],
+                    ['name' => 'Ver bitácora', 'slug' => 'bitacora.index'],
+                ]
+            ],
+            // Módulo: Planes de Tratamiento
+            [
+                'group' => 'Planes de Tratamiento',
+                'icon' => 'fa-clipboard-list',
+                'permissions' => [
+                    ['name' => 'Ver planes', 'slug' => 'planes.index'],
+                    ['name' => 'Crear plan', 'slug' => 'planes.create'],
+                    ['name' => 'Ver detalle de plan', 'slug' => 'planes.show'],
+                    ['name' => 'Editar plan', 'slug' => 'planes.edit'],
+                    ['name' => 'Eliminar plan', 'slug' => 'planes.destroy'],
+                ]
+            ],
+            // Módulo: Sesiones Clínicas
+            [
+                'group' => 'Sesiones',
+                'icon' => 'fa-hand-holding-heart',
+                'permissions' => [
+                    ['name' => 'Ver sesiones', 'slug' => 'sesiones.index'],
+                    ['name' => 'Crear sesión', 'slug' => 'sesiones.create'],
+                    ['name' => 'Ver detalle de sesión', 'slug' => 'sesiones.show'],
+                    ['name' => 'Editar sesión', 'slug' => 'sesiones.edit'],
+                    ['name' => 'Eliminar sesión', 'slug' => 'sesiones.destroy'],
+                ]
+            ],
+            // Módulo: Calendario
+            [
+                'group' => 'Calendario',
+                'icon' => 'fa-calendar-week',
+                'permissions' => [
+                    ['name' => 'Ver calendario', 'slug' => 'calendario.index'],
+                ]
+            ],
+            // Módulo: Reportes
+            [
+                'group' => 'Reportes',
+                'icon' => 'fa-chart-bar',
+                'permissions' => [
+                    ['name' => 'Ver reportes', 'slug' => 'reportes.index'],
+                    ['name' => 'Reporte de pacientes', 'slug' => 'reportes.pacientes'],
+                    ['name' => 'Reporte de citas', 'slug' => 'reportes.citas'],
+                    ['name' => 'Reporte de evolución', 'slug' => 'reportes.evolucion'],
+                ]
+            ],
+            // Módulo: Notificaciones
+            [
+                'group' => 'Notificaciones',
+                'icon' => 'fa-bell',
+                'permissions' => [
+                    ['name' => 'Ver notificaciones', 'slug' => 'notificaciones.index'],
                 ]
             ],
         ];

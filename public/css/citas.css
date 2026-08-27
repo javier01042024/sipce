@@ -1,11 +1,15 @@
-/* CONTENEDOR PRINCIPAL */
+/* ============================================ */
+/* CONTENEDOR PRINCIPAL
+/* ============================================ */
 .citas-wrapper {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px 15px;
 }
 
-/* HEADER MEJORADO */
+/* ============================================ */
+/* HEADER - VIEJO
+/* ============================================ */
 .citas-header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     padding: 25px 30px;
@@ -43,265 +47,257 @@
     color: #764ba2;
 }
 
-/* SECCIONES */
+/* ============================================ */
+/* SECCIONES - NUEVO
+/* ============================================ */
 .citas-section {
     margin-bottom: 35px;
 }
 
 .section-title {
-    font-size: 1.1rem;
-    font-weight: 700;
+    padding: 14px 22px;
+    border-radius: 12px;
     margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 3px solid;
+    font-weight: 700;
+    font-size: 16px;
     display: flex;
     align-items: center;
     gap: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
-.section-title.hoy {
-    color: #f59e0b;
-    border-color: #f59e0b;
+.section-title i {
+    font-size: 1.1rem;
 }
 
-.section-title.hoy i {
-    font-size: 1.3rem;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
-}
-
-.section-title.proximas {
-    color: #0083b0;
-    border-color: #0083b0;
-}
-
-/* GRID 2 COLUMNAS */
+/* ============================================ */
+/* GRID - NUEVO
+/* ============================================ */
 .citas-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 20px;
 }
 
-/* TARJETA REDISEÑADA - MÁS GRANDE */
+/* ============================================ */
+/* TARJETA - NUEVO
+/* ============================================ */
 .cita-card {
     background: white;
     border-radius: 16px;
-    padding: 20px;
-    border: none;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    min-height: 180px;
+    padding: 22px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     position: relative;
     overflow: hidden;
-    border-left: 5px solid;
-}
-
-/* BORDES POR TIPO */
-.cita-card.hoy {
-    border-left-color: #f59e0b;
-    background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
-}
-
-.cita-card.hoy:hover {
-    box-shadow: 0 8px 25px rgba(245, 158, 11, 0.2);
-}
-
-.cita-card.proxima {
-    border-left-color: #0083b0;
-    background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
-}
-
-.cita-card.proxima:hover {
-    box-shadow: 0 8px 25px rgba(0, 131, 176, 0.2);
 }
 
 .cita-card:hover {
     transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
 }
 
-/* CABECERA DE TARJETA */
+/* ============================================ */
+/* HEADER DE TARJETA - NUEVO
+/* ============================================ */
 .cita-card-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    margin-bottom: 18px;
 }
 
-.cita-paciente-info {
-    flex: 1;
-}
-
-.cita-nombre {
-    font-size: 15px;
-    font-weight: 700;
-    color: #1e293b;
-    margin-bottom: 4px;
+.paciente-info {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 14px;
 }
 
-.cita-nombre i {
-    color: #667eea;
-    font-size: 18px;
-}
-
-.cita-hora {
-    font-size: 14px;
-    color: #64748b;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.badge-hoy {
-    background: #f59e0b;
-    color: white;
-    font-size: 11px;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    animation: pulse 2s infinite;
-}
-
-/* OBJETIVO */
-.cita-objetivo {
-    background: #f8fafc;
-    padding: 12px;
-    border-radius: 10px;
-    font-size: 13px;
-    color: #475569;
-    line-height: 1.5;
-    flex: 1;
-    border: 1px solid #e2e8f0;
-}
-
-.cita-objetivo i {
-    color: #667eea;
-    margin-right: 8px;
-}
-
-/* BOTONES DE ACCIÓN - SOLO 3 */
-.cita-actions {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-top: auto;
-}
-
-.cita-actions button {
-    font-size: 12px;
-    padding: 10px 8px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s;
-    color: white;
+.paciente-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 5px;
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+    flex-shrink: 0;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
+.paciente-info h4 {
+    margin: 0 0 4px 0;
+    font-size: 15px;
+    color: #1e293b;
+    font-weight: 700;
+}
+
+.expediente-badge {
+    font-size: 11px;
+    color: #667eea;
+    font-weight: 700;
+    background: #eef2ff;
+    padding: 2px 10px;
+    border-radius: 12px;
+}
+
+/* ============================================ */
+/* ESTADO - NUEVO
+/* ============================================ */
+.cita-estado {
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
     letter-spacing: 0.5px;
+    white-space: nowrap;
 }
 
-.btn-asistio { 
-    background: linear-gradient(135deg, #10b981, #059669);
-    box-shadow: 0 3px 10px rgba(16, 185, 129, 0.3);
+.estado-pendiente {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fcd34d;
 }
 
-.btn-no-asistio { 
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-    box-shadow: 0 3px 10px rgba(245, 158, 11, 0.3);
+.estado-cancelada {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fca5a5;
 }
 
-.btn-cancelar { 
-    background: linear-gradient(135deg, #ef4444, #dc2626);
-    box-shadow: 0 3px 10px rgba(239, 68, 68, 0.3);
+/* ============================================ */
+/* CUERPO DE TARJETA - NUEVO
+/* ============================================ */
+.cita-card-body {
+    margin-bottom: 18px;
 }
 
-.cita-actions button:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.1);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+.cita-info-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #475569;
+    line-height: 1.4;
 }
 
-.cita-actions button:active {
-    transform: translateY(0);
+.cita-info-row i {
+    width: 18px;
+    color: #94a3b8;
+    font-size: 13px;
+    text-align: center;
+    flex-shrink: 0;
 }
 
-/* ESTADOS */
-.cita-card.atendida {
-    opacity: 0.8;
-    border-left-color: #94a3b8;
-    background: linear-gradient(135deg, #f1f5f9 0%, #ffffff 100%);
+.cita-info-row strong {
+    color: #334155;
+    flex-shrink: 0;
 }
 
-.cita-card.atendida::after {
-    content: '✓ ATENDIDA';
-    position: absolute;
-    top: 15px;
-    right: -30px;
+.cita-info-row.text-danger {
+    color: #ef4444;
+}
+
+.cita-info-row.text-danger i {
+    color: #ef4444;
+}
+
+/* ============================================ */
+/* FOOTER BOTONES - NUEVO
+/* ============================================ */
+.cita-card-footer {
+    display: flex;
+    gap: 10px;
+    padding-top: 15px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.btn-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    transition: all 0.2s ease;
+}
+
+.btn-icon:hover {
+    transform: scale(1.08);
+}
+
+.btn-view, .btn-asistio {
+    background: #d1fae5;
+    color: #059669;
+}
+
+.btn-view:hover, .btn-asistio:hover {
     background: #10b981;
     color: white;
-    padding: 5px 40px;
-    font-size: 10px;
-    font-weight: 700;
-    transform: rotate(45deg);
-    letter-spacing: 1px;
 }
 
-.cita-card.cancelada {
-    opacity: 0.65;
-    border-left-color: #ef4444;
-    background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
+.btn-edit, .btn-no-asistio {
+    background: #fef3c7;
+    color: #d97706;
 }
 
-.cita-card.cancelada::after {
-    content: '✕ CANCELADA';
-    position: absolute;
-    top: 15px;
-    right: -30px;
+.btn-edit:hover, .btn-no-asistio:hover {
+    background: #f59e0b;
+    color: white;
+}
+
+.btn-cancel, .btn-cancelar {
+    background: #fee2e2;
+    color: #ef4444;
+}
+
+.btn-cancel:hover, .btn-cancelar:hover {
     background: #ef4444;
     color: white;
-    padding: 5px 40px;
-    font-size: 10px;
-    font-weight: 700;
-    transform: rotate(45deg);
-    letter-spacing: 1px;
+}
+
+/* ============================================ */
+/* ESTADOS FINALES - NUEVO
+/* ============================================ */
+.cita-card.atendida {
+    opacity: 0.75;
+    background: #f0fdf4;
 }
 
 .cita-card.no-asistio {
     opacity: 0.75;
-    border-left-color: #f59e0b;
-    background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
+    background: #fefce8;
 }
 
-.cita-card.no-asistio::after {
-    content: '✕ NO ASISTIÓ';
+.cita-card.cancelada {
+    opacity: 0.75;
+    background: #fef2f2;
+}
+
+.badge-estado-final {
     position: absolute;
-    top: 15px;
-    right: -30px;
-    background: #d97706;
-    color: white;
-    padding: 5px 40px;
+    top: 18px;
+    right: -35px;
+    padding: 6px 45px;
     font-size: 10px;
     font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
     transform: rotate(45deg);
-    letter-spacing: 1px;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-/* ESTADO VACÍO */
+/* ============================================ */
+/* ESTADO VACÍO - VIEJO
+/* ============================================ */
 .empty-state {
     text-align: center;
     padding: 50px 20px;
@@ -324,25 +320,45 @@
     margin-bottom: 20px;
 }
 
-/* RESPONSIVE */
+/* ============================================ */
+/* ANIMACIONES
+/* ============================================ */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOutRight {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================ */
+/* RESPONSIVE - VIEJO
+/* ============================================ */
 @media (max-width: 768px) {
     .citas-grid {
         grid-template-columns: 1fr;
-        gap: 15px;
     }
     
     .cita-card {
-        min-height: 160px;
-        padding: 15px;
+        padding: 16px;
     }
     
-    .cita-actions {
-        gap: 8px;
-    }
-    
-    .cita-actions button {
-        font-size: 11px;
-        padding: 8px 5px;
+    .section-title {
+        font-size: 14px;
+        padding: 12px 16px;
     }
     
     .citas-header {
@@ -350,33 +366,5 @@
         flex-direction: column;
         gap: 15px;
         text-align: center;
-    }
-}/* Estilo para botones deshabilitados */
-.cita-actions button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-}
-
-/* Mejora del toast */
-@keyframes slideInRight {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-@keyframes slideOutRight {
-    from {
-        transform: translateX(0);
-        opacity: 1;
-    }
-    to {
-        transform: translateX(100%);
-        opacity: 0;
     }
 }

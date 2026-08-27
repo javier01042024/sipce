@@ -40,13 +40,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 const roleSelect = document.getElementById('role');
                 const selectedRoleText = roleSelect.options[roleSelect.selectedIndex]?.text;
                 if (selectedRoleText && selectedRoleText.toLowerCase() !== 'paciente') {
-                    Swal.fire({
+                    SIPCE_ALERT.confirm({
                         title: '¿Cambiar rol?',
                         text: 'Los pacientes generalmente tienen el rol "paciente". ¿Deseas cambiarlo?',
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonText: 'Sí, cambiar',
-                        cancelButtonText: 'No, mantener'
+                        confirmText: 'Sí, cambiar',
+                        cancelText: 'No, mantener'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             for(let i = 0; i < roleSelect.options.length; i++) {
@@ -62,6 +60,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 pacienteSelectGroup.style.display = 'none';
                 if (pacienteSelect) pacienteSelect.required = false;
                 if (pacienteSelect) pacienteSelect.value = '';
+            }
+        });
+    }
+
+    // Auto-fill nombre y email al seleccionar paciente
+    if (pacienteSelect) {
+        pacienteSelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            if (selectedOption && selectedOption.value) {
+                const nombre = selectedOption.dataset.nombre || '';
+                const email = selectedOption.dataset.email || '';
+                const nameInput = document.getElementById('name');
+                const emailInput = document.getElementById('email');
+                if (nameInput && nombre) nameInput.value = nombre;
+                if (emailInput && email) emailInput.value = email;
             }
         });
     }
@@ -151,7 +164,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (esPacienteCheckbox) esPacienteCheckbox.checked = true;
                 if (pacienteSelectGroup) pacienteSelectGroup.style.display = 'block';
                 if (pacienteSelect) {
-                    await loadPacientesSinUsuario();
+                    await loadPacientesSinUsuario({
+                        id: user.paciente.id,
+                        numero_expediente: user.paciente.numero_expediente || '',
+                        nombre_completo: user.paciente.nombre_completo || user.name,
+                        email: user.paciente.email || user.email
+                    });
                     pacienteSelect.value = user.paciente.id;
                 }
             } else {
@@ -161,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (userModal) userModal.classList.add('active');
         } catch (error) {
-            Swal.fire('Error', 'No se pudo cargar el usuario', 'error');
+            SIPCE_ALERT.error('No se pudo cargar el usuario');
         }
     }
     
@@ -170,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (userForm) userForm.reset();
     }
     
-    async function loadPacientesSinUsuario() {
+    async function loadPacientesSinUsuario(currentPaciente = null) {
         try {
             const response = await fetch('/pacientes/sin-usuario', {
                 headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': csrfToken }
@@ -180,14 +198,29 @@ document.addEventListener('DOMContentLoaded', function() {
             if (pacienteSelect) {
                 const currentValue = pacienteSelect.value;
                 pacienteSelect.innerHTML = '<option value="">Selecciona un paciente...</option>';
+                
+                // Agregar el paciente actual (el que está vinculado al usuario editado) primero
+                if (currentPaciente) {
+                    const option = document.createElement('option');
+                    option.value = currentPaciente.id;
+                    option.textContent = `#${currentPaciente.numero_expediente || ''} - ${currentPaciente.nombre_completo}`;
+                    option.dataset.nombre = currentPaciente.nombre_completo;
+                    option.dataset.email = currentPaciente.email || '';
+                    pacienteSelect.appendChild(option);
+                }
+                
                 if (data.pacientes && data.pacientes.length > 0) {
                     data.pacientes.forEach(paciente => {
+                        // No duplicar si ya está el paciente actual
+                        if (currentPaciente && paciente.id === currentPaciente.id) return;
                         const option = document.createElement('option');
                         option.value = paciente.id;
                         option.textContent = `#${paciente.numero_expediente} - ${paciente.nombre_completo}`;
+                        option.dataset.nombre = paciente.nombre_completo;
+                        option.dataset.email = paciente.email || '';
                         pacienteSelect.appendChild(option);
                     });
-                } else {
+                } else if (!currentPaciente) {
                     const option = document.createElement('option');
                     option.value = '';
                     option.textContent = 'No hay pacientes sin usuario';
@@ -215,7 +248,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (method === 'PUT') formData.append('_method', 'PUT');
         
         if (esPaciente && (!pacienteSelect || !pacienteSelect.value)) {
-            Swal.fire('Error', 'Debes seleccionar un paciente para vincular', 'error');
+            SIPCE_ALERT.error('Debes seleccionar un paciente para vincular');
             if (submitBtn) {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="fas fa-save me-2"></i>Guardar Usuario';
@@ -234,12 +267,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || 'Error');
             if (data.success) {
-                await Swal.fire({ icon: 'success', title: '¡Éxito!', text: data.message, timer: 2000, showConfirmButton: false });
+                await SIPCE_ALERT.success(data.message);
                 closeUserModal();
                 window.location.reload();
             }
         } catch (error) {
-            Swal.fire('Error', error.message, 'error');
+            SIPCE_ALERT.error(error.message);
         } finally {
             if (submitBtn) {
                 submitBtn.disabled = false;
@@ -249,15 +282,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     async function deleteUser(userId, userName) {
-        const result = await Swal.fire({
-            title: '¿Estás seguro?',
-            html: `Se eliminará a <strong>${userName}</strong>`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#ef4444',
-            cancelButtonColor: '#6b7280',
-            confirmButtonText: 'Sí, eliminar',
-            cancelButtonText: 'Cancelar'
+        const result = await SIPCE_ALERT.confirmDelete({
+            html: 'Se eliminará a <strong>' + userName + '</strong>'
         });
         
         if (result.isConfirmed) {
@@ -271,11 +297,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.success) {
                     const row = document.getElementById(`user-row-${userId}`);
                     if (row) { row.style.opacity = '0'; setTimeout(() => row.remove(), 300); }
-                    await Swal.fire({ icon: 'success', title: 'Eliminado', text: data.message, timer: 2000, showConfirmButton: false });
+                    await SIPCE_ALERT.success(data.message, 'Eliminado', { timer: 2000 });
                     setTimeout(() => window.location.reload(), 1500);
                 }
             } catch (error) {
-                Swal.fire('Error', error.message, 'error');
+                SIPCE_ALERT.error(error.message);
             }
         }
     }
@@ -334,11 +360,59 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // ===== BÚSQUEDA DE PERMISOS =====
+    const permSearch = document.getElementById('permSearch');
+    if (permSearch) {
+        permSearch.addEventListener('input', function() {
+            const term = this.value.toLowerCase().trim();
+            const groups = permissionsContainer.querySelectorAll('.permissions-group');
+            groups.forEach(group => {
+                const checkboxes = group.querySelectorAll('.permission-checkbox');
+                let groupVisible = false;
+                checkboxes.forEach(cb => {
+                    const text = cb.textContent.toLowerCase();
+                    if (!term || text.includes(term)) {
+                        cb.classList.remove('hidden');
+                        groupVisible = true;
+                    } else {
+                        cb.classList.add('hidden');
+                    }
+                });
+                group.classList.toggle('hidden', !groupVisible);
+            });
+            updatePermCount();
+        });
+    }
+
+    // ===== SELECCIONAR / DESELECCIONAR TODOS =====
+    const permSelectAll = document.getElementById('permSelectAll');
+    const permDeselectAll = document.getElementById('permDeselectAll');
+    if (permSelectAll) {
+        permSelectAll.addEventListener('click', () => {
+            permissionsContainer.querySelectorAll('input[type="checkbox"]:not(:disabled)').forEach(cb => cb.checked = true);
+            updatePermCount();
+        });
+    }
+    if (permDeselectAll) {
+        permDeselectAll.addEventListener('click', () => {
+            permissionsContainer.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            updatePermCount();
+        });
+    }
+
+    // ===== CONTADOR DE PERMISOS =====
+    function updatePermCount() {
+        const count = permissionsContainer ? permissionsContainer.querySelectorAll('input[type="checkbox"]:checked').length : 0;
+        const badge = document.getElementById('permCount');
+        if (badge) badge.textContent = count + ' seleccionado' + (count !== 1 ? 's' : '');
+    }
     
     function closeRoleModal() {
         if (roleModal) roleModal.classList.remove('active');
         if (roleForm) roleForm.style.display = 'none';
         if (btnShowCreateRole) btnShowCreateRole.style.display = 'block';
+        if (permSearch) permSearch.value = '';
     }
     
     async function loadRoles() {
@@ -348,17 +422,28 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             const data = await response.json();
             availablePermissions = data.availablePermissions;
-            
+
             if (rolesList) {
-                rolesList.innerHTML = data.roles.map(role => `
+                rolesList.innerHTML = data.roles.map(role => {
+                    const permCount = role.permissions ? role.permissions.length : 0;
+                    const permSample = role.permissions ? role.permissions.slice(0, 3).join(', ') : '';
+                    const moreText = permCount > 3 ? ` (+${permCount - 3} más)` : '';
+                    return `
                     <div class="role-item">
-                        <div>
-                            <strong style="color: #1e293b; font-size: 16px;">
-                                <i class="fas fa-user-tag me-2" style="color: #667eea;"></i>${role.name}
-                            </strong>
-                            <span style="color: #64748b; margin-left: 10px; font-size: 13px;">${role.users_count} usuario(s)</span>
-                            ${role.description ? `<br><small style="color: #94a3b8;">${role.description}</small>` : ''}
-                            <br><small style="color: #667eea;"><i class="fas fa-key me-1"></i>${role.permissions ? role.permissions.length : 0} permisos</small>
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                <strong style="color: #1e293b; font-size: 15px;">
+                                    <i class="fas fa-user-tag me-1" style="color: #667eea;"></i>${role.name}
+                                </strong>
+                                <span style="color: #64748b; font-size: 12px;">${role.users_count} usuario(s)</span>
+                            </div>
+                            ${role.description ? `<div style="color: #94a3b8; font-size: 12px; margin-top: 2px;">${role.description}</div>` : ''}
+                            <div style="margin-top: 4px; display: flex; flex-wrap: wrap; gap: 4px; align-items: center;">
+                                <span style="background: #ede9fe; color: #667eea; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600;">
+                                    <i class="fas fa-key me-1"></i>${permCount} permiso(s)
+                                </span>
+                                ${permSample ? `<span style="color: #94a3b8; font-size: 11px;">${permSample}${moreText}</span>` : ''}
+                            </div>
                         </div>
                         <div style="display: flex; gap: 8px;">
                             <button class="btn-icon edit" onclick="event.preventDefault(); editRole(${role.id})" title="Editar">
@@ -370,18 +455,19 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </button>
                             ` : ''}
                         </div>
-                    </div>
-                `).join('');
+                    </div>`;
+                }).join('');
             }
         } catch (error) {
             console.error('Error:', error);
-            Swal.fire('Error', 'No se pudieron cargar los roles', 'error');
+            SIPCE_ALERT.error('No se pudieron cargar los roles');
         }
     }
     
     async function showRoleForm(mode, roleId = null) {
         if (roleForm) roleForm.style.display = 'block';
         if (btnShowCreateRole) btnShowCreateRole.style.display = 'none';
+        if (permSearch) permSearch.value = '';
         
         if (permissionsContainer) {
             permissionsContainer.innerHTML = '';
@@ -389,7 +475,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 availablePermissions.forEach(group => {
                     const groupDiv = document.createElement('div');
                     groupDiv.className = 'permissions-group';
-                    groupDiv.innerHTML = `<strong class="permissions-group-title"><i class="fas ${group.icon} me-2" style="color: #667eea;"></i>${group.group}</strong>`;
+                    
+                    const groupHeader = document.createElement('div');
+                    groupHeader.className = 'perm-group-toggle';
+                    groupHeader.innerHTML = `
+                        <input type="checkbox" class="group-toggle-cb" data-group="${group.group}">
+                        <strong class="permissions-group-title" style="flex:1; margin:0;">
+                            <i class="fas ${group.icon} me-2" style="color: #667eea;"></i>${group.group}
+                        </strong>`;
+                    groupDiv.appendChild(groupHeader);
+                    
+                    const toggleCb = groupHeader.querySelector('.group-toggle-cb');
+                    toggleCb.addEventListener('change', function() {
+                        groupDiv.querySelectorAll('.permission-checkbox input[type="checkbox"]').forEach(cb => {
+                            cb.checked = toggleCb.checked;
+                        });
+                        updatePermCount();
+                    });
                     
                     group.permissions.forEach(perm => {
                         const checkboxDiv = document.createElement('div');
@@ -398,6 +500,14 @@ document.addEventListener('DOMContentLoaded', function() {
                             <label>
                                 <input type="checkbox" name="permissions[]" value="${perm.slug}"> ${perm.name}
                             </label>`;
+                        const cb = checkboxDiv.querySelector('input[type="checkbox"]');
+                        cb.addEventListener('change', () => {
+                            const total = groupDiv.querySelectorAll('.permission-checkbox input[type="checkbox"]').length;
+                            const checked = groupDiv.querySelectorAll('.permission-checkbox input[type="checkbox"]:checked').length;
+                            toggleCb.checked = checked === total;
+                            toggleCb.indeterminate = checked > 0 && checked < total;
+                            updatePermCount();
+                        });
                         groupDiv.appendChild(checkboxDiv);
                     });
                     permissionsContainer.appendChild(groupDiv);
@@ -413,6 +523,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('roleSlug').value = '';
             document.getElementById('roleDescription').value = '';
             if (btnSaveRole) btnSaveRole.innerHTML = '<i class="fas fa-save me-2"></i>Crear Rol';
+            updatePermCount();
         } else if (mode === 'edit' && roleId) {
             try {
                 const response = await fetch(`/roles/${roleId}`, {
@@ -430,12 +541,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (btnSaveRole) btnSaveRole.innerHTML = '<i class="fas fa-save me-2"></i>Actualizar Rol';
                 
                 if (role.permissions && role.permissions.length > 0 && permissionsContainer) {
-                    permissionsContainer.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                    permissionsContainer.querySelectorAll('input[name="permissions[]"]').forEach(cb => {
                         if (role.permissions.includes(cb.value)) cb.checked = true;
                     });
+                    
+                    permissionsContainer.querySelectorAll('.permissions-group').forEach(groupDiv => {
+                        const total = groupDiv.querySelectorAll('.permission-checkbox input[type="checkbox"]').length;
+                        const checked = groupDiv.querySelectorAll('.permission-checkbox input[type="checkbox"]:checked').length;
+                        const toggleCb = groupDiv.querySelector('.group-toggle-cb');
+                        if (toggleCb) {
+                            toggleCb.checked = checked === total && total > 0;
+                            toggleCb.indeterminate = checked > 0 && checked < total;
+                        }
+                    });
                 }
+                updatePermCount();
             } catch (error) {
-                Swal.fire('Error', 'No se pudo cargar el rol', 'error');
+                SIPCE_ALERT.error('No se pudo cargar el rol');
             }
         }
     }
@@ -451,7 +573,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const selectedPermissions = [];
         if (permissionsContainer) {
-            permissionsContainer.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => selectedPermissions.push(cb.value));
+            permissionsContainer.querySelectorAll('input[name="permissions[]"]:checked').forEach(cb => selectedPermissions.push(cb.value));
         }
         
         const roleData = {
@@ -472,14 +594,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || 'Error al guardar');
             if (data.success) {
-                await Swal.fire({ icon: 'success', title: '¡Éxito!', text: data.message, timer: 1500, showConfirmButton: false });
+                await SIPCE_ALERT.success(data.message);
                 if (roleForm) roleForm.style.display = 'none';
                 if (btnShowCreateRole) btnShowCreateRole.style.display = 'block';
                 await loadRoles();
                 await updateRoleSelect();
             }
         } catch (error) {
-            Swal.fire('Error', error.message, 'error');
+            SIPCE_ALERT.error(error.message);
         } finally {
             if (btnSaveRole) {
                 btnSaveRole.disabled = false;
@@ -489,15 +611,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     window.deleteRole = async function(roleId, roleName) {
-        const result = await Swal.fire({
-            title: '¿Estás seguro?',
-            html: `Se eliminará el rol <strong>${roleName}</strong>`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#ef4444',
-            cancelButtonColor: '#6b7280',
-            confirmButtonText: 'Sí, eliminar',
-            cancelButtonText: 'Cancelar'
+        const result = await SIPCE_ALERT.confirmDelete({
+            html: 'Se eliminará el rol <strong>' + roleName + '</strong>'
         });
         
         if (result.isConfirmed) {
@@ -509,12 +624,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 const data = await response.json();
                 if (!response.ok) throw new Error(data.message);
                 if (data.success) {
-                    await Swal.fire({ icon: 'success', title: 'Eliminado', text: data.message, timer: 1500, showConfirmButton: false });
+                    await SIPCE_ALERT.success(data.message, 'Eliminado');
                     await loadRoles();
                     await updateRoleSelect();
                 }
             } catch (error) {
-                Swal.fire('Error', error.message, 'error');
+                SIPCE_ALERT.error(error.message);
             }
         }
     };

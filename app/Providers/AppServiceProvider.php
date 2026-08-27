@@ -7,22 +7,33 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
+use App\Models\Paciente;
+use App\Models\Cita;
+use App\Models\Diario;
+use App\Models\Sesion;
+use App\Models\User;
+use App\Models\Nota;
+use App\Models\PlanTratamiento;
+use App\Observers\BitacoraObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
+        // Observers para bitácora automática
+        Paciente::observe(BitacoraObserver::class);
+        Cita::observe(BitacoraObserver::class);
+        Diario::observe(BitacoraObserver::class);
+        Sesion::observe(BitacoraObserver::class);
+        User::observe(BitacoraObserver::class);
+        Nota::observe(BitacoraObserver::class);
+        PlanTratamiento::observe(BitacoraObserver::class);
+
         // Directiva Blade para verificar permisos
         Blade::if('canPermission', function (string $permission) {
             /** @var \App\Models\User|null $user */
@@ -38,7 +49,6 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // Compartir permisos del usuario con todas las vistas
-        // Usamos un enfoque diferido para evitar problemas de inicialización
         View::composer('*', function ($view) {
             if (Auth::check()) {
                 /** @var \App\Models\User $user */
@@ -47,7 +57,6 @@ class AppServiceProvider extends ServiceProvider
                 $userPermissions = [];
                 $userRoles = [];
                 
-                // Obtener todos los permisos del usuario a través de sus roles
                 if ($user->roles) {
                     foreach ($user->roles as $role) {
                         $userRoles[] = $role->slug;
@@ -57,10 +66,8 @@ class AppServiceProvider extends ServiceProvider
                     }
                 }
                 
-                // Eliminar duplicados y reindexar
                 $userPermissions = array_values(array_unique($userPermissions));
                 
-                // Compartir con la vista
                 $view->with('userPermissions', $userPermissions);
                 $view->with('userRoles', $userRoles);
             }

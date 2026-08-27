@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="{{ asset('css/tables.css') }}">
+    @stack('styles')
 
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -41,6 +43,16 @@
     <!-- pdfmake para exportar a PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+
+    <!-- Sistema unificado de alertas -->
+    <script>
+        window.SIPCE_SESSION = {
+            success: @json(session('success')),
+            error: @json(session('error')),
+            validationErrors: @json($errors->any() ? $errors->all() : [])
+        };
+    </script>
+    <script src="{{ asset('js/alerts.js') }}"></script>
     @stack('scripts')
 </body>
 

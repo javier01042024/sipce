@@ -1,31 +1,65 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
-    </div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>SIPCE - Verificar email</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            display: flex; align-items: center; justify-content: center; padding: 1rem;
+        }
+        .auth-card {
+            background: white; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            width: 100%; max-width: 460px; padding: 2.5rem; text-align: center; animation: fadeInUp 0.4s ease;
+        }
+        @keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+        .auth-card .icon { font-size: 2.5rem; color: #7c3aed; margin-bottom: 1rem; }
+        .auth-card h2 { font-size: 1.3rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; }
+        .auth-card p { color: #6b7280; font-size: 0.85rem; line-height: 1.6; margin-bottom: 1.2rem; }
+        .success-msg { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 0.6rem; color: #166534; font-size: 0.85rem; margin-bottom: 1rem; }
+        .btn-primary {
+            display: inline-block; padding: 0.65rem 1.5rem; background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white; border: none; border-radius: 10px; font-size: 0.85rem; font-weight: 600;
+            cursor: pointer; transition: all 0.3s; text-decoration: none;
+        }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(79,70,229,0.4); }
+        .btn-ghost {
+            display: inline-block; margin-top: 1rem; color: #6b7280; font-size: 0.82rem;
+            background: none; border: none; cursor: pointer; text-decoration: underline;
+        }
+        .btn-ghost:hover { color: #374151; }
+    </style>
+</head>
+<body>
+    <div class="auth-card">
+        <div class="icon"><i class="fas fa-envelope-open-text"></i></div>
+        <h2>Verificar correo electrónico</h2>
+        <p>Gracias por registrarte. Antes de comenzar, verifica tu correo electrónico haciendo clic en el enlace que te enviamos.</p>
 
-    @if (session('status') == 'verification-link-sent')
-        <div class="mb-4 font-medium text-sm text-green-600">
-            {{ __('A new verification link has been sent to the email address you provided during registration.') }}
-        </div>
-    @endif
+        @if (session('status') == 'verification-link-sent')
+            <div class="success-msg">
+                <i class="fas fa-check-circle"></i> Se envió un nuevo enlace de verificación a tu correo.
+            </div>
+        @endif
 
-    <div class="mt-4 flex items-center justify-between">
         <form method="POST" action="{{ route('verification.send') }}">
             @csrf
-
-            <div>
-                <x-primary-button>
-                    {{ __('Resend Verification Email') }}
-                </x-primary-button>
-            </div>
+            <button type="submit" class="btn-primary">
+                <i class="fas fa-paper-plane"></i> Reenviar correo de verificación
+            </button>
         </form>
 
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-
-            <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                {{ __('Log Out') }}
-            </button>
+            <button type="submit" class="btn-ghost">Cerrar sesión</button>
         </form>
     </div>
-</x-guest-layout>
+</body>
+</html>

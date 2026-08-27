@@ -1,0 +1,370 @@
+/* ===== DIARIOS: SHOW ===== */
+
+/* CONTENEDOR PRINCIPAL */
+.diario-show-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+/* BOTÓN VOLVER */
+.btn-volver {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #64748b;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 25px;
+    transition: all 0.3s;
+}
+
+.btn-volver:hover {
+    color: #667eea;
+    transform: translateX(-3px);
+}
+
+/* HEADER DEL DIARIO */
+.diario-show-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 35px;
+    border-radius: 16px;
+    margin-bottom: 25px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.diario-show-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    transform: rotate(45deg);
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.user-info-show {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-avatar-large {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 24px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.user-detail-show h2 {
+    margin: 0 0 5px 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: white;
+}
+
+.user-detail-show .fecha-display {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.emocion-badge-large {
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 1;
+}
+
+.emocion-badge-large.positivo {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.emocion-badge-large.neutral {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.emocion-badge-large.negativo {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.emocion-icon {
+    font-size: 20px;
+}
+
+/* CONTENIDO PRINCIPAL */
+.diario-content-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.1);
+    overflow: hidden;
+}
+
+.content-section {
+    padding: 30px;
+}
+
+.content-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #64748b;
+    font-weight: 600;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.content-label i {
+    color: #667eea;
+}
+
+.contenido-texto {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #334155;
+    background: #f8fafc;
+    padding: 25px;
+    border-radius: 12px;
+    border-left: 4px solid #667eea;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* METADATOS */
+.metadata-section {
+    padding: 25px 30px;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.metadata-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.metadata-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.metadata-icon.created {
+    background: #eff6ff;
+    color: #3b82f6;
+}
+
+.metadata-icon.updated {
+    background: #fef3c7;
+    color: #f59e0b;
+}
+
+.metadata-icon.user {
+    background: #f0fdf4;
+    color: #22c55e;
+}
+
+.metadata-text h5 {
+    margin: 0 0 3px 0;
+    font-size: 11px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.metadata-text span {
+    font-size: 14px;
+    color: #1e293b;
+    font-weight: 500;
+}
+
+/* ACCIONES */
+.actions-section {
+    padding: 25px 30px;
+    background: white;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.actions-left {
+    display: flex;
+    gap: 10px;
+}
+
+.actions-right {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-accion {
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-accion.editar {
+    background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+    color: white;
+}
+
+.btn-accion.editar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+}
+
+.btn-accion.eliminar {
+    background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+    color: white;
+}
+
+.btn-accion.eliminar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(235, 51, 73, 0.3);
+}
+
+.btn-accion.volver-listado {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.btn-accion.volver-listado:hover {
+    background: #e2e8f0;
+    transform: translateY(-2px);
+}
+
+/* EMPTY STATE */
+.empty-state {
+    text-align: center;
+    padding: 60px 30px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.08);
+}
+
+.empty-icon {
+    font-size: 64px;
+    color: #cbd5e1;
+    margin-bottom: 20px;
+}
+
+.empty-state h3 {
+    color: #1e293b;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.empty-state p {
+    color: #64748b;
+    margin-bottom: 25px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .diario-show-wrapper {
+        padding: 20px 15px;
+    }
+    
+    .diario-show-header {
+        padding: 25px 20px;
+    }
+    
+    .header-top {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .user-info-show {
+        flex-direction: column;
+    }
+    
+    .user-avatar-large {
+        width: 70px;
+        height: 70px;
+        font-size: 28px;
+    }
+    
+    .content-section {
+        padding: 20px;
+    }
+    
+    .contenido-texto {
+        font-size: 15px;
+        padding: 20px;
+    }
+    
+    .metadata-section {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+    
+    .actions-section {
+        flex-direction: column;
+        padding: 20px;
+    }
+    
+    .actions-left,
+    .actions-right {
+        width: 100%;
+    }
+    
+    .btn-accion {
+        flex: 1;
+        justify-content: center;
+    }
+}

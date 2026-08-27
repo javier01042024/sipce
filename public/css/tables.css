@@ -1,0 +1,407 @@
+/* ==========================================
+   TABLAS UNIFICADAS - SIPCE
+   ========================================== */
+
+/* SHARED PAGE HEADER */
+.page-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 30px 35px;
+    border-radius: 14px;
+    margin-bottom: 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.header-content h1 {
+    font-weight: 700;
+    color: white;
+    margin: 0;
+    font-size: 28px;
+}
+
+.header-content p {
+    color: rgba(255, 255, 255, 0.9);
+    margin: 8px 0 0 0;
+    font-size: 15px;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-nuevo {
+    background: white;
+    color: #667eea;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.btn-nuevo:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    color: #764ba2;
+}
+
+/* CARD CONTAINER */
+.sipce-table-card {
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.12);
+    border: 1px solid rgba(102, 126, 234, 0.08);
+}
+
+/* CARD HEADER */
+.sipce-table-header {
+    background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.sipce-table-header h3 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sipce-table-header h3 i {
+    color: #a8edea;
+}
+
+.sipce-table-header p {
+    margin: 6px 0 0 0;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.sipce-table-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* SEARCH BOX */
+.sipce-search-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sipce-search-input {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 14px;
+    width: 250px;
+    transition: all 0.3s;
+}
+
+.sipce-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.sipce-search-input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* COUNT BADGE */
+.sipce-count-badge {
+    font-size: 12px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+/* TABLE */
+.sipce-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.sipce-table thead {
+    background: #f8fafc;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.sipce-table th {
+    padding: 14px 20px;
+    text-align: left;
+    font-weight: 600;
+    color: #475569;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.sipce-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.sipce-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.sipce-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.sipce-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* TABLE CELL HELPERS */
+.sipce-cell-main {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 14px;
+}
+
+.sipce-cell-sub {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 2px;
+}
+
+.sipce-cell-muted {
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+.sipce-cell-code {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 11px;
+    background: #f1f5f9;
+    padding: 3px 8px;
+    border-radius: 6px;
+    color: #475569;
+}
+
+.sipce-cell-bold {
+    font-weight: 700;
+    color: #667eea;
+    font-size: 14px;
+}
+
+.sipce-cell-date {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.sipce-cell-date i {
+    color: #94a3b8;
+}
+
+/* BADGES */
+.sipce-badge {
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.sipce-badge-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.sipce-badge-success {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.sipce-badge-danger {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.sipce-badge-warning {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.sipce-badge-info {
+    background: #e0f2fe;
+    color: #0369a1;
+    border: 1px solid #bae6fd;
+}
+
+.sipce-badge-neutral {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+/* INDICATOR (checkmark / cross) */
+.sipce-indicator {
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.sipce-indicator-yes {
+    color: #10b981;
+}
+
+.sipce-indicator-no {
+    color: #ef4444;
+}
+
+/* ACTION BUTTONS */
+.sipce-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.sipce-btn-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.sipce-btn-icon:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.sipce-btn-view {
+    background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%);
+}
+
+.sipce-btn-edit {
+    background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+}
+
+.sipce-btn-delete {
+    background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+}
+
+.sipce-btn-restore {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+}
+
+.sipce-btn-download {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+/* EMPTY STATE */
+.sipce-empty {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.sipce-empty-icon {
+    font-size: 48px;
+    color: #cbd5e1;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.sipce-empty-title {
+    color: #64748b;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 0 5px 0;
+}
+
+.sipce-empty-text {
+    color: #94a3b8;
+    font-size: 13px;
+    margin: 0;
+}
+
+/* PAGINATION */
+.sipce-pagination {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid #f1f5f9;
+}
+
+.sipce-pagination .pagination {
+    margin: 0;
+}
+
+.sipce-pagination .pagination .page-item .page-link {
+    padding: 8px 14px;
+    border-radius: 8px;
+    margin: 0 3px;
+    font-size: 13px;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s;
+}
+
+.sipce-pagination .pagination .page-item.active .page-link {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: transparent;
+}
+
+.sipce-pagination .pagination .page-item .page-link:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .sipce-table-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .sipce-search-input {
+        width: 100%;
+    }
+
+    .sipce-table th,
+    .sipce-table td {
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+}

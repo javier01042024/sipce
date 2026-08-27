@@ -1,63 +1,41 @@
 @extends('layouts.app')
 
 @section('content')
+{{-- Asegúrate de que estos archivos CSS existan --}}
 <link href="{{ asset('css/pacientes.css') }}" rel="stylesheet">
+<link href="{{ asset('css/pacientes-table.css') }}" rel="stylesheet">
 
-<div class="pacientes-wrapper">
+<div class="pacientes-wrapper" style="max-width:1200px;margin:0 auto;padding:20px;">
     
-    @include('pacientes.partials.header')
-    
-    @if(session('success'))
-    <div class="alert-success" style="display: none;">
-        {{ session('success') }}
+    <div class="pacientes-header">
+        <div>
+            <h1><i class="fas fa-users"></i> Pacientes</h1>
+            <p>Gestión de pacientes del sistema</p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <button class="btn-nuevo" onclick="abrirModal('adulto')" style="background:white;color:#667eea;">
+                <i class="fas fa-user-tie"></i> Adulto
+            </button>
+            <button class="btn-nuevo" onclick="abrirModal('adolescente')" style="background:white;color:#f59e0b;">
+                <i class="fas fa-user"></i> Adolescente
+            </button>
+            <button class="btn-nuevo" onclick="abrirModal('niño')" style="background:white;color:#10b981;">
+                <i class="fas fa-child"></i> Niño
+            </button>
+        </div>
     </div>
-    @endif
     
-    @if(session('error'))
-    <div class="alert-error" style="display: none;">
-        {{ session('error') }}
-    </div>
-    @endif
-    
+    {{-- La tabla debe tener el mismo número de <th> que de <td> --}}
     @include('pacientes.partials.table')
     
+    {{-- MODALES --}}
+    @include('pacientes.partials.modals.create-adulto-modal')
+    @include('pacientes.partials.modals.create-adolescente-modal')
+    @include('pacientes.partials.modals.create-nino-modal')
+    
 </div>
-
-@include('pacientes.partials.modals.create-modal')
-@include('pacientes.partials.modals.delete-modal')
-
-@push('styles')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-@endpush
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{ asset('js/paciente/pacientes-modals.js') }}"></script>
+@push('scripts')
 <script src="{{ asset('js/pacientes.js') }}"></script>
-
-@if(session('success'))
-<script>
-    Swal.fire({
-        icon: 'success',
-        title: '¡Éxito!',
-        text: @json(session('success')),
-        timer: 3000,
-        showConfirmButton: false,
-        toast: true,
-        position: 'top-end',
-        background: '#11998e',
-        color: 'white'
-    });
-</script>
-@endif
-
-@if(session('error'))
-<script>
-    Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: @json(session('error')),
-        confirmButtonColor: '#ef4444'
-    });
-</script>
-@endif
-
+@endpush
 @endsection

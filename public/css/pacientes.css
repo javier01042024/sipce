@@ -1,11 +1,23 @@
-/* CONTENEDOR PRINCIPAL */
+/* ==========================================
+   CONTENEDOR PRINCIPAL
+   ========================================== */
+
 .pacientes-wrapper {
     max-width: 1200px;
     margin: 0 auto;
     padding: 30px 20px;
 }
 
-/* HEADER */
+.editar-paciente-wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+/* ==========================================
+   HEADER PRINCIPAL (LISTADO)
+   ========================================== */
+
 .pacientes-header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     padding: 30px 35px;
@@ -50,7 +62,58 @@
     color: #764ba2;
 }
 
-/* ALERTA */
+/* ==========================================
+   HEADER DE EDICIÓN
+   ========================================== */
+
+.page-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 30px 35px;
+    border-radius: 14px;
+    margin-bottom: 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.page-header h1 {
+    font-weight: 700;
+    color: white;
+    margin: 0;
+    font-size: 28px;
+}
+
+.page-header p {
+    color: rgba(255, 255, 255, 0.9);
+    margin: 8px 0 0 0;
+    font-size: 15px;
+}
+
+.btn-volver {
+    background: white;
+    color: #667eea;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-volver:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    color: #764ba2;
+}
+
+/* ==========================================
+   ALERTAS
+   ========================================== */
+
 .alert-success {
     background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
     color: white;
@@ -60,6 +123,29 @@
     font-weight: 500;
     animation: slideDown 0.3s ease;
 }
+
+.alert-error {
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    color: #991b1b;
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    border-left: 4px solid #ef4444;
+    animation: shake 0.3s ease;
+}
+
+.alert-error ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.alert-error li {
+    margin: 5px 0;
+}
+
+/* ==========================================
+   ANIMACIONES DE ALERTAS
+   ========================================== */
 
 @keyframes slideDown {
     from {
@@ -72,7 +158,58 @@
     }
 }
 
-/* CARD Y TABLA */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ==========================================
+   CARD Y TABLA (LISTADO)
+   ========================================== */
+
 .card {
     background: white;
     border-radius: 18px;
@@ -81,39 +218,91 @@
     border: 1px solid rgba(102, 126, 234, 0.08);
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
+/* ==========================================
+   CARD DE FORMULARIO (EDICIÓN)
+   ========================================== */
+
+.form-card {
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.12);
+    border: 1px solid rgba(102, 126, 234, 0.08);
+    animation: slideIn 0.5s ease-out;
 }
 
-thead {
+.card-header-custom {
     background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
-}
-
-th {
     color: white;
+    padding: 22px 35px;
+}
+
+.card-header-custom h2 {
+    margin: 0;
     font-weight: 600;
+    font-size: 20px;
+}
+
+.card-header-custom p {
+    margin: 5px 0 0 0;
     font-size: 14px;
-    padding: 16px;
-    text-align: left;
+    opacity: 0.9;
 }
 
-td {
-    padding: 16px;
-    border-bottom: 1px solid #f1f5f9;
-    color: #334155;
-    font-size: 14px;
+.card-header-custom i {
+    margin-right: 10px;
+    color: #a8edea;
 }
 
-tbody tr {
-    transition: all 0.2s;
+.card-body-custom {
+    padding: 35px;
 }
 
-tbody tr:hover {
+/* ==========================================
+   INFO DEL PACIENTE (BADGE DE EDICIÓN)
+   ========================================== */
+
+.paciente-info-badge {
     background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
-/* BADGES */
+.paciente-avatar {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.paciente-info-text {
+    flex: 1;
+}
+
+.paciente-info-text strong {
+    color: #2d3748;
+    font-size: 16px;
+}
+
+.paciente-info-text small {
+    color: #64748b;
+    font-size: 13px;
+}
+
+/* ==========================================
+   BADGES DE PRIORIDAD
+   ========================================== */
+
 .badge {
     padding: 6px 14px;
     border-radius: 20px;
@@ -137,7 +326,10 @@ tbody tr:hover {
     color: white;
 }
 
-/* BOTONES DE ACCIÓN */
+/* ==========================================
+   BOTONES DE ACCIÓN (TABLA)
+   ========================================== */
+
 .actions {
     display: flex;
     gap: 8px;
@@ -182,7 +374,63 @@ tbody tr:hover {
     fill: none;
 }
 
-/* MODALES */
+/* ==========================================
+   BOTONES DE FORMULARIO (EDICIÓN)
+   ========================================== */
+
+.form-actions {
+    grid-column: span 2;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 2px solid #f1f5f9;
+}
+
+.btn {
+    padding: 14px 30px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-cancel {
+    background: white;
+    color: #64748b;
+    border: 2px solid #e2e8f0;
+}
+
+.btn-cancel:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #475569;
+    transform: translateY(-2px);
+}
+
+.btn-save {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+}
+
+.btn-save:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    color: white;
+}
+
+/* ==========================================
+   MODALES
+   ========================================== */
+
 .modal-paciente {
     position: fixed;
     top: 0;
@@ -200,6 +448,7 @@ tbody tr:hover {
 
 .modal-paciente.show {
     display: flex;
+    animation: fadeIn 0.3s ease;
 }
 
 .modal-paciente-box {
@@ -215,15 +464,15 @@ tbody tr:hover {
     flex-direction: column;
 }
 
-@keyframes modalSlideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-30px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
+.modal-paciente-box > form {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+}
+
+.modal-paciente-box > div {
+    flex-shrink: 0;
 }
 
 .modal-paciente-header {
@@ -267,6 +516,7 @@ tbody tr:hover {
     overflow-y: auto;
     flex: 1;
     min-height: 0;
+    max-height: 60vh;
 }
 
 .modal-paciente-body::-webkit-scrollbar {
@@ -287,11 +537,41 @@ tbody tr:hover {
     background: #94a3b8;
 }
 
-/* FORMULARIO */
+/* ==========================================
+   FORMULARIO EN MODAL (GRID)
+   ========================================== */
+
 .grid-form {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+}
+
+.field.full-width {
+    grid-column: span 2;
+}
+
+.field label {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #2d3748;
+}
+
+.field label i {
+    margin-right: 8px;
+    color: #667eea;
 }
 
 .input-group {
@@ -300,6 +580,14 @@ tbody tr:hover {
 
 .input-group.full-width {
     grid-column: span 2;
+}
+
+/* ==========================================
+   INPUTS Y SELECTS
+   ========================================== */
+
+.input-wrapper {
+    position: relative;
 }
 
 .input-icon {
@@ -330,17 +618,76 @@ tbody tr:hover {
 }
 
 textarea.input-field {
-    padding: 12px 12px 12px 42px;
+    padding: 12px;
     resize: vertical;
+    font-family: inherit;
     min-height: 80px;
 }
 
 select.input-field {
     padding-left: 42px;
     cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23667eea' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 16px;
 }
 
-/* CHECKBOX para acceso al sistema */
+.input-field[readonly] {
+    background: #f8fafc;
+    color: #64748b;
+    cursor: not-allowed;
+}
+
+/* ==========================================
+   CÉDULA CON NACIONALIDAD
+   ========================================== */
+
+.cedula-container {
+    position: relative;
+    display: flex;
+    gap: 0;
+    flex-wrap: wrap;
+}
+
+.cedula-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    z-index: 2;
+}
+
+.nacionalidad-select {
+    width: 80px;
+    border-right: none;
+    border-radius: 10px 0 0 10px;
+    padding-left: 40px;
+    background: #f8fafc;
+    font-weight: 600;
+    color: #334155;
+    cursor: pointer;
+}
+
+.cedula-numero {
+    border-radius: 0 10px 10px 0;
+    border-left: 1px solid #e2e8f0;
+    flex: 1;
+}
+
+.field-hint {
+    display: block;
+    margin-top: 5px;
+    color: #64748b;
+    font-size: 13px;
+}
+
+/* ==========================================
+   CHECKBOX PARA ACCESO AL SISTEMA
+   ========================================== */
+
 .checkbox-group {
     display: flex;
     align-items: center;
@@ -372,7 +719,10 @@ select.input-field {
     margin-top: 4px;
 }
 
-/* Campos de usuario (ocultos por defecto) */
+/* ==========================================
+   CAMPOS DE USUARIO (OCULTOS POR DEFECTO)
+   ========================================== */
+
 .user-fields {
     margin-top: 15px;
     padding: 15px;
@@ -390,7 +740,10 @@ select.input-field {
     color: #10b981;
 }
 
-/* BOTONES MODAL */
+/* ==========================================
+   BOTONES DEL MODAL
+   ========================================== */
+
 .modal-paciente-footer {
     display: flex;
     justify-content: flex-end;
@@ -445,7 +798,10 @@ select.input-field {
     box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
 }
 
-/* MODAL DELETE */
+/* ==========================================
+   MODAL DE ELIMINACIÓN
+   ========================================== */
+
 .delete-box {
     text-align: center;
 }
@@ -475,12 +831,20 @@ select.input-field {
     margin-bottom: 30px;
 }
 
+/* ==========================================
+   MENSAJE VACÍO
+   ========================================== */
+
 .empty-message {
     text-align: center;
     padding: 50px;
     color: #94a3b8;
     font-size: 16px;
 }
+
+/* ==========================================
+   UTILIDADES DE TEXTO
+   ========================================== */
 
 .strong {
     font-weight: 700;
@@ -494,21 +858,33 @@ select.input-field {
     display: block;
 }
 
-/* RESPONSIVE */
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
 @media (max-width: 768px) {
-    .pacientes-header {
+    .pacientes-header,
+    .page-header {
         flex-direction: column;
         text-align: center;
         gap: 20px;
         padding: 25px 20px;
     }
 
-    .grid-form {
+    .grid-form,
+    .form-grid {
         grid-template-columns: 1fr;
+        gap: 15px;
     }
 
-    .input-group.full-width {
+    .input-group.full-width,
+    .field.full-width {
         grid-column: span 1;
+    }
+
+    .form-actions {
+        grid-column: span 1;
+        flex-direction: column;
     }
 
     .modal-paciente-footer {
@@ -516,6 +892,11 @@ select.input-field {
     }
 
     .btn-paciente {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .btn {
         width: 100%;
         justify-content: center;
     }
@@ -530,5 +911,14 @@ select.input-field {
 
     .modal-paciente-box {
         max-height: 95vh;
+    }
+
+    .card-body-custom {
+        padding: 25px 20px;
+    }
+    
+    .paciente-info-badge {
+        flex-direction: column;
+        text-align: center;
     }
 }

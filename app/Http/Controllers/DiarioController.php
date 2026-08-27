@@ -20,7 +20,8 @@ class DiarioController extends Controller
     {
         // Si es el administrador (ID 1), obtiene todas las entradas con sus usuarios
         // Si es un usuario normal, solo obtiene sus propias entradas
-        $diarios = Auth::user()->id == 1 
+        $user = Auth::user();
+        $diarios = $user->isAdmin()
             ? Diario::with('user')->orderBy('fecha', 'desc')->get()
             : Diario::where('user_id', Auth::id())->orderBy('fecha', 'desc')->get();
         
@@ -39,7 +40,8 @@ class DiarioController extends Controller
     {
         // Si es administrador, obtiene todos los usuarios para el selector
         // Si es usuario normal, solo se muestra a sí mismo en una colección
-        $users = Auth::user()->id == 1 
+        $user = Auth::user();
+        $users = $user->isAdmin()
             ? User::orderBy('name')->get()
             : collect([Auth::user()]);
         
@@ -65,7 +67,8 @@ class DiarioController extends Controller
 
         // Verificar permisos: solo el administrador puede crear entradas para otros usuarios
         // Si no es administrador y trata de crear una entrada para otro usuario, denegar acceso
-        if (Auth::user()->id != 1 && $request->user_id != Auth::id()) {
+        $user = Auth::user();
+        if (!$user->isAdmin() && $request->user_id != Auth::id()) {
             abort(403); // Error 403: Acceso prohibido
         }
 
@@ -86,7 +89,8 @@ class DiarioController extends Controller
     public function show(Diario $diario)
     {
         // Verificar permisos: solo el administrador o el dueño de la entrada pueden verla
-        if (Auth::user()->id != 1 && $diario->user_id != Auth::id()) {
+        $user = Auth::user();
+        if (!$user->isAdmin() && $diario->user_id != Auth::id()) {
             abort(403); // Error 403: Acceso prohibido
         }
         
@@ -104,13 +108,14 @@ class DiarioController extends Controller
     public function edit(Diario $diario)
     {
         // Verificar permisos: solo el administrador o el dueño pueden editar
-        if (Auth::user()->id != 1 && $diario->user_id != Auth::id()) {
+        $user = Auth::user();
+        if (!$user->isAdmin() && $diario->user_id != Auth::id()) {
             abort(403); // Error 403: Acceso prohibido
         }
         
         // Si es administrador, obtiene todos los usuarios para el selector
         // Si es usuario normal, solo se muestra a sí mismo
-        $users = Auth::user()->id == 1 
+        $users = $user->isAdmin()
             ? User::orderBy('name')->get()
             : collect([Auth::user()]);
         
@@ -129,7 +134,8 @@ class DiarioController extends Controller
     public function update(Request $request, Diario $diario)
     {
         // Verificar permisos: solo el administrador o el dueño pueden actualizar
-        if (Auth::user()->id != 1 && $diario->user_id != Auth::id()) {
+        $user = Auth::user();
+        if (!$user->isAdmin() && $diario->user_id != Auth::id()) {
             abort(403); // Error 403: Acceso prohibido
         }
 
@@ -141,7 +147,7 @@ class DiarioController extends Controller
         ]);
 
         // Verificar que un usuario normal no intente cambiar el dueño de la entrada
-        if (Auth::user()->id != 1 && $request->user_id != Auth::id()) {
+        if (!$user->isAdmin() && $request->user_id != Auth::id()) {
             abort(403); // Error 403: Acceso prohibido
         }
 
@@ -162,7 +168,8 @@ class DiarioController extends Controller
     public function destroy(Diario $diario)
     {
         // Verificar permisos: solo el administrador o el dueño pueden eliminar
-        if (Auth::user()->id != 1 && $diario->user_id != Auth::id()) {
+        $user = Auth::user();
+        if (!$user->isAdmin() && $diario->user_id != Auth::id()) {
             abort(403); // Error 403: Acceso prohibido
         }
         

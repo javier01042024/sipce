@@ -7,15 +7,32 @@ const CitasManager = (function() {
     // ====================================================
     
     // Cambiar estado (asistió / no asistió) con AJAX
-    async function cambiarEstado(citaId, estado) {
+    async function cambiarEstado(boton, citaId, estado) {
+        const tarjeta = boton.closest('.cita-card');
+        if (!tarjeta) return;
+
+        // La asistencia solo puede registrarse el mismo día de la cita
+        if (tarjeta.dataset.esHoy !== '1') {
+            SIPCE_ALERT.info('La asistencia solo puede registrarse el día de la cita.', 'No disponible');
+            return;
+        }
+
+        const esAtendida = estado === 'atendida';
+        const confirmado = await SIPCE_ALERT.confirm({
+            title: esAtendida ? '¿Marcar cita como atendida?' : '¿Marcar cita como no asistida?',
+            html: 'La cita se retirará de la lista de pendientes.',
+            confirmText: esAtendida ? 'Sí, asistió' : 'Sí, no asistió',
+            confirmColor: esAtendida ? '#10b981' : '#d97706',
+            icon: esAtendida ? 'success' : 'warning'
+        });
+
+        if (!confirmado.isConfirmed) return;
+
         const token = document.querySelector('meta[name="csrf-token"]').content;
         const url = `/citas/${citaId}`;
-        
-        const boton = event.currentTarget;
-        const textoOriginal = boton.innerHTML;
-        boton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando...';
-        boton.disabled = true;
-        
+
+        deshabilitarAcciones(tarjeta);
+
         try {
             const response = await fetch(url, {
                 method: 'PUT',
@@ -29,124 +46,106 @@ const CitasManager = (function() {
                     _method: 'PUT'
                 })
             });
-            
+
             if (response.ok) {
-                actualizarTarjeta(citaId, estado);
                 mostrarNotificacion(estado);
+                quitarTarjeta(tarjeta);
+                if (esAtendida) {
+                    setTimeout(function() {
+                        SIPCE_ALERT.confirm({
+                            title: '¿Crear sesión clínica?',
+                            html: '¿Deseas registrar una sesión clínica para esta cita?',
+                            confirmText: 'Crear sesión',
+                            confirmColor: '#667eea',
+                            icon: 'question'
+                        }).then(function(result) {
+                            if (result.isConfirmed) {
+                                window.location.href = '/sesiones/create?cita_id=' + citaId;
+                            }
+                        });
+                    }, 500);
+                }
             } else {
-                throw new Error('Error al actualizar');
+                const data = await response.json().catch(() => null);
+                SIPCE_ALERT.error(data && data.message ? data.message : 'Error al actualizar la cita');
+                habilitarAcciones(tarjeta);
             }
         } catch (error) {
             console.error('Error:', error);
-            mostrarNotificacion('error', 'Hubo un error al procesar');
-        } finally {
-            boton.innerHTML = textoOriginal;
-            boton.disabled = false;
+            SIPCE_ALERT.error('Hubo un error al procesar la solicitud.');
+            habilitarAcciones(tarjeta);
+        }
+    }
+
+    function deshabilitarAcciones(tarjeta) {
+        tarjeta.querySelectorAll('button').forEach(btn => btn.disabled = true);
+    }
+
+    function habilitarAcciones(tarjeta) {
+        tarjeta.querySelectorAll('button').forEach(btn => btn.disabled = false);
+    }
+
+    // Quitar la tarjeta de la vista con animación (sin recargar)
+    function quitarTarjeta(tarjeta) {
+        tarjeta.style.transition = 'all 0.4s ease';
+        tarjeta.style.opacity = '0';
+        tarjeta.style.transform = 'translateY(-20px) scale(0.95)';
+        tarjeta.style.maxHeight = '0';
+        tarjeta.style.padding = '0 22px';
+        tarjeta.style.overflow = 'hidden';
+
+        setTimeout(() => {
+            tarjeta.remove();
+            actualizarSecciones();
+        }, 400);
+    }
+
+    // Actualizar contadores de las secciones y el estado vacío
+    function actualizarSecciones() {
+        let algunaVisible = false;
+
+        document.querySelectorAll('.citas-section').forEach(section => {
+            const tarjetas = section.querySelectorAll('.cita-card');
+            const contador = section.querySelector('.section-count');
+
+            if (contador) contador.textContent = tarjetas.length;
+
+            if (tarjetas.length === 0) {
+                section.style.display = 'none';
+            } else {
+                section.style.display = '';
+                algunaVisible = true;
+            }
+        });
+
+        const estadoVacio = document.getElementById('estadoVacio');
+        if (estadoVacio) {
+            estadoVacio.style.display = algunaVisible ? 'none' : '';
         }
     }
     
-    // Actualizar la tarjeta visualmente sin recargar
-    function actualizarTarjeta(citaId, estado) {
-        const tarjeta = document.querySelector(`.cita-card[data-id="${citaId}"]`);
-        if (!tarjeta) return;
-        
-        tarjeta.classList.remove('atendida', 'cancelada', 'no-asistio');
-        
-        if (estado === 'atendida') {
-            tarjeta.classList.add('atendida');
-            const acciones = tarjeta.querySelector('.cita-actions');
-            if (acciones) acciones.style.display = 'none';
-            agregarBadge(tarjeta, '✓ ATENDIDA', '#10b981');
-        } 
-        else if (estado === 'no_asistio') {
-            tarjeta.classList.add('no-asistio');
-            const acciones = tarjeta.querySelector('.cita-actions');
-            if (acciones) acciones.style.display = 'none';
-            agregarBadge(tarjeta, '✕ NO ASISTIÓ', '#d97706');
-        }
-        
-        tarjeta.style.animation = 'none';
-        tarjeta.offsetHeight;
-        tarjeta.style.animation = 'slideUp 0.3s ease';
-    }
-    
-    // Agregar badge a la tarjeta
-    function agregarBadge(tarjeta, texto, color) {
-        const badgeExistente = tarjeta.querySelector('.badge-estado-final');
-        if (badgeExistente) badgeExistente.remove();
-        
-        const badge = document.createElement('div');
-        badge.className = 'badge-estado-final';
-        badge.innerHTML = texto;
-        badge.style.cssText = `
-            position: absolute;
-            top: 15px;
-            right: -30px;
-            background: ${color};
-            color: white;
-            padding: 5px 40px;
-            font-size: 10px;
-            font-weight: 700;
-            transform: rotate(45deg);
-            letter-spacing: 1px;
-            z-index: 10;
-        `;
-        tarjeta.style.position = 'relative';
-        tarjeta.appendChild(badge);
-    }
-    
-    // Mostrar notificación suave (toast)
+    // Notificación con el estándar unificado de alertas
     function mostrarNotificacion(estado, mensaje = null) {
-        let texto = '';
-        let color = '';
-        
         switch(estado) {
             case 'atendida':
-                texto = mensaje || '✓ Cita marcada como atendida';
-                color = '#10b981';
+                SIPCE_ALERT.success(mensaje || 'Cita marcada como atendida');
                 break;
             case 'no_asistio':
-                texto = mensaje || '✕ Cita marcada como no asistida';
-                color = '#d97706';
+                SIPCE_ALERT.success(mensaje || 'Cita marcada como no asistida');
                 break;
             case 'cancelada':
-                texto = mensaje || '✕ Cita cancelada correctamente';
-                color = '#ef4444';
+                SIPCE_ALERT.success(mensaje || 'Cita cancelada correctamente');
                 break;
             case 'error':
-                texto = mensaje || '❌ Error al procesar';
-                color = '#ef4444';
+                SIPCE_ALERT.error(mensaje || 'Error al procesar');
                 break;
         }
-        
-        const toast = document.createElement('div');
-        toast.innerHTML = texto;
-        toast.style.cssText = `
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: ${color};
-            color: white;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            z-index: 9999;
-            animation: slideInRight 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        `;
-        
-        document.body.appendChild(toast);
-        
-        setTimeout(() => {
-            toast.style.animation = 'slideOutRight 0.3s ease';
-            setTimeout(() => toast.remove(), 300);
-        }, 3000);
     }
     
     // ====================================================
     // FUNCIONES PARA EL MODAL DE CANCELACIÓN
     // ====================================================
-    
+
     function abrirModalCancelar(citaId) {
         citaIdActual = citaId;
         const modal = document.getElementById('modalCancelar');
@@ -178,20 +177,6 @@ const CitasManager = (function() {
     // ====================================================
     
     function init() {
-        // Inicializar listado de citas
-        document.querySelectorAll('.cita-card').forEach(card => {
-            const id = card.getAttribute('data-id');
-            if (!id) {
-                const btn = card.querySelector('[onclick*="cambiarEstado"]');
-                if (btn) {
-                    const match = btn.getAttribute('onclick').match(/\d+/);
-                    if (match) {
-                        card.setAttribute('data-id', match[0]);
-                    }
-                }
-            }
-        });
-        
         agregarAnimacionesCSS();
         
         document.addEventListener('keydown', function(e) {
@@ -249,15 +234,10 @@ const CitasManager = (function() {
                         });
                         
                         if (response.ok) {
-                            actualizarTarjeta(citaIdActual, 'cancelada');
-                            closeModal();
-                            mostrarNotificacion('cancelada', '✕ Cita cancelada correctamente');
-                            
                             const tarjeta = document.querySelector(`.cita-card[data-id="${citaIdActual}"]`);
-                            if (tarjeta) {
-                                const acciones = tarjeta.querySelector('.cita-actions');
-                                if (acciones) acciones.remove();
-                            }
+                            if (tarjeta) quitarTarjeta(tarjeta);
+                            closeModal();
+                            mostrarNotificacion('cancelada', 'Cita cancelada correctamente');
                         }
                     }
                 } catch (error) {
@@ -276,22 +256,7 @@ const CitasManager = (function() {
             const style = document.createElement('style');
             style.id = 'citas-animations';
             style.textContent = `
-                @keyframes slideInRight {
-                    from { transform: translateX(100%); opacity: 0; }
-                    to { transform: translateX(0); opacity: 1; }
-                }
-                @keyframes slideOutRight {
-                    from { transform: translateX(0); opacity: 1; }
-                    to { transform: translateX(100%); opacity: 0; }
-                }
-                @keyframes slideUp {
-                    from { opacity: 0; transform: translateY(30px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
                 .cita-card { transition: all 0.3s ease; }
-                .cita-card.atendida,
-                .cita-card.cancelada,
-                .cita-card.no-asistio { animation: slideUp 0.3s ease; }
                 .btn-asistio:disabled,
                 .btn-no-asistio:disabled,
                 .btn-cancelar:disabled {

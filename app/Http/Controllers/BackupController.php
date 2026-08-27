@@ -10,6 +10,40 @@ use ZipArchive;
 class BackupController extends Controller
 {
     /**
+     * Valida que el nombre de archivo sea seguro (sin path traversal).
+     * Solo permite nombres de archivo simples sin barras ni puntos dobles.
+     */
+    private function sanitizeFilename(string $filename): string
+    {
+        // Eliminar cualquier path separator o traversal
+        $filename = basename($filename);
+        // Rechazar si contiene .. o caracteres peligrosos
+        if (str_contains($filename, '..') || !preg_match('/^[a-zA-Z0-9_\-\.]+$/', $filename)) {
+            abort(400, 'Nombre de archivo inválido.');
+        }
+        return $filename;
+    }
+
+    /**
+     * Valida que un contenido SQL sea seguro para ejecutar.
+     * Rechaza operaciones peligrosas como DROP, DELETE masivo, TRUNCATE, ALTER, GRANT, etc.
+     */
+    private function validateSqlSafety(string $query): void
+    {
+        $upper = strtoupper(trim($query));
+        $dangerous = [
+            'DROP DATABASE', 'DROP SCHEMA', 'TRUNCATE', 'ALTER DATABASE',
+            'GRANT ', 'REVOKE ', 'CREATE USER', 'DROP USER',
+            'SET PASSWORD', 'LOAD DATA', 'INTO OUTFILE', 'INTO DUMPFILE',
+            'EXEC ', 'EXECUTE ', 'CALL ', 'INTO OUTFILE',
+        ];
+        foreach ($dangerous as $pattern) {
+            if (str_contains($upper, $pattern)) {
+                abort(403, 'Operación SQL no permitida en respaldos.');
+            }
+        }
+    }
+    /**
      * Muestra el panel de gestión de respaldos.
      * Lista todos los respaldos disponibles con sus estadísticas.
      * 
@@ -20,7 +54,7 @@ class BackupController extends Controller
         // Crear carpeta de respaldos si no existe
         $backupPath = storage_path('app/backups');
         if (!File::exists($backupPath)) {
-            File::makeDirectory($backupPath, 0777, true); // Permisos completos
+            File::makeDirectory($backupPath, 0755, true);
         }
         
         // Obtener lista de archivos de respaldo
@@ -31,49 +65,37 @@ class BackupController extends Controller
             $filename = $file->getFilename();
             
             // Determinar el tipo de respaldo según el prefijo del nombre
-            $tipo = 'manual'; // Por defecto es manual
+            $tipo = 'manual';
             if (str_contains($filename, 'auto_')) {
-                $tipo = 'automatico'; // Respaldo automático diario
+                $tipo = 'automatico';
             } elseif (str_contains($filename, 'semanal_')) {
-                $tipo = 'semanal'; // Respaldo semanal programado
+                $tipo = 'semanal';
             }
             
-            // Crear objeto con información del archivo de respaldo
             $backups[] = (object)[
                 'nombre' => $filename,
                 'tipo' => $tipo,
-                'tamaño' => $this->formatSize($file->getSize()), // Tamaño legible para humanos
-                'tamaño_bytes' => $file->getSize(),              // Tamaño en bytes para cálculos
-                'fecha' => date('d/m/Y H:i:s', $file->getMTime()), // Fecha de modificación
-                'ruta' => $file->getPathname()                    // Ruta completa del archivo
+                'tamaño' => $this->formatSize($file->getSize()),
+                'tamaño_bytes' => $file->getSize(),
+                'fecha' => date('d/m/Y H:i:s', $file->getMTime()),
+                'ruta' => $file->getPathname()
             ];
         }
         
-        // Ordenar por tamaño de archivo descendente (del más grande al más pequeño)
+        // Ordenar por tamaño de archivo descendente
         usort($backups, function($a, $b) {
             return $b->tamaño_bytes - $a->tamaño_bytes;
         });
         
-        // ============================================
-        // ESTADÍSTICAS DE RESPALDOS
-        // ============================================
-        
-        // Total de archivos de respaldo
+        // Estadísticas
         $totalBackups = count($backups);
-        
-        // Sumar el tamaño total de todos los respaldos
         $tamañoTotal = array_sum(array_column($backups, 'tamaño_bytes'));
         $tamañoTotalFormateado = $this->formatSize($tamañoTotal);
-        
-        // Contar respaldos automáticos
         $automaticos = count(array_filter($backups, function($b) { 
             return $b->tipo == 'automatico'; 
         }));
-        
-        // Obtener la fecha del último respaldo (el primero del arreglo)
         $ultimoRespaldo = !empty($backups) ? $backups[0]->fecha : 'No hay respaldos';
         
-        // Retornar vista con todas las variables
         return view('configuracion.respaldos.index', compact(
             'backups',
             'totalBackups',
@@ -85,8 +107,8 @@ class BackupController extends Controller
     }
     
     /**
-     * Crea un nuevo respaldo de la base de datos usando PHP puro.
-     * No depende de mysqldump, funciona directamente con consultas SQL.
+     * Crea un nuevo respaldo de la base de datos.
+     * Es driver-aware: PostgreSQL usa pg_dump y MySQL usa consultas PHP puras.
      * Genera un archivo SQL y lo comprime en formato ZIP.
      * 
      * @param \Illuminate\Http\Request $request
@@ -94,141 +116,38 @@ class BackupController extends Controller
      */
     public function create(Request $request)
     {
-        // Obtener tipo de respaldo (manual por defecto)
         $tipo = $request->get('tipo', 'manual');
         
         try {
-            // Asegurar que la carpeta de respaldos existe
             $backupPath = storage_path('app/backups');
             if (!File::exists($backupPath)) {
-                File::makeDirectory($backupPath, 0777, true);
+                File::makeDirectory($backupPath, 0755, true);
             }
             
-            // Generar nombre de archivo con timestamp
             $timestamp = date('Y-m-d_His');
             $filename = "backup_{$tipo}_{$timestamp}.sql";
             $filePath = storage_path("app/backups/{$filename}");
             
-            // Obtener el nombre de la base de datos desde la configuración
-            $dbName = env('DB_DATABASE', 'sipce1');
+            $driver = DB::connection()->getDriverName();
             
-            // Obtener todas las tablas de la base de datos
-            $tables = DB::select('SHOW TABLES');
-            
-            // Obtener la clave correcta para el nombre de la tabla
-            // (varía según el driver de base de datos)
-            $firstTable = json_decode(json_encode($tables[0]), true);
-            $tableKey = array_keys($firstTable)[0];
-            
-            // Iniciar construcción del archivo SQL con cabecera informativa
-            $sql = "-- ====================================================\n";
-            $sql .= "-- RESPALDO DE BASE DE DATOS\n";
-            $sql .= "-- Base de datos: {$dbName}\n";
-            $sql .= "-- Fecha: " . date('Y-m-d H:i:s') . "\n";
-            $sql .= "-- ====================================================\n\n";
-            $sql .= "SET FOREIGN_KEY_CHECKS=0;\n\n"; // Desactivar verificación de claves foráneas
-            
-            // Procesar cada tabla
-            foreach ($tables as $table) {
-                $tableArray = json_decode(json_encode($table), true);
-                $tableName = $tableArray[$tableKey];
-                
-                // Saltar tablas de sistema para no incluir respaldos antiguos
-                if ($tableName == 'backups' || $tableName == 'bitacora_backup') {
-                    continue;
-                }
-                
-                // Obtener la estructura CREATE TABLE
-                $createResult = DB::select("SHOW CREATE TABLE {$tableName}");
-                $createArray = json_decode(json_encode($createResult[0]), true);
-                
-                // Extraer la sentencia CREATE TABLE del resultado
-                $createTableSQL = '';
-                foreach ($createArray as $key => $value) {
-                    if (strpos($key, 'Create Table') !== false || strpos($key, 'Create') !== false) {
-                        $createTableSQL = $value;
-                        break;
-                    }
-                }
-                
-                // Si no se encontró la estructura, crear una vacía
-                if (empty($createTableSQL)) {
-                    $createTableSQL = "CREATE TABLE `{$tableName}` ()";
-                }
-                
-                // Agregar separador y DROP TABLE antes del CREATE
-                $sql .= "-- ----------------------------------------------------\n";
-                $sql .= "-- Tabla: {$tableName}\n";
-                $sql .= "-- ----------------------------------------------------\n";
-                $sql .= "DROP TABLE IF EXISTS `{$tableName}`;\n";
-                $sql .= $createTableSQL . ";\n\n";
-                
-                // Obtener todos los registros de la tabla
-                $rows = DB::table($tableName)->get();
-                if (count($rows) > 0) {
-                    $sql .= "-- ----------------------------------------------------\n";
-                    $sql .= "-- Datos de tabla: {$tableName}\n";
-                    $sql .= "-- ----------------------------------------------------\n";
-                    
-                    // Obtener nombres de las columnas
-                    $columns = DB::select("SHOW COLUMNS FROM {$tableName}");
-                    $columnNames = [];
-                    foreach ($columns as $column) {
-                        $columnArray = json_decode(json_encode($column), true);
-                        $columnNames[] = $columnArray['Field'];
-                    }
-                    
-                    // Construir sentencia INSERT
-                    $sql .= "INSERT INTO `{$tableName}` (`" . implode("`, `", $columnNames) . "`) VALUES\n";
-                    
-                    // Procesar cada fila de datos
-                    $values = [];
-                    foreach ($rows as $row) {
-                        $rowArray = json_decode(json_encode($row), true);
-                        $escapedValues = [];
-                        
-                        // Escapar cada valor según su tipo
-                        foreach ($columnNames as $col) {
-                            $value = $rowArray[$col] ?? null;
-                            if ($value === null) {
-                                $escapedValues[] = 'NULL'; // Valores nulos
-                            } elseif (is_numeric($value)) {
-                                $escapedValues[] = $value; // Valores numéricos sin comillas
-                            } else {
-                                $escapedValues[] = "'" . addslashes($value) . "'"; // Strings con comillas y escapado
-                            }
-                        }
-                        $values[] = "(" . implode(', ', $escapedValues) . ")";
-                    }
-                    $sql .= implode(",\n", $values) . ";\n\n";
-                }
+            if ($driver === 'pgsql') {
+                $this->dumpPostgres($filePath);
+            } else {
+                $this->dumpMySql($filePath);
             }
             
-            // Finalizar el archivo SQL
-            $sql .= "SET FOREIGN_KEY_CHECKS=1;\n"; // Reactivar verificación de claves foráneas
-            $sql .= "\n-- ====================================================\n";
-            $sql .= "-- FIN DEL RESPALDO\n";
-            $sql .= "-- ====================================================\n";
-            
-            // Guardar el archivo SQL en disco
-            File::put($filePath, $sql);
-            
-            // Verificar que el archivo se creó correctamente
             if (!File::exists($filePath) || File::size($filePath) == 0) {
                 throw new \Exception('No se pudo crear el archivo de respaldo');
             }
             
-            // Comprimir el archivo SQL en formato ZIP para ahorrar espacio
             $zipPath = str_replace('.sql', '.zip', $filePath);
             $zip = new ZipArchive();
             if ($zip->open($zipPath, ZipArchive::CREATE) === true) {
-                $zip->addFile($filePath, $filename); // Agregar archivo SQL al ZIP
+                $zip->addFile($filePath, $filename);
                 $zip->close();
-                // Eliminar archivo SQL original después de comprimir
                 File::delete($filePath);
             }
             
-            // Retornar respuesta exitosa en formato JSON
             return response()->json([
                 'success' => true,
                 'message' => 'Respaldo creado exitosamente',
@@ -237,11 +156,148 @@ class BackupController extends Controller
             ]);
             
         } catch (\Exception $e) {
-            // Retornar error en formato JSON
             return response()->json([
                 'success' => false,
-                'message' => 'Error al crear respaldo: ' . $e->getMessage()
-            ], 500); // Código HTTP 500: Error interno del servidor
+                'message' => 'Error al crear el respaldo: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Respaldo para MySQL: genera SQL con PHP puro via SHOW DATABASE.
+     */
+    private function dumpMySql(string $filePath): void
+    {
+        $connection = DB::connection();
+        $dbName = $connection->getDatabaseName();
+        $tables = $connection->select('SHOW TABLES');
+        
+        $firstTable = json_decode(json_encode($tables[0]), true);
+        $tableKey = array_keys($firstTable)[0];
+        
+        $sql = "-- ====================================================\n";
+        $sql .= "-- RESPALDO DE BASE DE DATOS\n";
+        $sql .= "-- Base de datos: {$dbName}\n";
+        $sql .= "-- Fecha: " . date('Y-m-d H:i:s') . "\n";
+        $sql .= "-- Motor: MySQL\n";
+        $sql .= "-- ====================================================\n\n";
+        $sql .= "SET FOREIGN_KEY_CHECKS=0;\n\n";
+        
+        foreach ($tables as $table) {
+            $tableArray = json_decode(json_encode($table), true);
+            $tableName = $tableArray[$tableKey];
+            
+            if ($tableName == 'backups' || $tableName == 'bitacora_backup') {
+                continue;
+            }
+            
+            $createResult = $connection->select("SHOW CREATE TABLE {$tableName}");
+            $createArray = json_decode(json_encode($createResult[0]), true);
+            
+            $createTableSQL = '';
+            foreach ($createArray as $key => $value) {
+                if (strpos($key, 'Create Table') !== false || strpos($key, 'Create') !== false) {
+                    $createTableSQL = $value;
+                    break;
+                }
+            }
+            
+            if (empty($createTableSQL)) {
+                $createTableSQL = "CREATE TABLE `{$tableName}` ()";
+            }
+            
+            $sql .= "-- ----------------------------------------------------\n";
+            $sql .= "-- Tabla: {$tableName}\n";
+            $sql .= "-- ----------------------------------------------------\n";
+            $sql .= "DROP TABLE IF EXISTS `{$tableName}`;\n";
+            $sql .= $createTableSQL . ";\n\n";
+            
+            $rows = $connection->table($tableName)->get();
+            if (count($rows) > 0) {
+                $sql .= "-- ----------------------------------------------------\n";
+                $sql .= "-- Datos de tabla: {$tableName}\n";
+                $sql .= "-- ----------------------------------------------------\n";
+                
+                $columns = $connection->select("SHOW COLUMNS FROM {$tableName}");
+                $columnNames = [];
+                foreach ($columns as $column) {
+                    $columnArray = json_decode(json_encode($column), true);
+                    $columnNames[] = $columnArray['Field'];
+                }
+                
+                $sql .= "INSERT INTO `{$tableName}` (`" . implode("`, `", $columnNames) . "`) VALUES\n";
+                
+                $values = [];
+                foreach ($rows as $row) {
+                    $rowArray = json_decode(json_encode($row), true);
+                    $escapedValues = [];
+                    foreach ($columnNames as $col) {
+                        $value = $rowArray[$col] ?? null;
+                        if ($value === null) {
+                            $escapedValues[] = 'NULL';
+                        } elseif (is_numeric($value)) {
+                            $escapedValues[] = $value;
+                        } else {
+                            $escapedValues[] = "'" . addslashes($value) . "'";
+                        }
+                    }
+                    $values[] = "(" . implode(', ', $escapedValues) . ")";
+                }
+                $sql .= implode(",\n", $values) . ";\n\n";
+            }
+        }
+        
+        $sql .= "SET FOREIGN_KEY_CHECKS=1;\n";
+        $sql .= "\n-- ====================================================\n";
+        $sql .= "-- FIN DEL RESPALDO\n";
+        $sql .= "-- ====================================================\n";
+        
+        File::put($filePath, $sql);
+    }
+
+    /**
+     * Respaldo para PostgreSQL usando pg_dump.
+     * Genera SQL plano con INSERTs (no COPY) para que el parser de
+     * restauración pueda ejecutarlo statement a statement.
+     */
+    private function dumpPostgres(string $filePath): void
+    {
+        $pg = config('database.connections.pgsql');
+        $dbHost = $pg['host'] ?? '127.0.0.1';
+        $dbPort = $pg['port'] ?? '5432';
+        $dbName = $pg['database'] ?? 'sipce';
+        $dbUser = $pg['username'] ?? 'postgres';
+        $dbPass = $pg['password'] ?? '';
+        
+        $cmd = sprintf(
+            'pg_dump --clean --if-exists --no-owner --no-privileges --inserts --no-comments ' .
+            '-h %s -p %s -U %s -d %s',
+            escapeshellarg($dbHost),
+            escapeshellarg($dbPort),
+            escapeshellarg($dbUser),
+            escapeshellarg($dbName)
+        );
+        
+        $env = array_merge($_SERVER, ['PGPASSWORD' => $dbPass]);
+        
+        $process = proc_open($cmd, [
+            1 => ['file', $filePath, 'w'],
+            2 => ['pipe', 'w'],
+        ], $pipes, null, $env);
+        
+        if (!is_resource($process)) {
+            throw new \Exception('No se pudo iniciar pg_dump. Verifica que PostgreSQL client esté instalado.');
+        }
+        
+        $stderr = stream_get_contents($pipes[2]);
+        fclose($pipes[2]);
+        $exitCode = proc_close($process);
+        
+        if ($exitCode !== 0) {
+            if (File::exists($filePath)) {
+                File::delete($filePath);
+            }
+            throw new \Exception('pg_dump falló (código ' . $exitCode . '): ' . trim($stderr));
         }
     }
     
@@ -253,14 +309,13 @@ class BackupController extends Controller
      */
     public function download($filename)
     {
+        $filename = $this->sanitizeFilename($filename);
         $filePath = storage_path("app/backups/{$filename}");
         
-        // Verificar que el archivo existe
         if (!File::exists($filePath)) {
             abort(404, 'Archivo no encontrado');
         }
         
-        // Forzar la descarga del archivo
         return response()->download($filePath, $filename);
     }
     
@@ -274,71 +329,126 @@ class BackupController extends Controller
      */
     public function restore(Request $request, $filename)
     {
+        $filename = $this->sanitizeFilename($filename);
         $filePath = storage_path("app/backups/{$filename}");
         
-        // Verificar que el archivo de respaldo existe
         if (!File::exists($filePath)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Archivo no encontrado'
+                'message' => 'Archivo de respaldo no encontrado'
             ], 404);
         }
         
         try {
-            // Extraer contenido SQL según el tipo de archivo
+            // Extraer contenido SQL
+            $sqlContent = '';
             if (pathinfo($filePath, PATHINFO_EXTENSION) == 'zip') {
-                // Si es ZIP, extraer el archivo SQL temporalmente
                 $zip = new ZipArchive();
-                $zip->open($filePath);
+                if ($zip->open($filePath) !== true) {
+                    throw new \Exception('No se pudo abrir el archivo ZIP');
+                }
                 $sqlPath = storage_path('app/backups/temp_' . time() . '.sql');
                 $zip->extractTo(storage_path('app/backups/'), basename($sqlPath));
                 $zip->close();
+                
+                if (!File::exists($sqlPath)) {
+                    throw new \Exception('No se pudo extraer el archivo SQL del ZIP');
+                }
+                
                 $sqlContent = File::get($sqlPath);
-                // Eliminar archivo temporal después de leerlo
                 File::delete($sqlPath);
             } else {
-                // Si es SQL, leer directamente
                 $sqlContent = File::get($filePath);
             }
             
-            // Iniciar transacción para asegurar integridad
-            DB::beginTransaction();
+            if (empty($sqlContent)) {
+                throw new \Exception('El archivo de respaldo está vacío o es inválido');
+            }
             
-            // Separar las consultas por punto y coma + nueva línea
-            $queries = explode(";\n", $sqlContent);
+            // Separar las consultas (tokenizer: respeta strings y comentarios)
+            $queries = $this->splitQueries($sqlContent);
             
-            // Ejecutar cada consulta individualmente
-            foreach ($queries as $query) {
-                $query = trim($query);
-                // Ignorar líneas vacías y comentarios SQL
-                if (!empty($query) && !str_starts_with($query, '--')) {
-                    try {
-                        DB::statement($query);
-                    } catch (\Exception $e) {
-                        // Ignorar errores de elementos que ya existen
-                        // (tablas duplicadas o registros duplicados)
-                        if (!str_contains($e->getMessage(), 'already exists') && 
-                            !str_contains($e->getMessage(), 'Duplicate entry')) {
-                            throw $e; // Relanzar otros tipos de errores
+            $totalQueries = count($queries);
+            $executedQueries = 0;
+            $errors = [];
+            
+            // Ejecutar cada consulta (sin transacciones para evitar errores)
+            foreach ($queries as $index => $query) {
+                try {
+                    $this->validateSqlSafety($query);
+                    DB::statement($query);
+                    $executedQueries++;
+                } catch (\Exception $e) {
+                    $errorMsg = $e->getMessage();
+                    
+                    $ignoreErrors = [
+                        'already exists',
+                        'Duplicate entry',
+                        'Unknown table',
+                        'Can\'t create table',
+                        'Table already exists',
+                        'Duplicate key name',
+                        'duplicate key value violates unique constraint'
+                    ];
+                    
+                    $shouldIgnore = false;
+                    foreach ($ignoreErrors as $ignore) {
+                        if (str_contains($errorMsg, $ignore)) {
+                            $shouldIgnore = true;
+                            break;
                         }
+                    }
+                    
+                    if (!$shouldIgnore) {
+                        $errors[] = "Error en la consulta " . ($index + 1) . ": " . $errorMsg;
                     }
                 }
             }
             
-            // Confirmar la transacción
-            DB::commit();
+            // Verificar si hay errores críticos
+            if (!empty($errors)) {
+                if ($executedQueries > 0) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => "Respaldo restaurado parcialmente. {$executedQueries} de {$totalQueries} consultas ejecutadas correctamente.",
+                        'warnings' => $errors,
+                        'executed' => $executedQueries,
+                        'total' => $totalQueries
+                    ]);
+                } else {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Error al restaurar el respaldo',
+                        'errors' => $errors
+                    ], 500);
+                }
+            }
+            
+            // Registrar en bitácora
+            \App\Helpers\BitacoraHelper::exito(
+                'restaurar',
+                'respaldos',
+                "Restauró el respaldo: {$filename} - {$executedQueries} consultas ejecutadas",
+                ['filename' => $filename, 'queries' => $executedQueries]
+            );
             
             return response()->json([
                 'success' => true,
-                'message' => 'Respaldo restaurado exitosamente'
+                'message' => "Respaldo restaurado exitosamente. {$executedQueries} consultas ejecutadas.",
+                'queries' => $executedQueries
             ]);
             
         } catch (\Exception $e) {
-            // Revertir cambios en caso de error
-            DB::rollBack();
+            \App\Helpers\BitacoraHelper::error(
+                'restaurar',
+                'respaldos',
+                "Error al restaurar el respaldo {$filename}: " . $e->getMessage(),
+                ['filename' => $filename, 'error' => $e->getMessage()]
+            );
+            
             return response()->json([
                 'success' => false,
-                'message' => 'Error al restaurar: ' . $e->getMessage()
+                'message' => 'Error al restaurar el respaldo: ' . $e->getMessage()
             ], 500);
         }
     }
@@ -351,9 +461,9 @@ class BackupController extends Controller
      */
     public function delete($filename)
     {
+        $filename = $this->sanitizeFilename($filename);
         $filePath = storage_path("app/backups/{$filename}");
         
-        // Verificar que el archivo existe
         if (!File::exists($filePath)) {
             return response()->json([
                 'success' => false,
@@ -362,7 +472,6 @@ class BackupController extends Controller
         }
         
         try {
-            // Eliminar el archivo del disco
             File::delete($filePath);
             
             return response()->json([
@@ -373,41 +482,286 @@ class BackupController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error al eliminar: ' . $e->getMessage()
+                'message' => 'Error al eliminar el respaldo: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    
+    /**
+     * Importa un archivo SQL subido desde el equipo.
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function importSql(Request $request)
+    {
+        \Log::info('=== INICIO IMPORTACIÓN SQL ===');
+        
+        try {
+            // Validar que se haya subido un archivo
+            if (!$request->hasFile('sql_file')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No se recibió ningún archivo. Por favor selecciona un archivo SQL o ZIP.'
+                ], 400);
+            }
+            
+            $file = $request->file('sql_file');
+            $originalName = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $size = $file->getSize();
+            
+            \Log::info('Archivo recibido: ' . $originalName);
+            
+            // Validar extensión
+            $validExtensions = ['sql', 'zip'];
+            if (!in_array(strtolower($extension), $validExtensions)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'El archivo debe ser de tipo SQL o ZIP. Extensión recibida: ' . $extension
+                ], 400);
+            }
+            
+            // Validar tamaño (50MB máximo)
+            $maxSize = 50 * 1024 * 1024;
+            if ($size > $maxSize) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'El archivo no debe superar los 50MB. Tamaño actual: ' . number_format($size / 1024 / 1024, 2) . 'MB'
+                ], 400);
+            }
+            
+            // Crear carpeta temporal si no existe
+            $tempPath = storage_path('app/backups/temp');
+            if (!File::exists($tempPath)) {
+                File::makeDirectory($tempPath, 0755, true);
+            }
+            
+            // Guardar archivo temporal
+            $tempFile = $tempPath . '/' . time() . '_' . $originalName;
+            $file->move($tempPath, basename($tempFile));
+            
+            \Log::info('Archivo guardado temporalmente');
+            
+            // Obtener contenido SQL
+            $sqlContent = '';
+            if (strtolower($extension) == 'zip') {
+                \Log::info('Procesando archivo ZIP...');
+                $zip = new ZipArchive();
+                if ($zip->open($tempFile) !== true) {
+                    File::delete($tempFile);
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'No se pudo abrir el archivo ZIP. Verifica que sea un ZIP válido.'
+                    ], 400);
+                }
+                
+                $sqlFile = null;
+                for ($i = 0; $i < $zip->numFiles; $i++) {
+                    $filename = $zip->getNameIndex($i);
+                    if (pathinfo($filename, PATHINFO_EXTENSION) == 'sql') {
+                        $sqlFile = $filename;
+                        break;
+                    }
+                }
+                
+                if (!$sqlFile) {
+                    $zip->close();
+                    File::delete($tempFile);
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'No se encontró un archivo SQL dentro del ZIP'
+                    ], 400);
+                }
+                
+                $extractPath = $tempPath . '/extracted_' . time();
+                $zip->extractTo($extractPath);
+                $zip->close();
+                
+                $sqlContent = File::get($extractPath . '/' . $sqlFile);
+                File::deleteDirectory($extractPath);
+            } else {
+                $sqlContent = File::get($tempFile);
+            }
+            
+            // Eliminar archivo temporal
+            if (File::exists($tempFile)) {
+                File::delete($tempFile);
+            }
+            
+            if (empty($sqlContent)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'El archivo SQL está vacío o es inválido'
+                ], 400);
+            }
+            
+            // Verificar que el SQL es válido
+            if (!preg_match('/CREATE\s+TABLE|INSERT\s+INTO/i', $sqlContent)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'El archivo no contiene una estructura de base de datos válida'
+                ], 400);
+            }
+            
+            // Extraer nombres de tablas del SQL
+            $tableNames = [];
+            preg_match_all('/CREATE\s+TABLE\s+`?([a-zA-Z0-9_]+)`?/i', $sqlContent, $matches);
+            if (!empty($matches[1])) {
+                $tableNames = array_unique($matches[1]);
+                \Log::info('Tablas encontradas: ' . implode(', ', $tableNames));
+            }
+            
+            // Separar consultas (tokenizer: respeta strings y comentarios) - SIN TRANSACCIONES
+            $queries = $this->splitQueries($sqlContent);
+            
+            $totalQueries = count($queries);
+            $executedQueries = 0;
+            $errors = [];
+            $createdTables = [];
+            
+            \Log::info('Total de consultas a ejecutar: ' . $totalQueries);
+            
+            // Ejecutar cada consulta individualmente SIN transacciones
+            foreach ($queries as $index => $query) {
+                try {
+                    $this->validateSqlSafety($query);
+                    DB::statement($query);
+                    $executedQueries++;
+                    
+                    if (preg_match('/CREATE\s+TABLE\s+`?([a-zA-Z0-9_]+)`?/i', $query, $match)) {
+                        $createdTables[] = $match[1];
+                    }
+                } catch (\Exception $e) {
+                    $errorMsg = $e->getMessage();
+                    
+                    $ignoreErrors = [
+                        'already exists',
+                        'Duplicate entry',
+                        'Unknown table',
+                        'Can\'t create table',
+                        'Table already exists',
+                        'Duplicate key name',
+                        'duplicate key value violates unique constraint'
+                    ];
+                    
+                    $shouldIgnore = false;
+                    foreach ($ignoreErrors as $ignore) {
+                        if (str_contains($errorMsg, $ignore)) {
+                            $shouldIgnore = true;
+                            break;
+                        }
+                    }
+                    
+                    if (!$shouldIgnore) {
+                        $errors[] = "Error en la consulta " . ($index + 1) . ": " . $errorMsg;
+                        \Log::info('Error en consulta ' . ($index + 1) . ': ' . $errorMsg);
+                    }
+                }
+            }
+            
+            \Log::info('Consultas ejecutadas: ' . $executedQueries . ' de ' . $totalQueries);
+            \Log::info('Tablas creadas: ' . implode(', ', $createdTables));
+            
+            // Si no se ejecutó ninguna consulta
+            if ($executedQueries == 0) {
+                \Log::error('Importación fallida, no se ejecutó ninguna consulta');
+                
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error al importar el archivo SQL. No se ejecutó ninguna consulta.',
+                    'errors' => $errors
+                ], 500);
+            }
+            
+            // Si hay errores pero se ejecutaron algunas consultas
+            if (!empty($errors) && $executedQueries > 0) {
+                \Log::info('Importación parcial, ' . $executedQueries . ' consultas ejecutadas');
+                
+                return response()->json([
+                    'success' => true,
+                    'message' => "Importación parcial. {$executedQueries} de {$totalQueries} consultas ejecutadas.",
+                    'warnings' => $errors,
+                    'tables_creadas' => $createdTables,
+                    'executed' => $executedQueries,
+                    'total' => $totalQueries
+                ]);
+            }
+            
+            // Todo bien
+            \Log::info('Importación completada exitosamente');
+            \Log::info('=== FIN IMPORTACIÓN SQL ===');
+            
+            \App\Helpers\BitacoraHelper::exito(
+                'importar_sql',
+                'respaldos',
+                "Importó archivo SQL: {$originalName} - {$executedQueries} consultas ejecutadas",
+                [
+                    'filename' => $originalName,
+                    'queries' => $executedQueries,
+                    'tables' => $createdTables
+                ]
+            );
+            
+            return response()->json([
+                'success' => true,
+                'message' => "Archivo SQL importado exitosamente. {$executedQueries} consultas ejecutadas.",
+                'tables_creadas' => $createdTables,
+                'queries' => $executedQueries
+            ]);
+            
+        } catch (\Exception $e) {
+            // Limpiar archivos temporales
+            if (isset($tempFile) && File::exists($tempFile)) {
+                File::delete($tempFile);
+            }
+            if (isset($extractPath) && File::exists($extractPath)) {
+                File::deleteDirectory($extractPath);
+            }
+            
+            \Log::error('Error en importación: ' . $e->getMessage());
+            \Log::info('=== FIN IMPORTACIÓN SQL (ERROR) ===');
+            
+            \App\Helpers\BitacoraHelper::error(
+                'importar_sql',
+                'respaldos',
+                "Error al importar SQL: " . $e->getMessage(),
+                ['filename' => $originalName ?? 'desconocido', 'error' => $e->getMessage()]
+            );
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al importar el archivo SQL: ' . $e->getMessage()
             ], 500);
         }
     }
     
     /**
      * Guarda la configuración de respaldos automáticos.
-     * Almacena las preferencias en un archivo JSON.
      * 
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function saveConfig(Request $request)
     {
-        // Construir arreglo de configuración
         $config = [
-            'auto_diario' => $request->get('auto_diario', false),     // Respaldo automático diario
-            'auto_semanal' => $request->get('auto_semanal', false),   // Respaldo automático semanal
-            'notificar_email' => $request->get('notificar_email', false), // Notificación por correo
-            'comprimir' => $request->get('comprimir', true)           // Comprimir respaldos en ZIP
+            'auto_diario' => $request->get('auto_diario', false),
+            'auto_semanal' => $request->get('auto_semanal', false),
+            'notificar_email' => $request->get('notificar_email', false),
+            'comprimir' => $request->get('comprimir', true)
         ];
         
-        // Guardar configuración en archivo JSON con formato legible
         $configPath = storage_path('app/backups/config.json');
         File::put($configPath, json_encode($config, JSON_PRETTY_PRINT));
         
         return response()->json([
             'success' => true,
-            'message' => 'Configuración guardada'
+            'message' => 'Configuración guardada correctamente'
         ]);
     }
     
     /**
      * Obtiene la configuración actual de respaldos.
-     * Si no existe el archivo de configuración, retorna valores predeterminados.
      * 
      * @return \Illuminate\Http\JsonResponse
      */
@@ -415,11 +769,9 @@ class BackupController extends Controller
     {
         $configPath = storage_path('app/backups/config.json');
         
-        // Cargar configuración existente o usar valores por defecto
         if (File::exists($configPath)) {
             $config = json_decode(File::get($configPath), true);
         } else {
-            // Configuración predeterminada
             $config = [
                 'auto_diario' => true,
                 'auto_semanal' => true,
@@ -433,28 +785,103 @@ class BackupController extends Controller
     
     /**
      * Formatea el tamaño de un archivo en una unidad legible.
-     * Convierte bytes a B, KB, MB o GB según corresponda.
      * 
      * @param int $bytes Tamaño en bytes
      * @return string Tamaño formateado con unidad
      */
     private function formatSize($bytes)
     {
-        // 1 GB = 1,073,741,824 bytes
         if ($bytes >= 1073741824) {
             return number_format($bytes / 1073741824, 2) . ' GB';
-        } 
-        // 1 MB = 1,048,576 bytes
-        elseif ($bytes >= 1048576) {
+        } elseif ($bytes >= 1048576) {
             return number_format($bytes / 1048576, 2) . ' MB';
-        } 
-        // 1 KB = 1,024 bytes
-        elseif ($bytes >= 1024) {
+        } elseif ($bytes >= 1024) {
             return number_format($bytes / 1024, 2) . ' KB';
-        } 
-        // Menos de 1 KB, mostrar en bytes
-        else {
+        } else {
             return $bytes . ' B';
         }
+    }
+
+    /**
+     * Divide un archivo SQL en consultas individuales.
+     * Usa un tokenizer que respeta strings entre comillas, comentarios
+     * de línea (--) y de bloque (/* * /), de modo que un ";" dentro de
+     * una cadena de texto no rompa la consulta.
+     */
+    private function splitQueries(string $sqlContent): array
+    {
+        $queries = [];
+        $length = strlen($sqlContent);
+        $current = '';
+        $quote = null;
+        $inLineComment = false;
+        $inBlockComment = false;
+
+        for ($i = 0; $i < $length; $i++) {
+            $char = $sqlContent[$i];
+            $next = $sqlContent[$i + 1] ?? '';
+
+            if ($char === "\n") {
+                $inLineComment = false;
+            }
+
+            if (!$quote && !$inLineComment && !$inBlockComment) {
+                if ($char === '-' && $next === '-') {
+                    $inLineComment = true;
+                    $i++;
+                    continue;
+                }
+                if ($char === '/' && $next === '*') {
+                    $inBlockComment = true;
+                    $i++;
+                    continue;
+                }
+            }
+
+            if ($inLineComment || $inBlockComment) {
+                if ($inBlockComment && $char === '*' && $next === '/') {
+                    $inBlockComment = false;
+                    $i++;
+                }
+                continue;
+            }
+
+            if ($quote !== null) {
+                $current .= $char;
+                if ($char === '\\' && $i + 1 < $length) {
+                    $current .= $sqlContent[$i + 1];
+                    $i++;
+                    continue;
+                }
+                if ($char === $quote) {
+                    $quote = null;
+                }
+                continue;
+            }
+
+            if ($char === "'" || $char === '"') {
+                $quote = $char;
+                $current .= $char;
+                continue;
+            }
+
+            if ($char === ';') {
+                $query = trim($current);
+                if ($query !== '') {
+                    $queries[] = $query;
+                }
+                $current = '';
+                continue;
+            }
+
+            $current .= $char;
+        }
+
+        $query = trim($current);
+        if ($query !== '') {
+            $queries[] = $query;
+        }
+
+        return $queries;
     }
 }

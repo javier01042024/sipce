@@ -1,3 +1,5 @@
+@php use Illuminate\Support\Facades\DB; @endphp
+
 <div class="modal-overlay" id="userModal">
     <div class="modal-content">
         <div class="modal-header">
@@ -75,16 +77,10 @@
                     <i class="fas fa-user-circle me-2"></i>Seleccionar Paciente
                 </label>
                 <select class="form-control" id="paciente_id" name="paciente_id">
-                    <option value="">Cargando pacientes...</option>
-                    @php
-                        use App\Models\Paciente;
-                        $pacientesSinUsuario = Paciente::whereNull('user_id')
-                            ->orderBy('nombre_completo')
-                            ->get();
-                    @endphp
-                    @foreach($pacientesSinUsuario as $paciente)
-                    <option value="{{ $paciente->id }}">
-                        #{{ $paciente->numero_expediente }} - {{ $paciente->nombre_completo }}
+                    <option value="">Seleccione un paciente...</option>
+                    @foreach($pacientesSinUsuario as $p)
+                    <option value="{{ $p->id }}">
+                        Exp: {{ $p->numero_expediente }} | {{ DB::table('paciente_adultos')->where('id', $p->paciente_detalle_id)->value('nombre') }} {{ DB::table('paciente_adultos')->where('id', $p->paciente_detalle_id)->value('apellido') }}
                     </option>
                     @endforeach
                 </select>

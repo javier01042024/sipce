@@ -1,0 +1,48 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sipce-app
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - DB_CONNECTION=pgsql
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_DATABASE=sipce
+      - DB_USERNAME=sipce
+      - DB_PASSWORD=sipce_secret
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/up"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  db:
+    image: postgres:16-alpine
+    container_name: sipce-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: sipce
+      POSTGRES_USER: sipce
+      POSTGRES_PASSWORD: sipce_secret
+    ports:
+      - "5433:5432"
+    volumes:
+      - sipce_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sipce -d sipce"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  sipce_db_data:
