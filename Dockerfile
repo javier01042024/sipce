@@ -8,7 +8,8 @@ FROM composer:2 AS vendor
 WORKDIR /sipce
 
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --ignore-platform-req=ext-gd
+RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --ignore-platform-req=ext-gd \
+    && composer dump-autoload --no-dev --no-scripts --ignore-platform-req=ext-gd
 
 # ---------- ETAPA 2: Assets frontend (Node + Vite) ----------
 FROM node:22 AS frontend
@@ -71,6 +72,12 @@ COPY --from=vendor /sipce/vendor /var/www/html/vendor
 
 # Copiar assets frontend compilados
 COPY --from=frontend /sipce/public/build /var/www/html/public/build
+
+# Generar el manifest de auto-discovery de paquetes (necesita vendor + código)
+RUN php artisan package:discover --ansi
+
+# php-fpm: heredar las variables de entorno del contenedor (usadas por Render)
+RUN echo 'clear_env = no' >> /usr/local/etc/php-fpm.d/www.conf
 
 # Configuración PHP (opcache, límites)
 COPY docker/php/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
