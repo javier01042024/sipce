@@ -32,6 +32,7 @@ RUN apk add --no-cache \
         oniguruma-dev \
         icu-dev \
         libxml2-dev \
+        sqlite-dev \
         zip \
         unzip \
         git \
