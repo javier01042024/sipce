@@ -104,6 +104,11 @@ RUN chown -R www-data:www-data /var/www/html/vendor /var/www/html/public/build 2
 
 EXPOSE 80
 
+# Valores seguros por defecto en producción (Render puede sobreescribirlos).
+# Evita que .env.example (APP_DEBUG=true / APP_ENV=local) se use en el contenedor.
+ENV APP_ENV=production \
+    APP_DEBUG=false
+
 # Entrypoint: genera clave si falta, migra, y arranca supervisor
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
