@@ -72,6 +72,56 @@ class BitacoraController extends Controller
     }
     
     /**
+     * GET /api/bitacora
+     * Listado paginado para la app móvil con los mismos filtros y
+     * estadísticas que la vista web. Requiere permiso bitacora.index.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function apiIndex(Request $request)
+    {
+        $user = $request->user();
+        $permisos = $user->roles
+            ->pluck('permissions')
+            ->flatten()
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
+
+        if (!in_array('bitacora.index', $permisos)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No autorizado.',
+            ], 403);
+        }
+
+        $registros = Bitacora::with('usuario:id,name,email')
+            ->porUsuario($request->get('usuario'))
+            ->porAccion($request->get('accion'))
+            ->porTabla($request->get('tabla'))
+            ->porFecha($request->get('desde'), $request->get('hasta'))
+            ->orderBy('fecha_hora', 'desc')
+            ->paginate(min((int) $request->get('per_page', 20), 100));
+
+        return response()->json([
+            'success' => true,
+            'data' => $registros->items(),
+            'pagination' => [
+                'total' => $registros->total(),
+                'per_page' => $registros->perPage(),
+                'current_page' => $registros->currentPage(),
+                'last_page' => $registros->lastPage(),
+            ],
+            'stats' => Bitacora::getEstadisticas(),
+            'usuarios' => User::orderBy('name')->get(['id', 'name']),
+            'acciones' => ['CREATE', 'UPDATE', 'DELETE', 'LOGIN', 'ERROR'],
+            'tablas' => ['pacientes', 'paciente_adultos', 'paciente_adolescentes', 'paciente_ninos', 'citas', 'sesiones', 'diarios', 'diagnosticos', 'acompanantes', 'notificaciones', 'plan_tratamiento', 'plan_objetivos', 'estados', 'users', 'auth'],
+        ]);
+    }
+
+    /**
      * Exporta los registros de la bitácora a un archivo CSV.
      * Aplica los mismos filtros que la vista de listado.
      * El archivo incluye BOM UTF-8 para correcta visualización de caracteres especiales.
