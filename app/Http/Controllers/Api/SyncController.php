@@ -265,6 +265,79 @@ class SyncController extends Controller
     }
 
     /**
+     * Si pacientes requiere detalle polimórfica a una Niño/Adolescente/Adulto
+     * referenciada por UUID (creadas offline), resolver a su id numérico.
+     */
+    private function resolverDetalle(array &$datos): void
+    {
+        if (empty($datos['paciente_detalle_type']) || empty($datos['paciente_detalle_id'])) {
+            return;
+        }
+
+        $detalleUuid = (string) $datos['paciente_detalle_id'];
+
+        // Ya es un id numérico
+        if (ctype_digit($detalleUuid)) {
+            return;
+        }
+
+        $mapa = [
+            'App\\Models\\PacienteAdulto' => PacienteAdulto::class,
+            'App\\Models\\PacienteAdolescente' => PacienteAdolescente::class,
+            'App\\Models\\PacienteNino' => PacienteNino::class,
+        ];
+
+        $clase = $mapa[$datos['paciente_detalle_type']] ?? null;
+        if (!$clase) {
+            return;
+        }
+
+        $detalle = $clase::where('uuid', $detalleUuid)->withTrashed()->first();
+        if ($detalle) {
+            $datos['paciente_detalle_id'] = $detalle->id;
+        }
+    }
+
+    /**
+     * Resolver claves foráneas enviadas como UUID (creadas offline) a ids numéricos.
+     */
+    private function resolverIds(array &$datos): void
+    {
+        $mapas = [
+            'paciente_id' => Paciente::class,
+            'cita_id' => Cita::class,
+            'acompanante_id' => Acompanante::class,
+            'diario_id' => Diario::class,
+            'plan_id' => PlanTratamiento::class,
+            'user_id' => \App\Models\User::class,
+        ];
+
+        foreach ($mapas as $campo => $clase) {
+            if (empty($datos[$campo]) || !is_string($datos[$campo])) {
+                continue;
+            }
+            $valor = $datos[$campo];
+            if (ctype_digit($valor)) {
+                continue;
+            }
+            $obj = $clase::where('uuid', $valor)->first();
+            if ($obj) {
+                $datos[$campo] = $obj->id;
+            }
+        }
+    }
+
+    /**
+     * Siguiente número de expediente EXP-000001 estilo web.
+     */
+    private function siguienteExpediente(): string
+    {
+        $ultimo = Paciente::withTrashed()->latest('id')->first();
+        $numero = $ultimo ? intval(substr($ultimo->numero_expediente ?? 'EXP-000000', 4)) + 1 : 1;
+        return 'EXP-' . str_pad($numero, 6, '0', STR_PAD_LEFT);
+    }
+
+    /**
      * Aplicar un registro individual del upload
      */
     private function aplicarRegistro(array $record, int $userId, string $deviceId): string
@@ -289,6 +362,15 @@ class SyncController extends Controller
                 if (in_array($tabla, ['pacientes', 'sesiones', 'diarios', 'notas', 'notificaciones'])) {
                     $datos['user_id'] = $datos['user_id'] ?? $userId;
                 }
+                $this->resolverIds($datos);
+                if ($tabla === 'pacientes') {
+                    // La app móvil puede referenciar la detalle por UUID (fuera de línea)
+                    $this->resolverDetalle($datos);
+                    // Generar expediente automáticamente si no se envió
+                    if (empty($datos['numero_expediente'])) {
+                        $datos['numero_expediente'] = $this->siguienteExpediente();
+                    }
+                }
                 $modelClass::create($datos);
                 return 'applied';
 
@@ -297,6 +379,13 @@ class SyncController extends Controller
                     // No existe en servidor — crear con el UUID
                     $datos = $record['datos'] ?? [];
                     $datos['uuid'] = $record['uuid'];
+                    $this->resolverIds($datos);
+                    if ($tabla === 'pacientes') {
+                        $this->resolverDetalle($datos);
+                        if (empty($datos['numero_expediente'])) {
+                            $datos['numero_expediente'] = $this->siguienteExpediente();
+                        }
+                    }
                     $modelClass::create($datos);
                     return 'applied';
                 }
@@ -319,7 +408,9 @@ class SyncController extends Controller
                     return 'conflict';
                 }
                 // El cliente es más reciente — aplicar
-                $existing->update($record['datos'] ?? []);
+                $aplicar = $record['datos'] ?? [];
+                $this->resolverIds($aplicar);
+                $existing->update($aplicar);
                 return 'applied';
 
             case 'DELETE':

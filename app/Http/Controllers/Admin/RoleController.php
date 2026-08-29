@@ -104,11 +104,12 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Solo administradores pueden actualizar roles
-        if (!Auth::user()->isAdmin()) {
+        // Administradores o usuarios con permiso de edición de roles (ej. Psicóloga
+        // para configurar la visibilidad de la Secretaria) pueden modificar roles.
+        if (!Auth::user()->isAdmin() && !Auth::user()->hasPermission('roles.edit')) {
             return response()->json([
                 'success' => false,
-                'message' => 'Solo los administradores pueden modificar roles'
+                'message' => 'No tienes permiso para modificar roles'
             ], 403);
         }
 
@@ -232,6 +233,8 @@ class RoleController extends Controller
                     ['name' => 'Ver detalle de paciente', 'slug' => 'pacientes.show'],
                     ['name' => 'Editar paciente', 'slug' => 'pacientes.edit'],
                     ['name' => 'Eliminar paciente', 'slug' => 'pacientes.destroy'],
+                    ['name' => 'Ver pacientes públicos', 'slug' => 'pacientes.ver_publico'],
+                    ['name' => 'Ver pacientes privados', 'slug' => 'pacientes.ver_privado'],
                 ]
             ],
             // Módulo: Gestión de citas médicas

@@ -8,6 +8,7 @@ use App\Models\PacienteAdolescente;
 use App\Models\PacienteNino;
 use App\Models\Estado;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
@@ -29,6 +30,9 @@ class PacienteController extends Controller
             })
             ->when($request->filled('tipo'), function ($query) use ($request) {
                 return $query->where('tipo_paciente', $request->tipo);
+            })
+            ->when(count($this->tiposAtencionPermitidos()) < 2, function ($query) {
+                return $query->whereIn('tipo_atencion', $this->tiposAtencionPermitidos());
             })
             ->orderBy('created_at', 'desc')
             ->paginate(15);
@@ -63,6 +67,11 @@ class PacienteController extends Controller
             'prioridad' => 'required|in:baja,media,alta,urgencia',
             'tipo_atencion' => 'required|in:publico,privado',
         ]);
+
+        // Validar permiso de visibilidad sobre el tipo de atención elegido
+        if (!$this->puedeTipoAtencion($comunData['tipo_atencion'])) {
+            return back()->with('error', 'No tienes permiso para registrar pacientes de tipo "' . $comunData['tipo_atencion'] . '".')->withInput();
+        }
 
         // SEGUNDO: Validar según tipo (campos específicos de cada tabla)
         if ($tipo === 'adulto') {
@@ -120,6 +129,9 @@ class PacienteController extends Controller
 
    public function show(Paciente $paciente)
 {
+    // Bloquear si el rol no tiene permiso para ver este tipo de atención
+    abort_unless($this->puedeTipoAtencion($paciente->tipo_atencion), 403, 'No tienes permiso para ver pacientes de tipo "' . $paciente->tipo_atencion . '".');
+
     // Cargar relaciones básicas
     $paciente->load(['estado', 'citas', 'user', 'notas', 'sesiones.user']);
     
@@ -140,9 +152,11 @@ class PacienteController extends Controller
     return view('pacientes.show', compact('paciente'));
 }
 
-    public function edit(Paciente $paciente)
-    {
-        $estados = Estado::orderBy('tipo')->get();
+public function edit(Paciente $paciente)
+{
+    abort_unless($this->puedeTipoAtencion($paciente->tipo_atencion), 403, 'No tienes permiso para editar pacientes de tipo "' . $paciente->tipo_atencion . '".');
+
+    $estados = Estado::orderBy('tipo')->get();
 
         // Buscar detalle manualmente por si la relación polimórfica falla
         $detalle = null;
@@ -181,6 +195,11 @@ class PacienteController extends Controller
             'prioridad' => 'required|in:baja,media,alta,urgencia',
             'tipo_atencion' => 'required|in:publico,privado',
         ]);
+
+        // Bloquear edición si el rol no tiene permiso sobre el tipo actual o el nuevo
+        if (!$this->puedeTipoAtencion($paciente->tipo_atencion) || !$this->puedeTipoAtencion($comunData['tipo_atencion'])) {
+            return back()->with('error', 'No tienes permiso para editar pacientes de este tipo de atención.')->withInput();
+        }
 
         // Validar según tipo DESPUÉS
         if ($tipo === 'adulto') {
@@ -274,6 +293,39 @@ class PacienteController extends Controller
     // ==========================================
     // MÉTODOS PRIVADOS
     // ==========================================
+
+    /**
+     * Tipos de atención (público/privado) que el usuario autenticado puede ver.
+     * Se controlan con los permisos pacientes.ver_publico y pacientes.ver_privado.
+     *
+     * @return array<string>
+     */
+    private function tiposAtencionPermitidos(): array
+    {
+        $user = Auth::user();
+        $tipos = [];
+
+        if ($user->hasPermission('pacientes.ver_publico')) {
+            $tipos[] = 'publico';
+        }
+
+        if ($user->hasPermission('pacientes.ver_privado')) {
+            $tipos[] = 'privado';
+        }
+
+        return $tipos;
+    }
+
+    /**
+     * Indica si el usuario autenticado puede ver/editar un tipo de atención.
+     *
+     * @param string $tipo Tipo de atención: publico o privado
+     * @return bool
+     */
+    private function puedeTipoAtencion(string $tipo): bool
+    {
+        return in_array($tipo, $this->tiposAtencionPermitidos(), true);
+    }
 
     private function generarExpediente(): string
     {

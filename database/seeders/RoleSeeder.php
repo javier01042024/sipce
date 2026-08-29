@@ -19,6 +19,7 @@ class RoleSeeder extends Seeder
                     'dashboard',
                     'profile.edit', 'profile.update', 'profile.destroy',
                     'pacientes.index', 'pacientes.create', 'pacientes.show', 'pacientes.edit', 'pacientes.destroy',
+                    'pacientes.ver_publico', 'pacientes.ver_privado',
                     'citas.index', 'citas.create', 'citas.show', 'citas.edit', 'citas.destroy',
                     'diarios.index', 'diarios.create', 'diarios.show', 'diarios.edit', 'diarios.destroy',
                     'usuarios.index', 'usuarios.create', 'usuarios.show', 'usuarios.edit', 'usuarios.destroy', 'usuarios.toggle-status',
@@ -45,6 +46,7 @@ class RoleSeeder extends Seeder
                     'dashboard',
                     'profile.edit', 'profile.update', 'profile.destroy',
                     'pacientes.index', 'pacientes.create', 'pacientes.show', 'pacientes.edit', 'pacientes.destroy',
+                    'pacientes.ver_publico', 'pacientes.ver_privado',
                     'citas.index', 'citas.create', 'citas.show', 'citas.edit', 'citas.destroy',
                     'diarios.index', 'diarios.create', 'diarios.show', 'diarios.edit', 'diarios.destroy',
                     'planes.index', 'planes.create', 'planes.show', 'planes.edit', 'planes.destroy',
@@ -52,6 +54,7 @@ class RoleSeeder extends Seeder
                     'calendario.index',
                     'reportes.index', 'reportes.pacientes', 'reportes.citas', 'reportes.evolucion',
                     'notificaciones.index',
+                    'usuarios.index', 'roles.index', 'roles.show', 'roles.edit',
                 ]
             ]
         );
@@ -66,6 +69,7 @@ class RoleSeeder extends Seeder
                     'dashboard',
                     'profile.edit', 'profile.update', 'profile.destroy',
                     'pacientes.index', 'pacientes.create', 'pacientes.show', 'pacientes.edit',
+                    'pacientes.ver_publico', 'pacientes.ver_privado',
                     'citas.index', 'citas.create', 'citas.show', 'citas.edit',
                     'notificaciones.index',
                 ]
