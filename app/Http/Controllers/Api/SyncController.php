@@ -19,6 +19,7 @@ use App\Models\Notificacion;
 use App\Models\PlanTratamiento;
 use App\Models\PlanObjetivo;
 use App\Models\Estado;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -157,19 +158,31 @@ class SyncController extends Controller
         $records = [];
 
         foreach ($this->tablas as $tabla => $modelClass) {
-            $query = $modelClass::withTrashed();
+            // Algunas tablas no usan SoftDeletes (citas, diarios,
+            // notificaciones, plan_objetivos); no tienen deleted_at.
+            $usaSoftDeletes = in_array(SoftDeletes::class, class_uses_recursive($modelClass));
+
+            $query = $usaSoftDeletes
+                ? $modelClass::withTrashed()
+                : $modelClass::query();
 
             if ($lastSync) {
-                $query->where(function ($q) use ($lastSync) {
-                    $q->where('updated_at', '>', $lastSync)
-                      ->orWhere('deleted_at', '>', $lastSync);
-                });
+                $query->where('updated_at', '>', $lastSync);
+                if ($usaSoftDeletes) {
+                    $query->orWhere('deleted_at', '>', $lastSync);
+                }
             }
 
             $rows = $query->get();
 
             foreach ($rows as $row) {
-                $accion = $row->trashed() ? 'DELETE' : ($row->wasRecentlyCreated ? 'CREATE' : 'UPDATE');
+                if ($usaSoftDeletes) {
+                    $accion = $row->trashed()
+                        ? 'DELETE'
+                        : ($row->wasRecentlyCreated ? 'CREATE' : 'UPDATE');
+                } else {
+                    $accion = $row->wasRecentlyCreated ? 'CREATE' : 'UPDATE';
+                }
 
                 $records[] = [
                     'uuid' => $row->uuid ?? (string) Str::uuid(),
