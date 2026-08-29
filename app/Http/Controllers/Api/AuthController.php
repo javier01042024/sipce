@@ -70,7 +70,7 @@ class AuthController extends Controller
     private function usuarioConPermisos(User $user): array
     {
         $roles = $user->roles()
-            ->get(['id', 'name', 'slug'])
+            ->get(['roles.id', 'roles.name', 'roles.slug'])
             ->map(fn ($role) => [
                 'id' => $role->id,
                 'name' => $role->name,
