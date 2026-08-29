@@ -104,13 +104,12 @@ class SyncController extends Controller
             }
 
             // Actualizar estado de sincronización
-            SyncState::updateOrCreate(
-                ['device_id' => $deviceId, 'user_id' => $userId],
-                [
-                    'last_sync_at' => now(),
-                    'records_sent' => DB::raw('records_sent + ' . count($records)),
-                ]
+            $syncState = SyncState::firstOrNew(
+                ['device_id' => $deviceId, 'user_id' => $userId]
             );
+            $syncState->last_sync_at = now();
+            $syncState->records_sent = ($syncState->records_sent ?? 0) + count($records);
+            $syncState->save();
 
             DB::commit();
 
