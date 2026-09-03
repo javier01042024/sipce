@@ -1,3 +1,9 @@
+<button class="mobile-menu-btn" onclick="openMobileSidebar()" aria-label="Abrir menú">
+    <i class="fas fa-bars"></i>
+</button>
+
+<div id="sidebarOverlay" class="sidebar-overlay" onclick="closeMobileSidebar()"></div>
+
 <div id="sidebar" class="sidebar">
 
     <!-- LOGO -->
@@ -644,6 +650,76 @@
         justify-content: center;
         padding: 10px;
     }
+
+    /* ============================================
+       RESPONSIVE MÓVILES / TABLETS PORTRAIT
+       ============================================ */
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(2, 6, 23, 0.65);
+        backdrop-filter: blur(3px);
+        z-index: 999;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+        .sidebar {
+            transform: translateX(-100%);
+            width: 280px;
+            z-index: 1001;
+        }
+
+        .sidebar.mobile-open {
+            transform: translateX(0);
+            box-shadow: 8px 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .main-content,
+        .main-content.sidebar-collapsed {
+            margin-left: 0;
+            padding: 14px;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Botón flotante para abrir el menú en móvil */
+        .mobile-menu-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            font-size: 1.1rem;
+            position: fixed;
+            top: 14px;
+            left: 14px;
+            z-index: 998;
+            transition: all 0.25s ease;
+        }
+
+        .mobile-menu-btn:hover {
+            transform: translateY(-2px);
+        }
+    }
+
+    /* Ocultar botón móvil en pantallas grandes */
+    @media (min-width: 769px) {
+        .mobile-menu-btn {
+            display: none;
+        }
+    }
 </style>
 
 <script>
@@ -655,6 +731,29 @@
             mainContent.classList.toggle('sidebar-collapsed');
         }
         localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+    }
+
+    function openMobileSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        sidebar.classList.remove('collapsed');
+        localStorage.removeItem('sidebarCollapsed');
+        sidebar.classList.add('mobile-open');
+        if (overlay) overlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeMobileSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        sidebar.classList.remove('mobile-open');
+        if (overlay) overlay.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+
+    // Cerrar sidebar móvil al navegar (se re-renderiza la página completa)
+    function handleMobileNav() {
+        if (window.innerWidth <= 768) closeMobileSidebar();
     }
 
     function toggleSubmenu(element) {

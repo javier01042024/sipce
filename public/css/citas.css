@@ -367,4 +367,26 @@
         gap: 15px;
         text-align: center;
     }
+
+    .citas-header > div:last-child {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .view-toggle {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .view-toggle .toggle-btn {
+        flex: 1;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 400px) {
+    .view-toggle .toggle-btn {
+        font-size: 12px;
+        padding: 8px 10px;
+    }
 }
