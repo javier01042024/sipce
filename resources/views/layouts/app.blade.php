@@ -7,6 +7,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    @php
+        $themeColor = optional(auth()->user())->theme_color ?: '#667eea';
+        $themeDark = (bool) (optional(auth()->user())->dark_mode ?? false);
+        // Oscurecer el color primario ~12% para el degradado
+        $darken = function ($hex) {
+            $hex = ltrim($hex, '#');
+            if (strlen($hex) !== 6) { return $hex; }
+            $rgb = array_map(function ($c) {
+                return max(0, hexdec($c) - (int)(hexdec($c) * 0.12));
+            }, str_split($hex, 2));
+            return sprintf('#%02x%02x%02x', $rgb[0], $rgb[1], $rgb[2]);
+        };
+        $themeDarkColor = $darken($themeColor);
+    @endphp
+
+    <style>
+        :root {
+            --sipce-primary: {{ $themeColor }};
+            --sipce-primary-dark: {{ $themeDarkColor }};
+        }
+    </style>
+    <link rel="stylesheet" href="{{ asset('css/theme-overrides.css') }}">
+
     <!-- Font Awesome -->
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -19,7 +42,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
+<body class="{{ $themeDark ? 'theme-dark' : '' }}">
 
     <!-- Sidebar -->
     @include('layouts.navigation')

@@ -7,6 +7,7 @@ use App\Http\Controllers\BackupController;
 use App\Http\Controllers\BitacoraController;
 use App\Http\Controllers\CitaController;
 use App\Http\Controllers\Configuracion\EstadoController;
+use App\Http\Controllers\Configuracion\AparienciaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DiarioController;
 use App\Http\Controllers\NotaController;
@@ -272,6 +273,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/configuracion/bitacora/exportar', [BitacoraController::class, 'exportar'])
         ->middleware('permission:bitacora.index')
         ->name('configuracion.bitacora.exportar');
+
+    // Apariencia (colores y modo nocturno) - preferencia personal de cada usuario
+    Route::prefix('configuracion/apariencia')
+        ->name('configuracion.apariencia.')
+        ->group(function () {
+            Route::get('/', [AparienciaController::class, 'index'])->name('index');
+            Route::put('/', [AparienciaController::class, 'update'])->name('update');
+        });
 
     // --------------------------------------------------
     // PLANES DE TRATAMIENTO

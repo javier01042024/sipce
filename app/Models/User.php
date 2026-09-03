@@ -53,6 +53,8 @@ class User extends Authenticatable
         'password',
         'email_verified_at',
         'last_login_at',
+        'theme_color',
+        'dark_mode',
     ];
 
     /**
@@ -76,6 +78,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'last_login_at' => 'datetime',
             'password' => 'hashed',
+            'dark_mode' => 'boolean',
         ];
     }
 

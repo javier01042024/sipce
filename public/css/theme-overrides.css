@@ -1,0 +1,194 @@
+/* =========================================
+   TEMA DINÁMICO - COLOR PRINCIPAL + MODO NOCTURNO
+   Se inyecta en <head> por layouts/app.blade.php
+   ========================================= */
+
+/* Variables del tema (definidas dinámicamente en head por layouts/app.blade.php) */
+
+/* -----------------------------------------
+   RECOLOR: color principal del sistema
+   ----------------------------------------- */
+.page-header {
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%) !important;
+}
+
+/* Cabeceras de cards de tabla */
+.sipce-table-header {
+    background: linear-gradient(135deg, var(--sipce-primary-dark) 0%, #2d3748 100%) !important;
+}
+
+/* Botones primarios reutilizados */
+.btn-nuevo,
+.btn-backup,
+.btn-volver,
+.btn-save,
+.btn-primary,
+.btn-filter,
+.btn-success,
+.btn-export {
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%) !important;
+    border-color: var(--sipce-primary) !important;
+}
+.btn-nuevo { color: #ffffff !important; }
+
+/* Links y acentos de color principal */
+a,
+.link,
+.text-primary {
+    color: var(--sipce-primary) !important;
+}
+
+/* Iconos de stats y avatares */
+.stat-icon,
+.paciente-avatar,
+.paciente-avatar-small {
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%) !important;
+}
+
+/* Hover de badges/sugerencias */
+.suggestion-badge:hover,
+.emocion-option:hover,
+.emocion-option.selected {
+    border-color: var(--sipce-primary) !important;
+}
+.suggestion-badge:hover {
+    background: var(--sipce-primary) !important;
+}
+.emocion-option.selected {
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%) !important;
+    color: #fff;
+}
+
+/* Paginación DataTables */
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.pagination .page-item.active .page-link {
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%) !important;
+    border-color: var(--sipce-primary) !important;
+    color: #fff !important;
+}
+
+/* Sidebar activo */
+.nav-item.active,
+.submenu-item.active {
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%) !important;
+}
+
+/* Switch modo nocturno y tema */
+.switch input:checked + .slider {
+    background: var(--sipce-primary) !important;
+}
+
+/* -----------------------------------------
+   MODO NOCTURNO (body.theme-dark)
+   ----------------------------------------- */
+body.theme-dark {
+    background: #0f172a !important;
+    color: #e2e8f0 !important;
+}
+
+body.theme-dark .main-content {
+    background: #0f172a !important;
+}
+
+body.theme-dark .sidebar {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+body.theme-dark .sidebar a,
+body.theme-dark .nav-item,
+body.theme-dark .submenu-item {
+    color: #cbd5e1 !important;
+}
+body.theme-dark .sidebar-bottom a {
+    color: #cbd5e1 !important;
+}
+
+/* Cards y contenedores */
+body.theme-dark .apariencia-card,
+body.theme-dark .form-card,
+body.theme-dark .card,
+body.theme-dark .sipce-table-card,
+body.theme-dark .card-header-custom,
+body.theme-dark .diario-card,
+body.theme-dark .reportes-code {
+    background: #1e293b !important;
+    color: #e2e8f0 !important;
+    border-color: #334155 !important;
+}
+
+body.theme-dark .cita-card {
+    background: #1e293b !important;
+    color: #e2e8f0 !important;
+}
+
+body.theme-dark h1, body.theme-dark h2, body.theme-dark h3,
+body.theme-dark h4, body.theme-dark .card-title,
+body.theme-dark .sipce-table-header h3,
+body.theme-dark .page-header h1 {
+    color: #f1f5f9 !important;
+}
+
+/* Tablas */
+body.theme-dark .sipce-table thead,
+body.theme-dark .dataTables_wrapper thead {
+    background: #334155 !important;
+}
+body.theme-dark .sipce-table th,
+body.theme-dark .sipce-table td,
+body.theme-dark #pacientesTable thead th,
+body.theme-dark #pacientesTable tbody td {
+    color: #e2e8f0 !important;
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+body.theme-dark .sipce-table tbody tr:hover,
+body.theme-dark #pacientesTable tbody tr:hover {
+    background: #334155 !important;
+}
+
+/* Inputs y textareas */
+body.theme-dark input,
+body.theme-dark select,
+body.theme-dark textarea {
+    background: #0f172a !important;
+    color: #e2e8f0 !important;
+    border-color: #334155 !important;
+}
+
+/* Badges suaves y fondos */
+body.theme-dark .suggestion-badge,
+body.theme-dark .quick-suggestions .suggestion-badge {
+    background: #334155 !important;
+    color: #cbd5e1 !important;
+    border-color: #475569 !important;
+}
+body.theme-dark .stat-info h4,
+body.theme-dark .stat-card {
+    background: #1e293b !important;
+    color: #e2e8f0 !important;
+}
+body.theme-dark .stat-info .number {
+    color: #f1f5f9 !important;
+}
+
+/* Filtros y footers */
+body.theme-dark .export-filters,
+body.theme-dark .filtros-card,
+body.theme-dark .filtro-select,
+body.theme-dark .filtro-input {
+    background: #1e293b !important;
+    color: #e2e8f0 !important;
+}
+
+/* Usuario session info */
+body.theme-dark .usuario-session-info {
+    background: #1e293b !important;
+    color: #e2e8f0 !important;
+}
+
+/* Texto secundario */
+body.theme-dark .card-subtitle,
+body.theme-dark .sipce-cell-muted,
+body.theme-dark .sipce-cell-sub {
+    color: #94a3b8 !important;
+}

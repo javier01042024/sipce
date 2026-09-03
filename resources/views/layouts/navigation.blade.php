@@ -73,12 +73,8 @@
         </a>
         @endif
 
-        {{-- CONFIGURACIÓN CON SUBMENÚ --}}
-        @if(auth()->user()->hasPermission('usuarios.index') ||
-        auth()->user()->hasPermission('roles.index') ||
-        auth()->user()->hasPermission('respaldos.index') ||
-        auth()->user()->hasPermission('estados.index') ||
-        auth()->user()->hasPermission('bitacora.index'))
+        {{-- CONFIGURACIÓN CON SUBMENÚ (visible para todos: incluye Apariencia personal) --}}
+        @if(auth()->user())
         <div class="nav-item has-submenu" onclick="toggleSubmenu(this)">
             <i class="fas fa-cog"></i>
             <span>Configuración</span>
@@ -86,6 +82,13 @@
         </div>
 
         <div class="submenu">
+            {{-- Apariencia (personal, disponible para todos) --}}
+            <a href="{{ route('configuracion.apariencia.index') }}"
+                class="submenu-item {{ request()->routeIs('configuracion.apariencia.*') ? 'active' : '' }}">
+                <i class="fas fa-palette"></i>
+                <span>Apariencia</span>
+            </a>
+
             {{-- Usuarios y Roles --}}
             @if(auth()->user()->hasPermission('usuarios.index') || auth()->user()->hasPermission('roles.index'))
             <a href="{{ route('usuarios.index') }}"

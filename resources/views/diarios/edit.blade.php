@@ -112,19 +112,22 @@
                         <span id="charCount">{{ mb_strlen(old('contenido', $diario->contenido)) }}</span> / 1000 caracteres
                     </div>
 
-                    <!-- SUGERENCIAS RÁPIDAS -->
+                    <!-- GUÍA PARA COMENZAR A ESCRIBIR -->
                     <div class="quick-suggestions">
-                        <span class="suggestion-badge" onclick="agregarSugerencia('Hoy me he sentido ')">
-                            <i class="far fa-smile"></i> Emociones
+                        <span class="suggestion-badge" onclick="agregarSugerencia('1. Pensamiento: ')">
+                            <i class="fas fa-brain"></i> 1. Pensamiento
                         </span>
-                        <span class="suggestion-badge" onclick="agregarSugerencia('Durante el día trabajé en ')">
-                            <i class="fas fa-comments"></i> Actividades
+                        <span class="suggestion-badge" onclick="agregarSugerencia('2. Situación: ')">
+                            <i class="fas fa-map-pin"></i> 2. Situación
                         </span>
-                        <span class="suggestion-badge" onclick="agregarSugerencia('He notado mejoría en ')">
-                            <i class="fas fa-chart-line"></i> Progreso
+                        <span class="suggestion-badge" onclick="agregarSugerencia('3. Emoción: ')">
+                            <i class="fas fa-smile"></i> 3. Emoción
                         </span>
-                        <span class="suggestion-badge" onclick="agregarSugerencia('Me preocupa ')">
-                            <i class="fas fa-heart"></i> Preocupaciones
+                        <span class="suggestion-badge" onclick="agregarSugerencia('4. Conducta: ')">
+                            <i class="fas fa-running"></i> 4. Conducta
+                        </span>
+                        <span class="suggestion-badge" onclick="agregarSugerencia('5. Del 0 al 10, ¿cómo me sentí? ')">
+                            <i class="fas fa-tachometer-alt"></i> 5. Del 0 al 10 me sentí
                         </span>
                     </div>
                 </div>

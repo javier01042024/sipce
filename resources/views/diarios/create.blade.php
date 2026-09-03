@@ -102,17 +102,45 @@
                     </label>
                     
                     <div class="emocion-selector">
-                        <div class="emocion-option" onclick="selectEmocion(this, 'positivo', '😊 Me siento bien, con energía positiva')">
+                        <div class="emocion-option" onclick="selectEmocion(this, 'positivo', '😊 Me siento feliz, con energía positiva')">
                             <span class="emoji">😊</span>
-                            <span class="label">Positivo</span>
+                            <span class="label">Feliz</span>
+                        </div>
+                        <div class="emocion-option" onclick="selectEmocion(this, 'positivo', '😄 Me siento muy bien, alegre y contento')">
+                            <span class="emoji">😄</span>
+                            <span class="label">Alegre</span>
+                        </div>
+                        <div class="emocion-option" onclick="selectEmocion(this, 'positivo', '😌 Me siento tranquilo y en calma')">
+                            <span class="emoji">😌</span>
+                            <span class="label">Tranquilo</span>
                         </div>
                         <div class="emocion-option" onclick="selectEmocion(this, 'neutral', '😐 Me siento estable, sin cambios significativos')">
                             <span class="emoji">😐</span>
                             <span class="label">Neutral</span>
                         </div>
-                        <div class="emocion-option" onclick="selectEmocion(this, 'negativo', '😔 Me siento mal, con malestar emocional')">
-                            <span class="emoji">😔</span>
-                            <span class="label">Negativo</span>
+                        <div class="emocion-option" onclick="selectEmocion(this, 'neutral', '😕 Me siento confundido, sin saber qué pensar')">
+                            <span class="emoji">😕</span>
+                            <span class="label">Confundido</span>
+                        </div>
+                        <div class="emocion-option" onclick="selectEmocion(this, 'negativo', '😢 Me siento triste y desanimado')">
+                            <span class="emoji">😢</span>
+                            <span class="label">Triste</span>
+                        </div>
+                        <div class="emocion-option" onclick="selectEmocion(this, 'negativo', '😠 Me siento enojado o irritado')">
+                            <span class="emoji">😠</span>
+                            <span class="label">Enojado</span>
+                        </div>
+                        <div class="emocion-option" onclick="selectEmocion(this, 'negativo', '😰 Me siento ansioso o nervioso')">
+                            <span class="emoji">😰</span>
+                            <span class="label">Ansioso</span>
+                        </div>
+                        <div class="emocion-option" onclick="selectEmocion(this, 'negativo', '😨 Me siento asustado o con miedo')">
+                            <span class="emoji">😨</span>
+                            <span class="label">Asustado</span>
+                        </div>
+                        <div class="emocion-option" onclick="selectEmocion(this, 'negativo', '😫 Me siento cansado o agotado')">
+                            <span class="emoji">😫</span>
+                            <span class="label">Cansado</span>
                         </div>
                     </div>
                 </div>
@@ -139,19 +167,22 @@
                         <span id="charCount">0</span> / 1000 caracteres
                     </div>
 
-                    <!-- SUGERENCIAS RÁPIDAS -->
+                    <!-- GUÍA PARA COMENZAR A ESCRIBIR -->
                     <div class="quick-suggestions">
-                        <span class="suggestion-badge" onclick="agregarSugerencia('Hoy me he sentido ')">
-                            <i class="far fa-smile"></i> Emociones
+                        <span class="suggestion-badge" onclick="agregarSugerencia('1. Pensamiento: ')">
+                            <i class="fas fa-brain"></i> 1. Pensamiento
                         </span>
-                        <span class="suggestion-badge" onclick="agregarSugerencia('Durante el día trabajé en ')">
-                            <i class="fas fa-comments"></i> Actividades
+                        <span class="suggestion-badge" onclick="agregarSugerencia('2. Situación: ')">
+                            <i class="fas fa-map-pin"></i> 2. Situación
                         </span>
-                        <span class="suggestion-badge" onclick="agregarSugerencia('He notado mejoría en ')">
-                            <i class="fas fa-chart-line"></i> Progreso
+                        <span class="suggestion-badge" onclick="agregarSugerencia('3. Emoción: ')">
+                            <i class="fas fa-smile"></i> 3. Emoción
                         </span>
-                        <span class="suggestion-badge" onclick="agregarSugerencia('Me preocupa ')">
-                            <i class="fas fa-heart"></i> Preocupaciones
+                        <span class="suggestion-badge" onclick="agregarSugerencia('4. Conducta: ')">
+                            <i class="fas fa-running"></i> 4. Conducta
+                        </span>
+                        <span class="suggestion-badge" onclick="agregarSugerencia('5. Del 0 al 10, ¿cómo me sentí? ')">
+                            <i class="fas fa-tachometer-alt"></i> 5. Del 0 al 10 me sentí
                         </span>
                     </div>
                 </div>
