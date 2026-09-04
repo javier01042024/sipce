@@ -1,6 +1,6 @@
-<div id="modalEstadoInline" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);z-index:9999999;align-items:center;justify-content:center;backdrop-filter:blur(4px);">
+﻿<div id="modalEstadoInline" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);z-index:9999999;align-items:center;justify-content:center;backdrop-filter:blur(4px);">
     <div style="background:white;border-radius:16px;max-width:400px;width:95%;box-shadow:0 25px 60px rgba(0,0,0,0.3);overflow:hidden;">
-        <div style="background:linear-gradient(135deg,#667eea,#764ba2);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;">
+        <div style="background:linear-gradient(135deg,var(--sipce-primary),var(--sipce-primary-dark));padding:16px 20px;display:flex;justify-content:space-between;align-items:center;">
             <h3 style="margin:0;color:white;font-size:16px;"><i class="fas fa-plus-circle"></i> Nuevo Estado</h3>
             <button type="button" onclick="cerrarModalEstado()" style="background:none;border:none;color:white;font-size:22px;cursor:pointer;line-height:1;">&times;</button>
         </div>
@@ -10,8 +10,8 @@
                 <input type="text" id="estadoTipo" placeholder="Ej: Activo, Inactivo, Seguimiento..." style="width:100%;padding:10px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;">
             </div>
             <div style="margin-bottom:12px;">
-                <label style="display:block;font-weight:600;color:#475569;font-size:13px;margin-bottom:4px;">Descripción *</label>
-                <input type="text" id="estadoDescripcion" placeholder="Breve descripción del estado" style="width:100%;padding:10px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;">
+                <label style="display:block;font-weight:600;color:#475569;font-size:13px;margin-bottom:4px;">DescripciÃ³n *</label>
+                <input type="text" id="estadoDescripcion" placeholder="Breve descripciÃ³n del estado" style="width:100%;padding:10px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;">
             </div>
             <div style="margin-bottom:16px;">
                 <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:600;color:#475569;font-size:13px;">
@@ -21,7 +21,7 @@
             </div>
             <div style="display:flex;gap:10px;justify-content:flex-end;">
                 <button type="button" onclick="cerrarModalEstado()" style="padding:8px 18px;background:#f1f5f9;color:#64748b;border:none;border-radius:8px;font-weight:600;cursor:pointer;font-size:13px;">Cancelar</button>
-                <button type="button" id="btnGuardarEstado" onclick="guardarEstadoInline()" style="padding:8px 18px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;font-size:13px;">
+                <button type="button" id="btnGuardarEstado" onclick="guardarEstadoInline()" style="padding:8px 18px;background:linear-gradient(135deg,var(--sipce-primary),var(--sipce-primary-dark));color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;font-size:13px;">
                     <i class="fas fa-save"></i> Guardar
                 </button>
             </div>
@@ -50,7 +50,7 @@ function guardarEstadoInline() {
     var btn = document.getElementById('btnGuardarEstado');
 
     if (!tipo || !desc) {
-        errDiv.textContent = 'Tipo y descripción son obligatorios.';
+        errDiv.textContent = 'Tipo y descripciÃ³n son obligatorios.';
         errDiv.style.display = 'block';
         return;
     }
@@ -99,7 +99,7 @@ function guardarEstadoInline() {
         btn.innerHTML = '<i class="fas fa-save"></i> Guardar';
     })
     .catch(function() {
-        errDiv.textContent = 'Error de conexión.';
+        errDiv.textContent = 'Error de conexiÃ³n.';
         errDiv.style.display = 'block';
         btn.disabled = false;
         btn.innerHTML = '<i class="fas fa-save"></i> Guardar';

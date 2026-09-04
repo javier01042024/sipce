@@ -1,4 +1,4 @@
-<div class="sipce-table-card">
+﻿<div class="sipce-table-card">
     <div class="sipce-table-header">
         <div>
             <h3>
@@ -23,7 +23,7 @@
                     <th>Rol</th>
                     <th>Paciente Vinculado</th>
                     <th>Estado</th>
-                    <th>Último Acceso</th>
+                    <th>Ãšltimo Acceso</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -49,7 +49,7 @@
                                 $roleIcon = $role->icon ?? 'user';
                                 $palette = [
                                     'admin' => ['#f39c12','#f1c40f'],
-                                    'user' => ['#667eea','#764ba2'],
+                                    'user' => ['var(--sipce-primary)','var(--sipce-primary-dark)'],
                                     'medico' => ['#3498db','#2ecc71'],
                                     'secretaria' => ['#11998e','#38ef7d'],
                                     'moderator' => ['#6366f1','#818cf8'],
@@ -85,13 +85,13 @@
                             @endphp
                             <div style="display: flex; flex-direction: column;">
                                 <span class="sipce-cell-main">
-                                    <i class="fas fa-link" style="color: #667eea; margin-right: 4px;"></i>
+                                    <i class="fas fa-link" style="color: var(--sipce-primary); margin-right: 4px;"></i>
                                     {{ $nombrePaciente }}
                                 </span>
                                 <span class="sipce-cell-sub">Exp: {{ $user->paciente->numero_expediente }}</span>
                             </div>
                         @else
-                            <span class="sipce-cell-muted">—</span>
+                            <span class="sipce-cell-muted">â€”</span>
                         @endif
                     </td>
                     <td>

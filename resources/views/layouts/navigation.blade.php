@@ -1,4 +1,4 @@
-<button class="mobile-menu-btn" onclick="openMobileSidebar()" aria-label="Abrir menú">
+﻿<button class="mobile-menu-btn" onclick="openMobileSidebar()" aria-label="Abrir menÃº">
     <i class="fas fa-bars"></i>
 </button>
 
@@ -73,11 +73,11 @@
         </a>
         @endif
 
-        {{-- CONFIGURACIÓN CON SUBMENÚ (visible para todos: incluye Apariencia personal) --}}
+        {{-- CONFIGURACIÃ“N CON SUBMENÃš (visible para todos: incluye Apariencia personal) --}}
         @if(auth()->user())
         <div class="nav-item has-submenu" onclick="toggleSubmenu(this)">
             <i class="fas fa-cog"></i>
-            <span>Configuración</span>
+            <span>ConfiguraciÃ³n</span>
             <i class="fas fa-chevron-down submenu-arrow"></i>
         </div>
 
@@ -115,12 +115,12 @@
             </a>
             @endif
 
-            {{-- Bitácora --}}
+            {{-- BitÃ¡cora --}}
             @if(auth()->user()->hasPermission('bitacora.index'))
             <a href="{{ route('configuracion.bitacora.index') }}"
                 class="submenu-item {{ request()->routeIs('configuracion.bitacora.*') ? 'active' : '' }}">
                 <i class="fas fa-history"></i>
-                <span>Bitácora</span>
+                <span>BitÃ¡cora</span>
             </a>
             @endif
         </div>
@@ -140,27 +140,27 @@
             @endif
         </a>
 
-        <div class="wifi-status" id="wifiStatus" title="Verificando conexión...">
+        <div class="wifi-status" id="wifiStatus" title="Verificando conexiÃ³n...">
             <i class="fas fa-wifi" id="wifiIcon"></i>
             <span id="wifiLabel">Verificando...</span>
         </div>
 
         <button onclick="openLogoutModal()" class="nav-item logout">
             <i class="fas fa-sign-out-alt"></i>
-            <span>Cerrar sesión</span>
+            <span>Cerrar sesiÃ³n</span>
         </button>
     </div>
 
 </div>
 
-<!-- MODAL DE CONFIRMACIÓN DE CIERRE DE SESIÓN -->
+<!-- MODAL DE CONFIRMACIÃ“N DE CIERRE DE SESIÃ“N -->
 <div id="logoutModal" class="logout-modal-overlay">
     <div class="logout-modal-box">
         <div class="logout-modal-icon">
             <i class="fas fa-sign-out-alt"></i>
         </div>
-        <h3>Cerrar sesión</h3>
-        <p>¿Estás seguro que deseas salir del sistema?</p>
+        <h3>Cerrar sesiÃ³n</h3>
+        <p>Â¿EstÃ¡s seguro que deseas salir del sistema?</p>
         <div class="logout-modal-actions">
             <button class="logout-btn logout-btn-ghost" onclick="closeLogoutModal()">
                 Cancelar
@@ -168,7 +168,7 @@
             <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                 @csrf
                 <button type="submit" class="logout-btn logout-btn-danger">
-                    Cerrar sesión
+                    Cerrar sesiÃ³n
                 </button>
             </form>
         </div>
@@ -219,7 +219,7 @@
     }
 
     .sidebar::-webkit-scrollbar-thumb {
-        background: rgba(79, 70, 229, 0.5);
+        background: rgba(var(--sipce-primary-rgb), 0.5);
         border-radius: 4px;
     }
 
@@ -246,12 +246,12 @@
         width: 36px;
         height: 36px;
         min-width: 36px;
-        background: linear-gradient(145deg, #4f46e5, #7c3aed);
+        background: linear-gradient(145deg, var(--sipce-primary), var(--sipce-primary-dark));
         border-radius: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        box-shadow: 0 4px 12px rgba(var(--sipce-primary-rgb), 0.3);
     }
 
     .brand-icon i {
@@ -329,14 +329,14 @@
     }
 
     .nav-item:hover {
-        background: rgba(79, 70, 229, 0.15);
+        background: rgba(var(--sipce-primary-rgb), 0.15);
         color: white;
     }
 
     .nav-item.active {
-        background: linear-gradient(90deg, #4f46e5, #7c3aed);
+        background: linear-gradient(90deg, var(--sipce-primary), var(--sipce-primary-dark));
         color: white;
-        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+        box-shadow: 0 4px 12px rgba(var(--sipce-primary-rgb), 0.4);
     }
 
     /* FOOTER */
@@ -397,7 +397,7 @@
         gap: 2px;
         margin-left: 20px;
         padding-left: 12px;
-        border-left: 2px solid rgba(79, 70, 229, 0.3);
+        border-left: 2px solid rgba(var(--sipce-primary-rgb), 0.3);
     }
 
     .submenu.show {
@@ -423,17 +423,17 @@
     }
 
     .submenu-item:hover {
-        background: rgba(79, 70, 229, 0.15);
+        background: rgba(var(--sipce-primary-rgb), 0.15);
         color: white;
     }
 
     .submenu-item.active {
-        background: linear-gradient(90deg, #4f46e5, #7c3aed);
+        background: linear-gradient(90deg, var(--sipce-primary), var(--sipce-primary-dark));
         color: white;
-        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        box-shadow: 0 4px 12px rgba(var(--sipce-primary-rgb), 0.3);
     }
 
-    /* SIDEBAR COLAPSADA - VERSIÓN 1: Apilado vertical */
+    /* SIDEBAR COLAPSADA - VERSIÃ“N 1: Apilado vertical */
     .sidebar.collapsed {
         width: 80px;
     }
@@ -534,7 +534,7 @@
     .logout-modal-icon {
         width: 60px;
         height: 60px;
-        background: linear-gradient(145deg, #4f46e5, #7c3aed);
+        background: linear-gradient(145deg, var(--sipce-primary), var(--sipce-primary-dark));
         border-radius: 30px;
         display: flex;
         align-items: center;
@@ -635,7 +635,7 @@
         text-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
     }
 
-    /* Gris: sin conexión de red */
+    /* Gris: sin conexiÃ³n de red */
     .wifi-status.disconnected {
         color: #64748b;
     }
@@ -655,7 +655,7 @@
     }
 
     /* ============================================
-       RESPONSIVE MÓVILES / TABLETS PORTRAIT
+       RESPONSIVE MÃ“VILES / TABLETS PORTRAIT
        ============================================ */
     .sidebar-overlay {
         display: none;
@@ -691,7 +691,7 @@
             opacity: 1;
         }
 
-        /* Botón flotante para abrir el menú en móvil */
+        /* BotÃ³n flotante para abrir el menÃº en mÃ³vil */
         .mobile-menu-btn {
             display: inline-flex;
             align-items: center;
@@ -699,11 +699,11 @@
             width: 42px;
             height: 42px;
             border-radius: 12px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
             color: white;
             border: none;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 12px rgba(var(--sipce-primary-rgb), 0.4);
             font-size: 1.1rem;
             position: fixed;
             top: 14px;
@@ -717,7 +717,7 @@
         }
     }
 
-    /* Ocultar botón móvil en pantallas grandes */
+    /* Ocultar botÃ³n mÃ³vil en pantallas grandes */
     @media (min-width: 769px) {
         .mobile-menu-btn {
             display: none;
@@ -754,7 +754,7 @@
         document.body.style.overflow = '';
     }
 
-    // Cerrar sidebar móvil al navegar (se re-renderiza la página completa)
+    // Cerrar sidebar mÃ³vil al navegar (se re-renderiza la pÃ¡gina completa)
     function handleMobileNav() {
         if (window.innerWidth <= 768) closeMobileSidebar();
     }
@@ -795,7 +795,7 @@
             });
         }
 
-        // Abrir submenú si hay una ruta activa dentro
+        // Abrir submenÃº si hay una ruta activa dentro
         const activeSubmenuItem = document.querySelector('.submenu-item.active');
         if (activeSubmenuItem) {
             const submenu = activeSubmenuItem.closest('.submenu');
@@ -815,7 +815,7 @@
     });
 
     // =============================================
-    // INDICADOR DE CONEXIÓN WiFi
+    // INDICADOR DE CONEXIÃ“N WiFi
     // =============================================
     (function() {
         const icon = document.getElementById('wifiIcon');
@@ -830,7 +830,7 @@
             status.className = 'wifi-status online';
             icon.className = 'fas fa-wifi';
             label.textContent = 'Conectado';
-            status.title = 'Conexión estable';
+            status.title = 'ConexiÃ³n estable';
         }
 
         function setOffline() {
@@ -843,8 +843,8 @@
         function setDisconnected() {
             status.className = 'wifi-status disconnected';
             icon.className = 'fas fa-wifi';
-            label.textContent = 'Sin conexión';
-            status.title = 'No hay conexión de red';
+            label.textContent = 'Sin conexiÃ³n';
+            status.title = 'No hay conexiÃ³n de red';
         }
 
         async function checkConnection() {
@@ -871,7 +871,7 @@
                     setOffline();
                 }
             } catch (e) {
-                // Fetch falló = hay red local pero no internet/servidor
+                // Fetch fallÃ³ = hay red local pero no internet/servidor
                 setOffline();
             }
         }

@@ -54,6 +54,7 @@ class User extends Authenticatable
         'email_verified_at',
         'last_login_at',
         'theme_color',
+        'theme_color_dark',
         'dark_mode',
     ];
 

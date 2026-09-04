@@ -1,8 +1,8 @@
-@extends('layouts.paciente')
+﻿@extends('layouts.paciente')
 
 @section('content')
 <div style="max-width: 1000px; margin: 0 auto;">
-    <div class="page-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div class="page-header" style="background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);">
         <div class="header-content">
             <h1><i class="fas fa-calendar-alt me-2"></i> Mis Citas</h1>
             <p>Consulta todas tus citas programadas</p>
@@ -36,7 +36,7 @@
                             @endphp
                             <span class="sipce-badge {{ $badgeClass }}">{{ $cita->estado_texto }}</span>
                         </td>
-                        <td>{{ $cita->objetivo ? Str::limit($cita->objetivo, 60) : '—' }}</td>
+                        <td>{{ $cita->objetivo ? Str::limit($cita->objetivo, 60) : 'â€”' }}</td>
                     </tr>
                     @empty
                     <tr>
@@ -44,7 +44,7 @@
                             <div class="sipce-empty">
                                 <i class="fas fa-calendar-times sipce-empty-icon"></i>
                                 <p class="sipce-empty-title">No tienes citas registradas</p>
-                                <p class="sipce-empty-text">Tus próximas citas aparecerán aquí</p>
+                                <p class="sipce-empty-text">Tus prÃ³ximas citas aparecerÃ¡n aquÃ­</p>
                             </div>
                         </td>
                     </tr>

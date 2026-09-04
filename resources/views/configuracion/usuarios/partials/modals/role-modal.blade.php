@@ -1,4 +1,4 @@
-<div class="modal-overlay" id="roleModal">
+﻿<div class="modal-overlay" id="roleModal">
     <div class="modal-content modal-content-wide">
         <div class="modal-header">
             <h2 id="roleModalTitle">Gestionar Roles</h2>
@@ -24,7 +24,7 @@
                     <i class="fas fa-tag me-2"></i>Nombre del Rol
                 </label>
                 <input type="text" class="form-control" id="roleName" name="name" required 
-                       placeholder="Ej: Médico, Secretaria">
+                       placeholder="Ej: MÃ©dico, Secretaria">
             </div>
             
             <div class="form-group">
@@ -33,15 +33,15 @@
                 </label>
                 <input type="text" class="form-control" id="roleSlug" name="slug" required 
                        placeholder="Ej: medico, secretaria">
-                <small class="text-muted">Solo minúsculas, números y guiones</small>
+                <small class="text-muted">Solo minÃºsculas, nÃºmeros y guiones</small>
             </div>
             
             <div class="form-group">
                 <label for="roleDescription">
-                    <i class="fas fa-info-circle me-2"></i>Descripción
+                    <i class="fas fa-info-circle me-2"></i>DescripciÃ³n
                 </label>
                 <textarea class="form-control" id="roleDescription" name="description" rows="2" 
-                          placeholder="Descripción del rol"></textarea>
+                          placeholder="DescripciÃ³n del rol"></textarea>
             </div>
             
             <div class="form-group">
@@ -79,7 +79,7 @@
 
 <style>
     .perm-count-badge {
-        background: #667eea;
+        background: var(--sipce-primary);
         color: white;
         font-size: 11px;
         padding: 2px 8px;
@@ -172,7 +172,7 @@
     .permission-checkbox input[type="checkbox"] {
         width: 16px;
         height: 16px;
-        accent-color: #667eea;
+        accent-color: var(--sipce-primary);
         cursor: pointer;
     }
     .permission-checkbox.hidden {
@@ -196,7 +196,7 @@
     .perm-group-toggle input[type="checkbox"] {
         width: 16px;
         height: 16px;
-        accent-color: #667eea;
+        accent-color: var(--sipce-primary);
         cursor: pointer;
     }
 </style>

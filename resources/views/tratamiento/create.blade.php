@@ -1,9 +1,9 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
 <div class="estados-container">
     <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
-        <a href="{{ route('tratamiento.index') }}" style="color: #667eea; text-decoration: none;"><i class="fas fa-arrow-left"></i> Volver</a>
+        <a href="{{ route('tratamiento.index') }}" style="color: var(--sipce-primary); text-decoration: none;"><i class="fas fa-arrow-left"></i> Volver</a>
         <h2 style="margin: 0; color: #1e293b;">Nuevo Plan de Tratamiento</h2>
     </div>
 
@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div style="margin-bottom: 16px;">
-                <label style="display: block; font-weight: 600; color: #475569; margin-bottom: 6px;">Título *</label>
+                <label style="display: block; font-weight: 600; color: #475569; margin-bottom: 6px;">TÃ­tulo *</label>
                 <input type="text" name="titulo" value="{{ old('titulo') }}" required style="width:100%;padding:10px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;">
             </div>
             <div style="margin-bottom: 16px;">
@@ -52,7 +52,7 @@
             </div>
             <div style="display: flex; gap: 10px; justify-content: flex-end;">
                 <a href="{{ route('tratamiento.index') }}" style="padding:10px 24px;background:#f1f5f9;color:#64748b;border-radius:10px;text-decoration:none;font-weight:600;">Cancelar</a>
-                <button type="submit" style="padding:10px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;border-radius:10px;font-weight:600;cursor:pointer;">Crear Plan</button>
+                <button type="submit" style="padding:10px 24px;background:linear-gradient(135deg,var(--sipce-primary),var(--sipce-primary-dark));color:white;border:none;border-radius:10px;font-weight:600;cursor:pointer;">Crear Plan</button>
             </div>
         </form>
     </div>

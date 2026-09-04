@@ -69,8 +69,15 @@ a,
 
 /* Sidebar activo */
 .nav-item.active,
-.submenu-item.active {
+.nav-item.active i,
+.submenu-item.active,
+.submenu-item.active i {
     background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%) !important;
+    color: #ffffff !important;
+}
+.nav-item.active:hover,
+.submenu-item.active:hover {
+    color: #ffffff !important;
 }
 
 /* Switch modo nocturno y tema */

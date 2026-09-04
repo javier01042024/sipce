@@ -28,15 +28,15 @@ class AparienciaController extends Controller
 
         return view('configuracion.apariencia.index', compact('usuario', 'colores'));
     }
-
     /**
      * Guardar las preferencias de apariencia del usuario.
      */
     public function update(Request $request)
     {
         $request->validate([
-            'theme_color' => ['nullable', 'string', 'max:20'],
-            'dark_mode'   => ['nullable', 'boolean'],
+            'theme_color'      => ['nullable', 'string', 'max:20'],
+            'theme_color_dark' => ['nullable', 'string', 'max:20'],
+            'dark_mode'        => ['nullable', 'boolean'],
         ]);
 
         $usuario = auth()->user();
@@ -44,8 +44,13 @@ class AparienciaController extends Controller
         if (in_array($color, ['', 'null', null], true)) {
             $color = null;
         }
+        $colorDark = $request->input('theme_color_dark');
+        if (in_array($colorDark, ['', 'null', null], true)) {
+            $colorDark = null;
+        }
 
         $usuario->theme_color = $color ?: null;
+        $usuario->theme_color_dark = $colorDark ?: null;
         $usuario->dark_mode = $request->boolean('dark_mode');
         $usuario->save();
 

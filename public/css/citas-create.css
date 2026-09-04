@@ -1,4 +1,4 @@
-/* CONTENEDOR PRINCIPAL */
+﻿/* CONTENEDOR PRINCIPAL */
 .citas-form-wrapper {
     max-width: 1000px;
     margin: 0 auto;
@@ -7,7 +7,7 @@
 
 /* HEADER COLORIDO */
 .form-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
     padding: 30px 35px;
     border-radius: 14px;
     margin-bottom: 35px;
@@ -31,7 +31,7 @@
 
 .btn-volver {
     background: white;
-    color: #667eea;
+    color: var(--sipce-primary);
     border: none;
     padding: 12px 24px;
     border-radius: 25px;
@@ -45,7 +45,7 @@
 .btn-volver:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    color: #764ba2;
+    color: var(--sipce-primary-dark);
 }
 
 /* CARD PRINCIPAL */
@@ -53,8 +53,8 @@
     background: white;
     border-radius: 18px;
     overflow: hidden;
-    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.12);
-    border: 1px solid rgba(102, 126, 234, 0.08);
+    box-shadow: 0 15px 40px rgba(var(--sipce-primary-rgb), 0.12);
+    border: 1px solid rgba(var(--sipce-primary-rgb), 0.08);
     animation: slideIn 0.6s ease-out;
 }
 
@@ -89,7 +89,7 @@
 
 .form-label i {
     margin-right: 8px;
-    color: #667eea;
+    color: var(--sipce-primary);
 }
 
 /* INPUTS */
@@ -105,8 +105,8 @@
 }
 
 .form-select-custom:focus, .form-input-custom:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.08);
+    border-color: var(--sipce-primary);
+    box-shadow: 0 0 0 4px rgba(var(--sipce-primary-rgb), 0.08);
     outline: none;
 }
 
@@ -170,7 +170,7 @@
 }
 
 .btn-submit {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
     color: white;
     border: none;
     padding: 14px 40px;
@@ -178,12 +178,12 @@
     font-weight: 600;
     font-size: 15px;
     transition: all 0.3s;
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.25);
+    box-shadow: 0 6px 20px rgba(var(--sipce-primary-rgb), 0.25);
 }
 
 .btn-submit:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.35);
+    box-shadow: 0 8px 25px rgba(var(--sipce-primary-rgb), 0.35);
     color: white;
 }
 
@@ -213,7 +213,7 @@
     left: 18px;
     top: 50%;
     transform: translateY(-50%);
-    color: #667eea;
+    color: var(--sipce-primary);
     z-index: 10;
     font-size: 16px;
 }

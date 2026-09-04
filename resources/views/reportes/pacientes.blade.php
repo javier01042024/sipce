@@ -1,11 +1,11 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
 <div style="max-width: 1400px; margin: 0 auto; padding: 20px;">
     <div class="page-header">
         <div class="header-content">
             <h1><i class="fas fa-users me-2"></i> Reporte de Pacientes</h1>
-            <p>Estadísticas y listado de pacientes</p>
+            <p>EstadÃ­sticas y listado de pacientes</p>
         </div>
         <div class="header-buttons">
             <a href="{{ route('reportes.index') }}" class="btn-nuevo">
@@ -41,7 +41,7 @@
                     <option value="inactivo" {{ request('estado') === 'inactivo' ? 'selected' : '' }}>Inactivo</option>
                 </select>
             </div>
-            <button type="submit" style="padding:8px 20px; background:linear-gradient(135deg,#667eea,#764ba2); color:white; border:none; border-radius:8px; font-weight:600; cursor:pointer; font-size:13px;">
+            <button type="submit" style="padding:8px 20px; background:linear-gradient(135deg,var(--sipce-primary),var(--sipce-primary-dark)); color:white; border:none; border-radius:8px; font-weight:600; cursor:pointer; font-size:13px;">
                 <i class="fas fa-filter"></i> Filtrar
             </button>
         </form>
@@ -49,7 +49,7 @@
 
     <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-bottom:24px;">
         <div style="background:white; border-radius:14px; padding:20px; box-shadow:0 4px 16px rgba(0,0,0,0.05); text-align:center;">
-            <div style="font-size:32px; font-weight:700; color:#667eea;">{{ $estadisticas['total'] ?? 0 }}</div>
+            <div style="font-size:32px; font-weight:700; color:var(--sipce-primary);">{{ $estadisticas['total'] ?? 0 }}</div>
             <div style="font-size:13px; color:#64748b; margin-top:4px;">Total Pacientes</div>
         </div>
         <div style="background:white; border-radius:14px; padding:20px; box-shadow:0 4px 16px rgba(0,0,0,0.05); text-align:center;">
@@ -67,7 +67,7 @@
         <div style="background:white; border-radius:14px; padding:20px; box-shadow:0 4px 16px rgba(0,0,0,0.05); text-align:center;">
             <div style="font-size:14px; font-weight:600; color:#475569; margin-bottom:8px;">Por Tipo</div>
             <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap;">
-                <span class="sipce-badge sipce-badge-info">Público: {{ $estadisticas['por_tipo']['publico'] ?? 0 }}</span>
+                <span class="sipce-badge sipce-badge-info">PÃºblico: {{ $estadisticas['por_tipo']['publico'] ?? 0 }}</span>
                 <span class="sipce-badge sipce-badge-primary">Privado: {{ $estadisticas['por_tipo']['privado'] ?? 0 }}</span>
             </div>
         </div>

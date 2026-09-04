@@ -1,10 +1,10 @@
-    <!DOCTYPE html>
+﻿    <!DOCTYPE html>
     <html lang="es">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>SIPCE - Recuperar Contraseña</title>
+        <title>SIPCE - Recuperar ContraseÃ±a</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <style>
             .auth-card img,
@@ -55,7 +55,7 @@
             /* Lado izquierdo - Branding */
             .brand-side {
                 flex: 1;
-                background: linear-gradient(145deg, #4f46e5, #7c3aed);
+                background: linear-gradient(145deg, var(--sipce-primary), var(--sipce-primary-dark));
                 padding: 2.5rem;
                 display: flex;
                 flex-direction: column;
@@ -115,7 +115,7 @@
                 display: inline-flex;
                 align-items: center;
                 gap: 5px;
-                color: #7c3aed;
+                color: var(--sipce-primary-dark);
                 text-decoration: none;
                 font-size: 0.8rem;
                 font-weight: 600;
@@ -126,7 +126,7 @@
 
             .back-link:hover {
                 gap: 8px;
-                color: #4f46e5;
+                color: var(--sipce-primary);
             }
 
             .form-side h1 {
@@ -141,7 +141,7 @@
                 margin-bottom: 1.5rem;
                 font-size: 0.85rem;
                 line-height: 1.5;
-                border-left: 3px solid #7c3aed;
+                border-left: 3px solid var(--sipce-primary-dark);
                 padding-left: 12px;
             }
 
@@ -159,7 +159,7 @@
 
             label i {
                 margin-right: 6px;
-                color: #7c3aed;
+                color: var(--sipce-primary-dark);
             }
 
             input {
@@ -175,7 +175,7 @@
 
             input:focus {
                 outline: none;
-                border-color: #7c3aed;
+                border-color: var(--sipce-primary-dark);
                 background: white;
                 box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
             }
@@ -196,7 +196,7 @@
 
             button {
                 width: 100%;
-                background: linear-gradient(105deg, #4f46e5, #7c3aed);
+                background: linear-gradient(105deg, var(--sipce-primary), var(--sipce-primary-dark));
                 border: none;
                 padding: 0.75rem;
                 border-radius: 12px;
@@ -284,7 +284,7 @@
                 }
             }
 
-            /* Móviles */
+            /* MÃ³viles */
             @media (max-width: 480px) {
                 body {
                     padding: 0.5rem;
@@ -307,7 +307,9 @@
                 }
             }
         </style>
-    </head>
+    <style>:root{--sipce-primary:#667eea;--sipce-primary-dark:#5a6bd9;--sipce-primary-rgb:102, 126, 234}</style>
+
+  </head>
     <body>
         <div class="forgot-card">
             <!-- Lado izquierdo -->
@@ -318,21 +320,21 @@
                 <h2>SIPCE</h2>
                 <p>Sistema Integral para el Cuidado y Bienestar Emocional</p>
                 <ul class="feature-list">
-                    <li><i class="fas fa-lock"></i> Recuperación segura</li>
+                    <li><i class="fas fa-lock"></i> RecuperaciÃ³n segura</li>
                     <li><i class="fas fa-envelope"></i> Enlace enviado por correo</li>
-                    <li><i class="fas fa-shield-alt"></i> Protección de datos</li>
+                    <li><i class="fas fa-shield-alt"></i> ProtecciÃ³n de datos</li>
                 </ul>
             </div>
 
             <!-- Lado derecho -->
             <div class="form-side">
                 <a href="{{ route('login') }}" class="back-link">
-                    <i class="fas fa-arrow-left"></i> Volver al inicio de sesión
+                    <i class="fas fa-arrow-left"></i> Volver al inicio de sesiÃ³n
                 </a>
 
-                <h1>¿Olvidaste tu contraseña?</h1>
+                <h1>Â¿Olvidaste tu contraseÃ±a?</h1>
                 <div class="description">
-                    {{ __('No hay problema. Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.') }}
+                    {{ __('No hay problema. Ingresa tu correo electrÃ³nico y te enviaremos un enlace para restablecer tu contraseÃ±a.') }}
                 </div>
 
                 @if (session('status'))
@@ -369,7 +371,7 @@
                     @csrf
 
                     <div class="input-group">
-                        <label for="email"><i class="fas fa-envelope"></i> Correo electrónico</label>
+                        <label for="email"><i class="fas fa-envelope"></i> Correo electrÃ³nico</label>
                         <input id="email" type="email" name="email" value="{{ old('email') }}" 
                                class="@error('email') is-invalid @enderror"
                                placeholder="ejemplo@empresa.com" required autofocus autocomplete="email">
@@ -399,7 +401,7 @@
                 emailInput.addEventListener('input', function() {
                     if (this.value.trim() !== '') {
                         if (!isValidEmail(this.value)) {
-                            showError(emailInput, emailFeedback, 'Ingresa un correo electrónico válido');
+                            showError(emailInput, emailFeedback, 'Ingresa un correo electrÃ³nico vÃ¡lido');
                         } else {
                             clearError(emailInput, emailFeedback);
                         }
@@ -418,10 +420,10 @@
                     let isValid = true;
                     
                     if (!emailInput.value.trim()) {
-                        showError(emailInput, emailFeedback, 'El correo electrónico es obligatorio');
+                        showError(emailInput, emailFeedback, 'El correo electrÃ³nico es obligatorio');
                         isValid = false;
                     } else if (!isValidEmail(emailInput.value)) {
-                        showError(emailInput, emailFeedback, 'Ingresa un correo electrónico válido');
+                        showError(emailInput, emailFeedback, 'Ingresa un correo electrÃ³nico vÃ¡lido');
                         isValid = false;
                     }
                     
@@ -460,7 +462,7 @@
                             }
                         } catch (error) {
                             console.error('Error:', error);
-                            showErrorMessage('Error de conexión. Intenta nuevamente.');
+                            showErrorMessage('Error de conexiÃ³n. Intenta nuevamente.');
                         } finally {
                             setLoadingState(false);
                         }

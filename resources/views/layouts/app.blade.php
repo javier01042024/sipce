@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -19,13 +19,23 @@
             }, str_split($hex, 2));
             return sprintf('#%02x%02x%02x', $rgb[0], $rgb[1], $rgb[2]);
         };
-        $themeDarkColor = $darken($themeColor);
+        $toRgb = function ($hex) {
+            $hex = ltrim($hex, '#');
+            if (strlen($hex) !== 6) { return '102, 126, 234'; }
+            $rgb = str_split($hex, 2);
+            return hexdec($rgb[0]) . ', ' . hexdec($rgb[1]) . ', ' . hexdec($rgb[2]);
+        };
+        // Segundo color del degradado: manual si el usuario lo definió, si no se calcula automático
+        $themeColorDark = optional(auth()->user())->theme_color_dark
+            ?: $darken($themeColor);
+        $themeColorRgb = $toRgb($themeColor);
     @endphp
 
     <style>
         :root {
             --sipce-primary: {{ $themeColor }};
-            --sipce-primary-dark: {{ $themeDarkColor }};
+            --sipce-primary-dark: {{ $themeColorDark }};
+            --sipce-primary-rgb: {{ $themeColorRgb }};
         }
     </style>
     <link rel="stylesheet" href="{{ asset('css/theme-overrides.css') }}">

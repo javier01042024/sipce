@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
@@ -28,7 +28,7 @@
             position: relative;
         }
 
-        /* Patrón de fondo sutil */
+        /* PatrÃ³n de fondo sutil */
         body::before {
             content: '';
             position: fixed;
@@ -65,13 +65,13 @@
         .logo-icon {
             width: 80px;
             height: 80px;
-            background: linear-gradient(145deg, #4f46e5, #7c3aed);
+            background: linear-gradient(145deg, var(--sipce-primary), var(--sipce-primary-dark));
             border-radius: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 1.5rem;
-            box-shadow: 0 12px 24px -8px rgba(79, 70, 229, 0.4);
+            box-shadow: 0 12px 24px -8px rgba(var(--sipce-primary-rgb), 0.4);
         }
 
         .logo-icon i {
@@ -95,7 +95,7 @@
             font-size: 0.9rem;
             line-height: 1.5;
             margin-bottom: 2rem;
-            border-left: 3px solid #7c3aed;
+            border-left: 3px solid var(--sipce-primary-dark);
             padding-left: 12px;
             text-align: left;
         }
@@ -118,25 +118,25 @@
         }
 
         .btn-login {
-            background: linear-gradient(105deg, #4f46e5, #7c3aed);
+            background: linear-gradient(105deg, var(--sipce-primary), var(--sipce-primary-dark));
             color: white;
             margin-bottom: 0.75rem;
         }
 
         .btn-login:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+            box-shadow: 0 8px 20px rgba(var(--sipce-primary-rgb), 0.3);
             color: white;
         }
 
         .btn-dashboard {
-            background: linear-gradient(105deg, #4f46e5, #7c3aed);
+            background: linear-gradient(105deg, var(--sipce-primary), var(--sipce-primary-dark));
             color: white;
         }
 
         .btn-dashboard:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+            box-shadow: 0 8px 20px rgba(var(--sipce-primary-rgb), 0.3);
             color: white;
         }
 
@@ -168,7 +168,9 @@
             }
         }
     </style>
-</head>
+<style>:root{--sipce-primary:#667eea;--sipce-primary-dark:#5a6bd9;--sipce-primary-rgb:102, 126, 234}</style>
+
+  </head>
 <body>
     <div class="welcome-card">
         <div class="logo-icon">
@@ -178,8 +180,8 @@
         <h1>SIPCE</h1>
         
         <div class="subtitle">
-            <i class="fas fa-heartbeat me-1" style="color: #7c3aed;"></i>
-            Sistema Integral para Psicología Clínica Especializada
+            <i class="fas fa-heartbeat me-1" style="color: var(--sipce-primary-dark);"></i>
+            Sistema Integral para PsicologÃ­a ClÃ­nica Especializada
         </div>
 
         @if (Route::has('login'))
@@ -189,7 +191,7 @@
                 </a>
             @else
                 <a href="{{ route('login') }}" class="btn-login">
-                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                    <i class="fas fa-sign-in-alt"></i> Iniciar SesiÃ³n
                 </a>
             @endauth
         @endif

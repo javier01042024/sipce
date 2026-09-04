@@ -1,4 +1,4 @@
-/* ==========================================
+﻿/* ==========================================
    CONTENEDOR PRINCIPAL
    ========================================== */
 
@@ -19,7 +19,7 @@
    ========================================== */
 
 .pacientes-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
     padding: 30px 35px;
     border-radius: 14px;
     margin-bottom: 35px;
@@ -43,7 +43,7 @@
 
 .btn-nuevo {
     background: white;
-    color: #667eea;
+    color: var(--sipce-primary);
     border: none;
     padding: 12px 24px;
     border-radius: 25px;
@@ -59,15 +59,15 @@
 .btn-nuevo:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    color: #764ba2;
+    color: var(--sipce-primary-dark);
 }
 
 /* ==========================================
-   HEADER DE EDICIÓN
+   HEADER DE EDICIÃ“N
    ========================================== */
 
 .page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
     padding: 30px 35px;
     border-radius: 14px;
     margin-bottom: 35px;
@@ -91,7 +91,7 @@
 
 .btn-volver {
     background: white;
-    color: #667eea;
+    color: var(--sipce-primary);
     border: none;
     padding: 12px 24px;
     border-radius: 25px;
@@ -107,7 +107,7 @@
 .btn-volver:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    color: #764ba2;
+    color: var(--sipce-primary-dark);
 }
 
 /* ==========================================
@@ -214,20 +214,20 @@
     background: white;
     border-radius: 18px;
     overflow: hidden;
-    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.12);
-    border: 1px solid rgba(102, 126, 234, 0.08);
+    box-shadow: 0 15px 40px rgba(var(--sipce-primary-rgb), 0.12);
+    border: 1px solid rgba(var(--sipce-primary-rgb), 0.08);
 }
 
 /* ==========================================
-   CARD DE FORMULARIO (EDICIÓN)
+   CARD DE FORMULARIO (EDICIÃ“N)
    ========================================== */
 
 .form-card {
     background: white;
     border-radius: 18px;
     overflow: hidden;
-    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.12);
-    border: 1px solid rgba(102, 126, 234, 0.08);
+    box-shadow: 0 15px 40px rgba(var(--sipce-primary-rgb), 0.12);
+    border: 1px solid rgba(var(--sipce-primary-rgb), 0.08);
     animation: slideIn 0.5s ease-out;
 }
 
@@ -259,7 +259,7 @@
 }
 
 /* ==========================================
-   INFO DEL PACIENTE (BADGE DE EDICIÓN)
+   INFO DEL PACIENTE (BADGE DE EDICIÃ“N)
    ========================================== */
 
 .paciente-info-badge {
@@ -275,7 +275,7 @@
 .paciente-avatar {
     width: 50px;
     height: 50px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -327,7 +327,7 @@
 }
 
 /* ==========================================
-   BOTONES DE ACCIÓN (TABLA)
+   BOTONES DE ACCIÃ“N (TABLA)
    ========================================== */
 
 .actions {
@@ -375,7 +375,7 @@
 }
 
 /* ==========================================
-   BOTONES DE FORMULARIO (EDICIÓN)
+   BOTONES DE FORMULARIO (EDICIÃ“N)
    ========================================== */
 
 .form-actions {
@@ -416,14 +416,14 @@
 }
 
 .btn-save {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
     color: white;
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 6px 20px rgba(var(--sipce-primary-rgb), 0.3);
 }
 
 .btn-save:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 8px 25px rgba(var(--sipce-primary-rgb), 0.4);
     color: white;
 }
 
@@ -476,7 +476,7 @@
 }
 
 .modal-paciente-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
     color: white;
     padding: 20px 25px;
     display: flex;
@@ -571,7 +571,7 @@
 
 .field label i {
     margin-right: 8px;
-    color: #667eea;
+    color: var(--sipce-primary);
 }
 
 .input-group {
@@ -595,7 +595,7 @@
     left: 14px;
     top: 50%;
     transform: translateY(-50%);
-    color: #667eea;
+    color: var(--sipce-primary);
     font-size: 16px;
     z-index: 10;
     pointer-events: none;
@@ -612,8 +612,8 @@
 }
 
 .input-field:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: var(--sipce-primary);
+    box-shadow: 0 0 0 3px rgba(var(--sipce-primary-rgb), 0.1);
     outline: none;
 }
 
@@ -641,7 +641,7 @@ select.input-field {
 }
 
 /* ==========================================
-   CÉDULA CON NACIONALIDAD
+   CÃ‰DULA CON NACIONALIDAD
    ========================================== */
 
 .cedula-container {
@@ -702,7 +702,7 @@ select.input-field {
     width: 20px;
     height: 20px;
     cursor: pointer;
-    accent-color: #667eea;
+    accent-color: var(--sipce-primary);
 }
 
 .checkbox-group label {
@@ -799,7 +799,7 @@ select.input-field {
 }
 
 /* ==========================================
-   MODAL DE ELIMINACIÓN
+   MODAL DE ELIMINACIÃ“N
    ========================================== */
 
 .delete-box {
@@ -832,7 +832,7 @@ select.input-field {
 }
 
 /* ==========================================
-   MENSAJE VACÍO
+   MENSAJE VACÃO
    ========================================== */
 
 .empty-message {
@@ -848,7 +848,7 @@ select.input-field {
 
 .strong {
     font-weight: 700;
-    color: #667eea;
+    color: var(--sipce-primary);
 }
 
 .text-muted {

@@ -1,4 +1,4 @@
-<div class="sipce-table-card">
+﻿<div class="sipce-table-card">
     <div class="sipce-table-header">
         <div>
             <h3>
@@ -49,7 +49,7 @@
                     <th class="col-expediente">Expediente</th>
                     <th class="col-nombre">Paciente</th>
                     <th class="col-tipo">Tipo</th>
-                    <th class="col-atencion">Atención</th>
+                    <th class="col-atencion">AtenciÃ³n</th>
                     <th class="col-prioridad">Prioridad</th>
                     <th class="col-estado">Estado</th>
                     <th class="col-fecha">Registro</th>
@@ -109,14 +109,14 @@
                         @elseif($paciente->tipo_paciente === 'adolescente')
                         <span class="badge-tipo badge-tipo-adolescente"><i class="fas fa-user"></i> Adolescente</span>
                         @else
-                        <span class="badge-tipo badge-tipo-nino"><i class="fas fa-child"></i> Niño</span>
+                        <span class="badge-tipo badge-tipo-nino"><i class="fas fa-child"></i> NiÃ±o</span>
                         @endif
                     </td>
                     <td class="col-atencion">
                         @if($paciente->tipo_atencion === 'privado')
                         <span class="badge-atencion badge-privado"><i class="fas fa-building"></i> Privado</span>
                         @else
-                        <span class="badge-atencion badge-publico"><i class="fas fa-hospital"></i> Público</span>
+                        <span class="badge-atencion badge-publico"><i class="fas fa-hospital"></i> PÃºblico</span>
                         @endif
                     </td>
                     <td class="col-prioridad">
@@ -182,9 +182,9 @@ function confirmarEliminarPaciente(button) {
     const expedienteElement = row ? row.querySelector('.expediente-number') : null;
     const expediente = expedienteElement ? expedienteElement.textContent.trim() : '';
 
-    const detalle = 'Estás a punto de eliminar a <strong>' + nombrePaciente + '</strong>' +
-        (expediente ? ' <span style="color:#667eea;">(' + expediente + ')</span>' : '') +
-        '<br><br><small style="color:#64748b;">Esta acción no se puede deshacer. Se eliminarán todos los datos asociados.</small>';
+    const detalle = 'EstÃ¡s a punto de eliminar a <strong>' + nombrePaciente + '</strong>' +
+        (expediente ? ' <span style="color:var(--sipce-primary);">(' + expediente + ')</span>' : '') +
+        '<br><br><small style="color:#64748b;">Esta acciÃ³n no se puede deshacer. Se eliminarÃ¡n todos los datos asociados.</small>';
 
     SIPCE_ALERT.confirmDelete({
         html: detalle
@@ -200,7 +200,7 @@ function confirmarEliminarPaciente(button) {
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.paciente-row').forEach(row => {
         row.addEventListener('click', function(e) {
-            // No redirigir si se hizo clic en checkbox, botón o formulario
+            // No redirigir si se hizo clic en checkbox, botÃ³n o formulario
             if (e.target.closest('.col-checkbox') || 
                 e.target.closest('.col-acciones') || 
                 e.target.closest('button') || 
@@ -231,13 +231,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     .paciente-nombre-link:hover .nombre-text {
-        color: #667eea;
+        color: var(--sipce-primary);
         text-decoration: underline;
     }
 
     .paciente-nombre-link:hover .paciente-avatar-small {
         transform: scale(1.1);
-        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 2px 8px rgba(var(--sipce-primary-rgb), 0.4);
     }
 
     .expediente-link {
@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     .expediente-link:hover .expediente-number {
-        color: #4f46e5;
+        color: var(--sipce-primary);
         text-decoration: underline;
     }
 
@@ -259,7 +259,7 @@ document.addEventListener('DOMContentLoaded', function() {
         background-color: #f8fafc !important;
     }
 
-    /* Avatar animación */
+    /* Avatar animaciÃ³n */
     .paciente-avatar-small {
         transition: all 0.2s ease;
     }
@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function() {
         white-space: nowrap;
     }
 
-    .badge-tipo-adulto { background: #667eea; }
+    .badge-tipo-adulto { background: var(--sipce-primary); }
     .badge-tipo-adolescente { background: #f59e0b; }
     .badge-tipo-nino { background: #10b981; }
 
@@ -307,7 +307,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     .badge-urgencia { background: #ef4444; }
     .badge-alta { background: #f59e0b; }
-    .badge-media { background: #667eea; }
+    .badge-media { background: var(--sipce-primary); }
     .badge-baja { background: #10b981; }
 
     .estado-badge {
@@ -340,7 +340,7 @@ document.addEventListener('DOMContentLoaded', function() {
         width: 32px;
         height: 32px;
         border-radius: 50%;
-        background: #667eea;
+        background: var(--sipce-primary);
         color: white;
         display: flex;
         align-items: center;
@@ -369,7 +369,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     .expediente-number {
         font-weight: 700;
-        color: #667eea;
+        color: var(--sipce-primary);
         font-size: 13px;
     }
 </style>

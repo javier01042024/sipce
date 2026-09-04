@@ -1,4 +1,4 @@
-
+﻿
 .estados-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -7,7 +7,7 @@
 
 /* Header */
 .page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
 }
 
 /* Alertas */
@@ -95,7 +95,7 @@
 }
 
 .estado-modal-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
     color: white;
     padding: 20px 25px;
     display: flex;
@@ -184,8 +184,8 @@
 
 .estado-form-input:focus {
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: var(--sipce-primary);
+    box-shadow: 0 0 0 3px rgba(var(--sipce-primary-rgb), 0.1);
 }
 
 .estado-form-textarea {
@@ -213,7 +213,7 @@
 .estado-checkbox-wrapper input[type="checkbox"] {
     width: 18px;
     height: 18px;
-    accent-color: #667eea;
+    accent-color: var(--sipce-primary);
     cursor: pointer;
 }
 
@@ -323,7 +323,7 @@
 .estado-detalle-avatar {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;

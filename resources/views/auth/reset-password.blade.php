@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>SIPCE - Restablecer contraseña</title>
+    <title>SIPCE - Restablecer contraseÃ±a</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -20,7 +20,7 @@
             width: 100%; max-width: 460px; padding: 2.5rem; animation: fadeInUp 0.4s ease;
         }
         @keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-        .auth-card .icon { text-align: center; font-size: 2.5rem; color: #7c3aed; margin-bottom: 1rem; }
+        .auth-card .icon { text-align: center; font-size: 2.5rem; color: var(--sipce-primary-dark); margin-bottom: 1rem; }
         .auth-card h2 { text-align: center; font-size: 1.3rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; }
         .auth-card p { color: #6b7280; font-size: 0.85rem; text-align: center; margin-bottom: 1.5rem; }
         .input-group { margin-bottom: 1rem; }
@@ -29,21 +29,23 @@
             width: 100%; padding: 0.65rem 0.8rem; font-size: 0.85rem;
             border: 1.5px solid #e5e7eb; border-radius: 10px; background: #fafbfc; transition: all 0.2s;
         }
-        .input-group input:focus { outline: none; border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,0.1); background: white; }
+        .input-group input:focus { outline: none; border-color: var(--sipce-primary-dark); box-shadow: 0 0 0 3px rgba(124,58,237,0.1); background: white; }
         .input-error { color: #ef4444; font-size: 0.75rem; margin-top: 0.3rem; }
         .btn-primary {
-            width: 100%; padding: 0.7rem; background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            width: 100%; padding: 0.7rem; background: linear-gradient(135deg, var(--sipce-primary), var(--sipce-primary-dark));
             color: white; border: none; border-radius: 10px; font-size: 0.9rem; font-weight: 600;
             cursor: pointer; transition: all 0.3s; margin-top: 0.5rem;
         }
         .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(79,70,229,0.4); }
     </style>
-</head>
+<style>:root{--sipce-primary:#667eea;--sipce-primary-dark:#5a6bd9;--sipce-primary-rgb:102, 126, 234}</style>
+
+  </head>
 <body>
     <div class="auth-card">
         <div class="icon"><i class="fas fa-key"></i></div>
-        <h2>Restablecer contraseña</h2>
-        <p>Ingresa tu nueva contraseña a continuación.</p>
+        <h2>Restablecer contraseÃ±a</h2>
+        <p>Ingresa tu nueva contraseÃ±a a continuaciÃ³n.</p>
 
         @if($errors->any())
             <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:0.6rem 0.8rem;margin-bottom:1rem;">
@@ -58,22 +60,22 @@
             <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
             <div class="input-group">
-                <label><i class="fas fa-envelope"></i> Correo electrónico</label>
+                <label><i class="fas fa-envelope"></i> Correo electrÃ³nico</label>
                 <input type="email" name="email" value="{{ old('email', $request->email) }}" required autofocus autocomplete="username">
             </div>
 
             <div class="input-group">
-                <label><i class="fas fa-lock"></i> Nueva contraseña</label>
+                <label><i class="fas fa-lock"></i> Nueva contraseÃ±a</label>
                 <input type="password" name="password" required autocomplete="new-password">
             </div>
 
             <div class="input-group">
-                <label><i class="fas fa-lock"></i> Confirmar contraseña</label>
+                <label><i class="fas fa-lock"></i> Confirmar contraseÃ±a</label>
                 <input type="password" name="password_confirmation" required autocomplete="new-password">
             </div>
 
             <button type="submit" class="btn-primary">
-                <i class="fas fa-check"></i> Restablecer contraseña
+                <i class="fas fa-check"></i> Restablecer contraseÃ±a
             </button>
         </form>
     </div>

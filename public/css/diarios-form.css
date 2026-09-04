@@ -1,4 +1,4 @@
-/* ===== DIARIOS: FORMULARIO (CREATE / EDIT) ===== */
+﻿/* ===== DIARIOS: FORMULARIO (CREATE / EDIT) ===== */
 
 /* CONTENEDOR PRINCIPAL */
 .diario-create-wrapper {
@@ -9,7 +9,7 @@
 
 /* HEADER COLORIDO */
 .page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
     padding: 30px 35px;
     border-radius: 14px;
     margin-bottom: 35px;
@@ -33,7 +33,7 @@
 
 .btn-volver {
     background: white;
-    color: #667eea;
+    color: var(--sipce-primary);
     border: none;
     padding: 12px 24px;
     border-radius: 25px;
@@ -49,7 +49,7 @@
 .btn-volver:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    color: #764ba2;
+    color: var(--sipce-primary-dark);
 }
 
 /* CARD PRINCIPAL */
@@ -57,8 +57,8 @@
     background: white;
     border-radius: 18px;
     overflow: hidden;
-    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.12);
-    border: 1px solid rgba(102, 126, 234, 0.08);
+    box-shadow: 0 15px 40px rgba(var(--sipce-primary-rgb), 0.12);
+    border: 1px solid rgba(var(--sipce-primary-rgb), 0.08);
     animation: slideIn 0.5s ease-out;
 }
 
@@ -95,7 +95,7 @@
     padding: 35px;
 }
 
-/* INFO DEL USUARIO (SESIÓN) */
+/* INFO DEL USUARIO (SESIÃ“N) */
 .usuario-session-info {
     background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
     padding: 20px;
@@ -104,13 +104,13 @@
     display: flex;
     align-items: center;
     gap: 20px;
-    border-left: 4px solid #667eea;
+    border-left: 4px solid var(--sipce-primary);
 }
 
 .usuario-avatar {
     width: 60px;
     height: 60px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
     border-radius: 14px;
     display: flex;
     align-items: center;
@@ -118,7 +118,7 @@
     color: white;
     font-size: 24px;
     font-weight: bold;
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 5px 15px rgba(var(--sipce-primary-rgb), 0.3);
 }
 
 .usuario-details h4 {
@@ -140,7 +140,7 @@
 
 .usuario-details p i {
     margin-right: 5px;
-    color: #667eea;
+    color: var(--sipce-primary);
 }
 
 /* FECHA DEL DISPOSITIVO */
@@ -197,7 +197,7 @@
 }
 
 .form-label i {
-    color: #667eea;
+    color: var(--sipce-primary);
 }
 
 .textarea-wrapper {
@@ -208,7 +208,7 @@
     position: absolute;
     left: 15px;
     top: 15px;
-    color: #667eea;
+    color: var(--sipce-primary);
     font-size: 18px;
 }
 
@@ -227,8 +227,8 @@
 }
 
 .textarea-custom:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    border-color: var(--sipce-primary);
+    box-shadow: 0 0 0 4px rgba(var(--sipce-primary-rgb), 0.1);
     outline: none;
 }
 
@@ -237,7 +237,7 @@
     font-style: italic;
 }
 
-/* SUGERENCIAS RÁPIDAS */
+/* SUGERENCIAS RÃPIDAS */
 .quick-suggestions {
     margin-top: 15px;
     display: flex;
@@ -257,9 +257,9 @@
 }
 
 .suggestion-badge:hover {
-    background: #667eea;
+    background: var(--sipce-primary);
     color: white;
-    border-color: #667eea;
+    border-color: var(--sipce-primary);
 }
 
 /* CONTADOR DE CARACTERES */
@@ -299,12 +299,12 @@
 }
 
 .emocion-option:hover {
-    border-color: #667eea;
+    border-color: var(--sipce-primary);
     background: #f8fafc;
 }
 
 .emocion-option.selected {
-    border-color: #667eea;
+    border-color: var(--sipce-primary);
     background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
 }
 
@@ -320,7 +320,7 @@
     color: #334155;
 }
 
-/* BOTONES DE ACCIÓN */
+/* BOTONES DE ACCIÃ“N */
 .form-actions {
     display: flex;
     justify-content: space-between;

@@ -1,4 +1,4 @@
-/* ===== DIARIOS: SHOW ===== */
+﻿/* ===== DIARIOS: SHOW ===== */
 
 /* CONTENEDOR PRINCIPAL */
 .diario-show-wrapper {
@@ -7,7 +7,7 @@
     padding: 30px 20px;
 }
 
-/* BOTÓN VOLVER */
+/* BOTÃ“N VOLVER */
 .btn-volver {
     display: inline-flex;
     align-items: center;
@@ -21,13 +21,13 @@
 }
 
 .btn-volver:hover {
-    color: #667eea;
+    color: var(--sipce-primary);
     transform: translateX(-3px);
 }
 
 /* HEADER DEL DIARIO */
 .diario-show-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
     padding: 35px;
     border-radius: 16px;
     margin-bottom: 25px;
@@ -129,7 +129,7 @@
 .diario-content-card {
     background: white;
     border-radius: 16px;
-    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.1);
+    box-shadow: 0 5px 20px rgba(var(--sipce-primary-rgb), 0.1);
     overflow: hidden;
 }
 
@@ -150,7 +150,7 @@
 }
 
 .content-label i {
-    color: #667eea;
+    color: var(--sipce-primary);
 }
 
 .contenido-texto {
@@ -160,7 +160,7 @@
     background: #f8fafc;
     padding: 25px;
     border-radius: 12px;
-    border-left: 4px solid #667eea;
+    border-left: 4px solid var(--sipce-primary);
     white-space: pre-wrap;
     word-wrap: break-word;
 }
@@ -292,7 +292,7 @@
     padding: 60px 30px;
     background: white;
     border-radius: 16px;
-    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.08);
+    box-shadow: 0 5px 20px rgba(var(--sipce-primary-rgb), 0.08);
 }
 
 .empty-icon {

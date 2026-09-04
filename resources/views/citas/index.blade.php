@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
 <link href="{{ asset('css/citas.css') }}" rel="stylesheet">
@@ -26,12 +26,12 @@
         </div>
     @endif
 
-    {{-- CITAS PÚBLICAS DE HOY --}}
+    {{-- CITAS PÃšBLICAS DE HOY --}}
     @if(isset($citasHoyPublicas) && $citasHoyPublicas->count() > 0)
         <div class="citas-section">
             <div class="section-title hoy" style="background: #fef3c7; border-left: 4px solid #d97706; color: #92400e;">
                 <i class="fas fa-hospital"></i>
-                Citas Públicas de Hoy (<span class="section-count">{{ $citasHoyPublicas->count() }}</span>)
+                Citas PÃºblicas de Hoy (<span class="section-count">{{ $citasHoyPublicas->count() }}</span>)
             </div>
             <div class="citas-grid">
                 @foreach($citasHoyPublicas as $cita)
@@ -41,12 +41,12 @@
         </div>
     @endif
 
-    {{-- PRÓXIMAS CITAS PRIVADAS --}}
+    {{-- PRÃ“XIMAS CITAS PRIVADAS --}}
     @if(isset($citasProximasPrivadas) && $citasProximasPrivadas->count() > 0)
         <div class="citas-section">
             <div class="section-title proximas" style="background: #f0f9ff; border-left: 4px solid #0ea5e9; color: #0369a1;">
                 <i class="fas fa-building"></i>
-                Próximas Citas Privadas (<span class="section-count">{{ $citasProximasPrivadas->count() }}</span>)
+                PrÃ³ximas Citas Privadas (<span class="section-count">{{ $citasProximasPrivadas->count() }}</span>)
             </div>
             <div class="citas-grid">
                 @foreach($citasProximasPrivadas as $cita)
@@ -56,12 +56,12 @@
         </div>
     @endif
 
-    {{-- PRÓXIMAS CITAS PÚBLICAS --}}
+    {{-- PRÃ“XIMAS CITAS PÃšBLICAS --}}
     @if(isset($citasProximasPublicas) && $citasProximasPublicas->count() > 0)
         <div class="citas-section">
             <div class="section-title proximas" style="background: #fef3c7; border-left: 4px solid #d97706; color: #92400e;">
                 <i class="fas fa-hospital"></i>
-                Próximas Citas Públicas (<span class="section-count">{{ $citasProximasPublicas->count() }}</span>)
+                PrÃ³ximas Citas PÃºblicas (<span class="section-count">{{ $citasProximasPublicas->count() }}</span>)
             </div>
             <div class="citas-grid">
                 @foreach($citasProximasPublicas as $cita)
@@ -108,7 +108,7 @@
                             </div>
                             <div class="cita-info-row">
                                 <i class="fas fa-clock"></i>
-                                <strong>Tipo:</strong> {{ $tipoAtencion === 'privado' ? 'Privado' : 'Público' }}
+                                <strong>Tipo:</strong> {{ $tipoAtencion === 'privado' ? 'Privado' : 'PÃºblico' }}
                             </div>
                             @if($cita->motivo_cancelacion)
                             <div class="cita-info-row text-danger">
@@ -132,7 +132,7 @@
         </div>
     </div>
 
-    {{-- ESTADO VACÍO --}}
+    {{-- ESTADO VACÃO --}}
     <div id="estadoVacio" style="{{ $mostrarVacio ? '' : 'display: none;' }}">
         @include('citas.partials.empty-state')
     </div>
@@ -148,10 +148,10 @@
     .fc { font-family: 'Segoe UI', system-ui, sans-serif; }
     .fc .fc-toolbar-title { font-size: 1.2rem; font-weight: 700; color: #1e293b; }
     .fc .fc-button-primary {
-        background: #667eea; border-color: #667eea; font-size: 0.8rem; padding: 6px 12px;
+        background: var(--sipce-primary); border-color: var(--sipce-primary); font-size: 0.8rem; padding: 6px 12px;
     }
     .fc .fc-button-primary:hover { background: #5a6fd6; }
-    .fc .fc-button-primary.active { background: #4f46e5; }
+    .fc .fc-button-primary.active { background: var(--sipce-primary); }
     .fc .fc-today-button { background: #10b981 !important; border-color: #10b981 !important; }
     .fc .fc-today-button:disabled { opacity: 0.5; }
 </style>
@@ -185,12 +185,12 @@ function initCalendar() {
     var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
         locale: 'es',
         initialView: 'dayGridMonth',
-        buttonText: { today: 'Hoy', month: 'Mes', week: 'Semana', day: 'Día', list: 'Lista', prev: 'Anterior', next: 'Siguiente' },
+        buttonText: { today: 'Hoy', month: 'Mes', week: 'Semana', day: 'DÃ­a', list: 'Lista', prev: 'Anterior', next: 'Siguiente' },
         headerToolbar: { left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek,timeGridDay' },
-        allDayText: 'Todo el día',
+        allDayText: 'Todo el dÃ­a',
         noEventsText: 'No hay eventos para mostrar',
         events: '{{ route("calendario.eventos") }}',
-        eventColor: '#667eea',
+        eventColor: 'var(--sipce-primary)',
         eventTextColor: '#ffffff',
         eventDisplay: 'block',
         dayMaxEvents: 4,

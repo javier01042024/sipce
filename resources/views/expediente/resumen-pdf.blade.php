@@ -1,15 +1,15 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>SIPCE - Resumen Clínico</title>
+    <title>SIPCE - Resumen ClÃ­nico</title>
     <style>
         body { font-family: 'Helvetica', 'Arial', sans-serif; color: #333; font-size: 12px; line-height: 1.5; margin: 0; padding: 20px; }
-        .header { text-align: center; border-bottom: 3px solid #667eea; padding-bottom: 15px; margin-bottom: 20px; }
-        .header h1 { margin: 0; font-size: 22px; color: #667eea; }
+        .header { text-align: center; border-bottom: 3px solid var(--sipce-primary); padding-bottom: 15px; margin-bottom: 20px; }
+        .header h1 { margin: 0; font-size: 22px; color: var(--sipce-primary); }
         .header p { margin: 5px 0 0 0; color: #666; font-size: 11px; }
         .section { margin-bottom: 20px; }
-        .section-title { font-size: 14px; font-weight: bold; color: #667eea; border-bottom: 2px solid #e2e8f0; padding-bottom: 5px; margin-bottom: 10px; }
+        .section-title { font-size: 14px; font-weight: bold; color: var(--sipce-primary); border-bottom: 2px solid #e2e8f0; padding-bottom: 5px; margin-bottom: 10px; }
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
         .info-item { padding: 8px; background: #f8fafc; border-radius: 4px; }
         .info-label { font-size: 10px; color: #94a3b8; text-transform: uppercase; font-weight: 600; }

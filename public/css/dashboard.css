@@ -1,4 +1,4 @@
-/* ===== DASHBOARD ===== */
+﻿/* ===== DASHBOARD ===== */
 
 /* RESET Y VARIABLES */
 * {
@@ -19,10 +19,10 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px 24px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
     border-radius: 12px;
     margin-bottom: 20px;
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+    box-shadow: 0 8px 25px rgba(var(--sipce-primary-rgb), 0.2);
     flex-wrap: wrap;
     gap: 12px;
 }
@@ -62,7 +62,7 @@
     margin: 0 auto;
 }
 
-/* ESTADÍSTICAS */
+/* ESTADÃSTICAS */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -84,7 +84,7 @@
 
 .stat-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+    box-shadow: 0 8px 25px rgba(var(--sipce-primary-rgb), 0.15);
 }
 
 .stat-content h3 {
@@ -131,12 +131,12 @@
     flex-shrink: 0;
 }
 
-.icon-pacientes { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.icon-pacientes { background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%); }
 .icon-citas { background: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%); }
 .icon-diarios { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
 .icon-prioridad { background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%); }
 
-/* GRÁFICAS */
+/* GRÃFICAS */
 .charts-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -172,7 +172,7 @@
 }
 
 .chart-header h3 i {
-    color: #667eea;
+    color: var(--sipce-primary);
 }
 
 .chart-select {
@@ -223,7 +223,7 @@
 }
 
 .btn-view-all {
-    color: #667eea;
+    color: var(--sipce-primary);
     text-decoration: none;
     font-size: clamp(11px, 1.2vw, 13px);
     font-weight: 600;
@@ -310,7 +310,7 @@
 }
 
 .cita-item.futura {
-    border-left-color: #667eea;
+    border-left-color: var(--sipce-primary);
 }
 
 .cita-info {
@@ -339,13 +339,13 @@
 
 .cita-hora {
     font-weight: 600;
-    color: #667eea;
+    color: var(--sipce-primary);
     font-size: clamp(11px, 1.2vw, 13px);
     white-space: nowrap;
     flex-shrink: 0;
 }
 
-/* ACCESOS RÁPIDOS */
+/* ACCESOS RÃPIDOS */
 .quick-actions {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -367,8 +367,8 @@
 
 .quick-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
-    border-color: #667eea;
+    box-shadow: 0 8px 25px rgba(var(--sipce-primary-rgb), 0.15);
+    border-color: var(--sipce-primary);
 }
 
 .quick-icon {
@@ -423,7 +423,7 @@
 }
 
 /* ============================================
-   RESPONSIVE - MÓVILES (480px - 768px)
+   RESPONSIVE - MÃ“VILES (480px - 768px)
    ============================================ */
 @media (max-width: 768px) {
     .dashboard-container {
@@ -466,7 +466,7 @@
 }
 
 /* ============================================
-   RESPONSIVE - MÓVILES PEQUEÑOS (< 480px)
+   RESPONSIVE - MÃ“VILES PEQUEÃ‘OS (< 480px)
    ============================================ */
 @media (max-width: 480px) {
     .dashboard-container {

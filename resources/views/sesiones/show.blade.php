@@ -1,19 +1,19 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
 <div class="estados-container">
     <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
-        <a href="{{ route('sesiones.index') }}" style="color: #667eea; text-decoration: none;"><i class="fas fa-arrow-left"></i> Volver</a>
-        <h2 style="margin: 0; color: #1e293b;">Detalle de Sesión</h2>
+        <a href="{{ route('sesiones.index') }}" style="color: var(--sipce-primary); text-decoration: none;"><i class="fas fa-arrow-left"></i> Volver</a>
+        <h2 style="margin: 0; color: #1e293b;">Detalle de SesiÃ³n</h2>
     </div>
 
     <div style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); margin-bottom: 24px;">
         <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 24px;">
             <div>
-                <h3 style="margin: 0 0 8px 0; color: #1e293b; font-size: 22px;">Sesión #{{ $sesion->id }}</h3>
+                <h3 style="margin: 0 0 8px 0; color: #1e293b; font-size: 22px;">SesiÃ³n #{{ $sesion->id }}</h3>
                 <p style="margin: 0; color: #64748b; font-size: 14px;">
                     Paciente: <strong>
-                        <a href="{{ route('pacientes.show', $sesion->paciente) }}" style="color: #667eea; text-decoration: none;">
+                        <a href="{{ route('pacientes.show', $sesion->paciente) }}" style="color: var(--sipce-primary); text-decoration: none;">
                             {{ $sesion->paciente->detalle->nombre ?? '' }} {{ $sesion->paciente->detalle->apellido ?? 'N/A' }}
                         </a>
                     </strong>
@@ -21,7 +21,7 @@
             </div>
             <div style="text-align: right;">
                 <span class="sipce-cell-date" style="font-size: 14px;"><i class="far fa-calendar-alt"></i> {{ $sesion->fecha->format('d/m/Y') }}</span>
-                <p style="margin: 4px 0 0 0; color: #64748b; font-size: 13px;">Duración: <strong>{{ $sesion->duracion_minutos ?? 'N/A' }} min</strong></p>
+                <p style="margin: 4px 0 0 0; color: #64748b; font-size: 13px;">DuraciÃ³n: <strong>{{ $sesion->duracion_minutos ?? 'N/A' }} min</strong></p>
             </div>
         </div>
 
@@ -39,7 +39,7 @@
 
         @if($sesion->observaciones_clinicas)
         <div style="margin-bottom: 20px;">
-            <span style="font-size: 12px; color: #94a3b8; text-transform: uppercase; font-weight: 600;">Observaciones Clínicas</span>
+            <span style="font-size: 12px; color: #94a3b8; text-transform: uppercase; font-weight: 600;">Observaciones ClÃ­nicas</span>
             <p style="margin: 4px 0 0 0; color: #334155; line-height: 1.6;">{{ $sesion->observaciones_clinicas }}</p>
         </div>
         @endif
@@ -55,20 +55,20 @@
     </div>
 </div>
 
-{{-- MODAL: AGENDAR PRÓXIMA CITA --}}
+{{-- MODAL: AGENDAR PRÃ“XIMA CITA --}}
 @if(session('mostrar_agendar'))
 <div id="modalAgendar" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);z-index:9999999;align-items:center;justify-content:center;backdrop-filter:blur(4px);">
     <div style="background:white;border-radius:20px;padding:0;max-width:450px;width:95%;box-shadow:0 25px 60px rgba(0,0,0,0.3);overflow:hidden;">
         <div style="background:linear-gradient(135deg,#11998e,#38ef7d);padding:20px 24px;text-align:center;">
             <i class="fas fa-calendar-plus" style="font-size:36px;color:white;margin-bottom:8px;display:block;"></i>
-            <h3 style="margin:0;color:white;font-size:18px;">¿Agendar próxima cita?</h3>
+            <h3 style="margin:0;color:white;font-size:18px;">Â¿Agendar prÃ³xima cita?</h3>
         </div>
         <div style="padding:24px;text-align:center;">
             <p style="color:#475569;font-size:15px;margin:0 0 6px;">
-                ¿Habrá seguimiento en <strong>15 días</strong>?
+                Â¿HabrÃ¡ seguimiento en <strong>15 dÃ­as</strong>?
             </p>
             <p style="color:#94a3b8;font-size:13px;margin:0 0 20px;">
-                Se creará automáticamente una cita para el
+                Se crearÃ¡ automÃ¡ticamente una cita para el
                 <strong id="fechaProximaLabel"></strong>.
             </p>
             <div style="display:flex;gap:10px;justify-content:center;">
@@ -76,7 +76,7 @@
                     No, gracias
                 </button>
                 <button type="button" id="btnAgendarSi" onclick="agendarProximaCita()" style="padding:10px 24px;background:linear-gradient(135deg,#11998e,#38ef7d);color:white;border:none;border-radius:10px;font-weight:600;cursor:pointer;font-size:14px;">
-                    <i class="fas fa-check"></i> Sí, agendar
+                    <i class="fas fa-check"></i> SÃ­, agendar
                 </button>
             </div>
         </div>
@@ -129,7 +129,7 @@ function agendarProximaCita() {
                 '<div style="background:white;border-radius:20px;padding:0;max-width:450px;width:95%;box-shadow:0 25px 60px rgba(0,0,0,0.3);overflow:hidden;">' +
                 '<div style="background:linear-gradient(135deg,#11998e,#38ef7d);padding:20px 24px;text-align:center;">' +
                 '<i class="fas fa-check-circle" style="font-size:36px;color:white;margin-bottom:8px;display:block;"></i>' +
-                '<h3 style="margin:0;color:white;font-size:18px;">¡Cita agendada!</h3></div>' +
+                '<h3 style="margin:0;color:white;font-size:18px;">Â¡Cita agendada!</h3></div>' +
                 '<div style="padding:24px;text-align:center;">' +
                 '<p style="color:#475569;font-size:15px;">' + data.message + '</p>' +
                 '<button onclick="cerrarModalAgendar()" style="margin-top:16px;padding:10px 24px;background:#11998e;color:white;border:none;border-radius:10px;font-weight:600;cursor:pointer;">Aceptar</button>' +
@@ -147,9 +147,9 @@ function agendarProximaCita() {
         }
     })
     .catch(function() {
-        alert('Error de conexión. Intente de nuevo.');
+        alert('Error de conexiÃ³n. Intente de nuevo.');
         btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-check"></i> Sí, agendar';
+        btn.innerHTML = '<i class="fas fa-check"></i> SÃ­, agendar';
     });
 }
 </script>

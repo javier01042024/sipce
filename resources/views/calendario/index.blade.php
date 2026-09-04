@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
 <div style="max-width: 1400px; margin: 0 auto; padding: 20px;">
@@ -19,7 +19,7 @@
             <span style="font-size: 13px; color: #475569;">Pendiente</span>
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="width: 14px; height: 14px; border-radius: 3px; background: #667eea; display: inline-block;"></span>
+            <span style="width: 14px; height: 14px; border-radius: 3px; background: var(--sipce-primary); display: inline-block;"></span>
             <span style="font-size: 13px; color: #475569;">Confirmada</span>
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
@@ -36,7 +36,7 @@
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
             <span style="width: 14px; height: 14px; border-radius: 3px; background: #94a3b8; display: inline-block;"></span>
-            <span style="font-size: 13px; color: #475569;">No Asistió</span>
+            <span style="font-size: 13px; color: #475569;">No AsistiÃ³</span>
         </div>
     </div>
 
@@ -71,22 +71,22 @@ document.addEventListener('DOMContentLoaded', function() {
             today: 'Hoy',
             month: 'Mes',
             week: 'Semana',
-            day: 'Día',
+            day: 'DÃ­a',
             list: 'Lista',
             prev: 'Anterior',
             next: 'Siguiente',
-            prevYear: 'Año anterior',
-            nextYear: 'Año siguiente'
+            prevYear: 'AÃ±o anterior',
+            nextYear: 'AÃ±o siguiente'
         },
         headerToolbar: {
             left: 'prev,next today',
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
-        allDayText: 'Todo el día',
+        allDayText: 'Todo el dÃ­a',
         noEventsText: 'No hay eventos para mostrar',
         events: '{{ route("calendario.eventos") }}',
-        eventColor: '#667eea',
+        eventColor: 'var(--sipce-primary)',
         eventTextColor: '#ffffff',
         eventDisplay: 'block',
         dayMaxEvents: 4,

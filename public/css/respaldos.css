@@ -1,4 +1,4 @@
-/* CONTENEDOR PRINCIPAL */
+﻿/* CONTENEDOR PRINCIPAL */
 .respaldos-wrapper {
     max-width: 1200px;
     margin: 0 auto;
@@ -51,7 +51,7 @@
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
-/* ESTADÍSTICAS */
+/* ESTADÃSTICAS */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -86,7 +86,7 @@
 }
 
 .stat-icon.total { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
-.stat-icon.size { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.stat-icon.size { background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%); }
 .stat-icon.auto { background: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%); }
 .stat-icon.last { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
 
@@ -102,7 +102,7 @@
     color: #1e293b;
 }
 
-/* CONFIGURACIÓN */
+/* CONFIGURACIÃ“N */
 .config-card {
     background: white;
     border-radius: 18px;
@@ -239,7 +239,7 @@ input:checked + .slider:before {
 }
 
 .badge-tipo.manual {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
     color: white;
 }
 

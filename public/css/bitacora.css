@@ -1,4 +1,4 @@
-/* CONTENEDOR PRINCIPAL */
+﻿/* CONTENEDOR PRINCIPAL */
 .bitacora-wrapper {
     max-width: 1200px;
     margin: 0 auto;
@@ -51,7 +51,7 @@
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
-/* ESTADÍSTICAS */
+/* ESTADÃSTICAS */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -88,7 +88,7 @@
 .stat-icon.total { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
 .stat-icon.hoy { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
 .stat-icon.error { background: linear-gradient(135deg, #ef4444 0%, #f87171 100%); }
-.stat-icon.login { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.stat-icon.login { background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%); }
 
 .stat-info h4 {
     margin: 0 0 5px 0;
@@ -201,7 +201,7 @@
 .badge-accion.DELETE { background: #fee2e2; color: #991b1b; }
 .badge-accion.LOGIN { background: #fef3c7; color: #92400e; }
 
-/* ICONOS ACCIÓN */
+/* ICONOS ACCIÃ“N */
 .action-icon {
     width: 32px;
     height: 32px;
@@ -218,7 +218,7 @@
 .action-icon.DELETE { background: linear-gradient(135deg, #ef4444 0%, #f87171 100%); }
 .action-icon.LOGIN { background: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%); }
 
-/* PAGINACIÓN */
+/* PAGINACIÃ“N */
 .pagination {
     display: flex;
     justify-content: flex-end;

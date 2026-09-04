@@ -1,10 +1,10 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
 <div style="max-width: 1400px; margin: 0 auto; padding: 20px;">
     <div class="page-header">
         <div class="header-content">
-            <h1><i class="fas fa-chart-line me-2"></i> Reporte de Evolución</h1>
+            <h1><i class="fas fa-chart-line me-2"></i> Reporte de EvoluciÃ³n</h1>
             <p>Tendencias de pacientes, estados y diarios del sistema</p>
         </div>
         <div class="header-buttons">
@@ -15,7 +15,7 @@
     </div>
 
     <div style="background:white; border-radius:16px; padding:24px; box-shadow:0 4px 20px rgba(0,0,0,0.06); margin-bottom:24px;">
-        <h4 style="margin:0 0 16px 0; color:#1e293b; font-size:16px;"><i class="fas fa-user-plus" style="color:#667eea;"></i> Nuevos Pacientes por Mes</h4>
+        <h4 style="margin:0 0 16px 0; color:#1e293b; font-size:16px;"><i class="fas fa-user-plus" style="color:var(--sipce-primary);"></i> Nuevos Pacientes por Mes</h4>
         <div style="display:flex; align-items:end; gap:8px; height:200px; padding-top:10px;">
             @php
                 $nuevosPorMes = $estadisticas['nuevos_por_mes'] ?? collect();
@@ -24,7 +24,7 @@
             @forelse($nuevosPorMes as $item)
             <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%;">
                 <span style="font-size:11px; color:#475569; font-weight:600; margin-bottom:4px;">{{ $item->total }}</span>
-                <div style="width:100%; max-width:50px; height:{{ $maxNuevos > 0 ? round(($item->total / $maxNuevos) * 150) : 0 }}px; background:linear-gradient(180deg,#667eea,#764ba2); border-radius:6px 6px 0 0;"></div>
+                <div style="width:100%; max-width:50px; height:{{ $maxNuevos > 0 ? round(($item->total / $maxNuevos) * 150) : 0 }}px; background:linear-gradient(180deg,var(--sipce-primary),var(--sipce-primary-dark)); border-radius:6px 6px 0 0;"></div>
                 <span style="font-size:10px; color:#94a3b8; margin-top:6px; text-align:center;">{{ $item->mes }}</span>
             </div>
             @empty
@@ -43,8 +43,8 @@
             @forelse($porEstado as $estado)
             @php
                 $pct = round(($estado->total / $totalEstados) * 100);
-                $barColors = ['activo' => '#10b981', 'inactivo' => '#94a3b8', 'egresado' => '#667eea'];
-                $barColor = $barColors[$estado->estado] ?? '#667eea';
+                $barColors = ['activo' => '#10b981', 'inactivo' => '#94a3b8', 'egresado' => 'var(--sipce-primary)'];
+                $barColor = $barColors[$estado->estado] ?? 'var(--sipce-primary)';
             @endphp
             <div style="margin-bottom:12px;">
                 <div style="display:flex; justify-content:space-between; margin-bottom:4px;">

@@ -1,24 +1,24 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
 <div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
     <div class="page-header">
         <div class="header-content">
             <h1><i class="fas fa-chart-bar me-2"></i> Reportes</h1>
-            <p>Estadísticas y análisis del sistema</p>
+            <p>EstadÃ­sticas y anÃ¡lisis del sistema</p>
         </div>
     </div>
 
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;">
         <a href="{{ route('reportes.pacientes') }}" style="text-decoration:none;">
-            <div style="background:white; border-radius:16px; padding:30px; box-shadow:0 4px 20px rgba(0,0,0,0.06); border-left:4px solid #667eea; transition:transform 0.2s, box-shadow 0.2s; cursor:pointer;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 30px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 4px 20px rgba(0,0,0,0.06)'">
+            <div style="background:white; border-radius:16px; padding:30px; box-shadow:0 4px 20px rgba(0,0,0,0.06); border-left:4px solid var(--sipce-primary); transition:transform 0.2s, box-shadow 0.2s; cursor:pointer;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 30px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 4px 20px rgba(0,0,0,0.06)'">
                 <div style="display:flex; align-items:center; gap:16px;">
-                    <div style="width:56px; height:56px; border-radius:14px; background:linear-gradient(135deg,#667eea,#764ba2); display:flex; align-items:center; justify-content:center;">
+                    <div style="width:56px; height:56px; border-radius:14px; background:linear-gradient(135deg,var(--sipce-primary),var(--sipce-primary-dark)); display:flex; align-items:center; justify-content:center;">
                         <i class="fas fa-users" style="font-size:24px; color:white;"></i>
                     </div>
                     <div>
                         <h3 style="margin:0; color:#1e293b; font-size:18px;">Pacientes</h3>
-                        <p style="margin:4px 0 0 0; color:#64748b; font-size:13px;">Estadísticas de pacientes</p>
+                        <p style="margin:4px 0 0 0; color:#64748b; font-size:13px;">EstadÃ­sticas de pacientes</p>
                     </div>
                 </div>
             </div>
@@ -45,8 +45,8 @@
                         <i class="fas fa-chart-line" style="font-size:24px; color:white;"></i>
                     </div>
                     <div>
-                        <h3 style="margin:0; color:#1e293b; font-size:18px;">Evolución</h3>
-                        <p style="margin:4px 0 0 0; color:#64748b; font-size:13px;">Evolución de pacientes</p>
+                        <h3 style="margin:0; color:#1e293b; font-size:18px;">EvoluciÃ³n</h3>
+                        <p style="margin:4px 0 0 0; color:#64748b; font-size:13px;">EvoluciÃ³n de pacientes</p>
                     </div>
                 </div>
             </div>

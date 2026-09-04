@@ -1,4 +1,4 @@
-<div class="modal-cancel" id="modalCancelar">
+﻿<div class="modal-cancel" id="modalCancelar">
     <div class="modal-cancel-content">
         <div class="modal-cancel-header">
             <h4>
@@ -18,13 +18,13 @@
             <div class="form-group">
                 <label for="motivo">
                     <i class="fas fa-comment-alt me-2"></i>
-                    Motivo de cancelación
+                    Motivo de cancelaciÃ³n
                 </label>
                 <textarea 
                     name="motivo_cancelacion" 
                     id="motivo" 
                     required 
-                    placeholder="Explica brevemente el motivo de la cancelación..."
+                    placeholder="Explica brevemente el motivo de la cancelaciÃ³n..."
                 ></textarea>
             </div>
 
@@ -32,10 +32,10 @@
                 <input type="checkbox" name="reprogramar" id="reprogramar" value="1">
                 <div>
                     <strong style="display: block; color: #1e293b;">
-                        <i class="fas fa-calendar-alt me-2" style="color: #667eea;"></i>
+                        <i class="fas fa-calendar-alt me-2" style="color: var(--sipce-primary);"></i>
                         Reprogramar esta cita
                     </strong>
-                    <small style="color: #64748b;">Se abrirá el formulario para agendar nueva fecha</small>
+                    <small style="color: #64748b;">Se abrirÃ¡ el formulario para agendar nueva fecha</small>
                 </div>
             </label>
 
@@ -44,7 +44,7 @@
                     <i class="fas fa-times me-2"></i>Cerrar
                 </button>
                 <button type="submit" class="btn-confirm-cancel">
-                    <i class="fas fa-check me-2"></i>Confirmar Cancelación
+                    <i class="fas fa-check me-2"></i>Confirmar CancelaciÃ³n
                 </button>
             </div>
         </form>
@@ -158,7 +158,7 @@
 
 .form-group textarea:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: var(--sipce-primary);
 }
 
 .reprogramar-option {
@@ -175,14 +175,14 @@
 }
 
 .reprogramar-option:hover {
-    border-color: #667eea;
+    border-color: var(--sipce-primary);
     background: #f0f4ff;
 }
 
 .reprogramar-option input[type="checkbox"] {
     width: 20px;
     height: 20px;
-    accent-color: #667eea;
+    accent-color: var(--sipce-primary);
 }
 
 .modal-actions {

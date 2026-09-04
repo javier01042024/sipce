@@ -1,4 +1,4 @@
-<div id="tab-notas" class="tab-panel">
+﻿<div id="tab-notas" class="tab-panel">
 
     {{-- CSS TEMPORAL PARA NOTAS --}}
     <style>
@@ -11,8 +11,8 @@
             background: white;
             border-radius: 18px;
             overflow: hidden;
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.12);
-            border: 1px solid rgba(102, 126, 234, 0.08);
+            box-shadow: 0 15px 40px rgba(var(--sipce-primary-rgb), 0.12);
+            border: 1px solid rgba(var(--sipce-primary-rgb), 0.08);
             margin-bottom: 25px;
         }
 
@@ -42,7 +42,7 @@
 
         .btn-nueva-nota {
             background: white;
-            color: #667eea;
+            color: var(--sipce-primary);
             border: none;
             padding: 10px 20px;
             border-radius: 25px;
@@ -75,12 +75,12 @@
             background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
             padding: 18px;
             border-radius: 12px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid var(--sipce-primary);
             transition: all 0.3s;
         }
 
         .nota-item:hover {
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+            box-shadow: 0 4px 12px rgba(var(--sipce-primary-rgb), 0.1);
         }
 
         .nota-cabecera {
@@ -101,7 +101,7 @@
         .nota-avatar-small {
             width: 36px;
             height: 36px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -126,7 +126,7 @@
 
         .nota-user-rol {
             font-size: 11px;
-            color: #667eea;
+            color: var(--sipce-primary);
             display: flex;
             align-items: center;
             gap: 4px;
@@ -156,7 +156,7 @@
             margin-bottom: 10px;
         }
 
-        /* Vínculo con diario */
+        /* VÃ­nculo con diario */
         .nota-vinculo-diario {
             margin-top: 12px;
             padding: 10px 14px;
@@ -203,7 +203,7 @@
             align-items: center;
             margin-top: 10px;
             padding-top: 10px;
-            border-top: 1px solid rgba(102, 126, 234, 0.1);
+            border-top: 1px solid rgba(var(--sipce-primary-rgb), 0.1);
         }
 
         .btn-eliminar-nota {
@@ -230,8 +230,8 @@
             background: white;
             border-radius: 18px;
             overflow: hidden;
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.12);
-            border: 1px solid rgba(102, 126, 234, 0.08);
+            box-shadow: 0 15px 40px rgba(var(--sipce-primary-rgb), 0.12);
+            border: 1px solid rgba(var(--sipce-primary-rgb), 0.08);
             margin-top: 20px;
             animation: slideDown 0.3s ease;
         }
@@ -249,7 +249,7 @@
         }
 
         .form-tab-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
             color: white;
             padding: 18px 25px;
         }
@@ -282,7 +282,7 @@
         }
 
         .form-group label i {
-            color: #667eea;
+            color: var(--sipce-primary);
         }
 
         .form-control {
@@ -298,8 +298,8 @@
         }
 
         .form-control:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: var(--sipce-primary);
+            box-shadow: 0 0 0 3px rgba(var(--sipce-primary-rgb), 0.1);
             outline: none;
             background: white;
         }
@@ -396,7 +396,7 @@
         }
 
         .btn-save-tab {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
             color: white;
             border: none;
             padding: 12px 24px;
@@ -408,15 +408,15 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 15px rgba(var(--sipce-primary-rgb), 0.3);
         }
 
         .btn-save-tab:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 6px 20px rgba(var(--sipce-primary-rgb), 0.4);
         }
 
-        /* Estado vacío */
+        /* Estado vacÃ­o */
         .empty-state-tab {
             text-align: center;
             padding: 50px 20px;
@@ -442,7 +442,7 @@
         }
 
         .btn-empty-tab {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
             color: white;
             border: none;
             padding: 10px 24px;
@@ -454,12 +454,12 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 15px rgba(var(--sipce-primary-rgb), 0.3);
         }
 
         .btn-empty-tab:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 6px 20px rgba(var(--sipce-primary-rgb), 0.4);
         }
 
         /* Responsive */
@@ -558,7 +558,7 @@
                         {{ $nota->anotacion }}
                     </div>
 
-                    {{-- VÍNCULO CON DIARIO --}}
+                    {{-- VÃNCULO CON DIARIO --}}
                     @if($nota->diario_id && $nota->diario)
                     <div class="nota-vinculo-diario">
                         <i class="fas fa-link"></i>
@@ -572,7 +572,7 @@
                     </div>
                     @endif
 
-                    {{-- FOOTER CON BOTÓN ELIMINAR --}}
+                    {{-- FOOTER CON BOTÃ“N ELIMINAR --}}
                     <div class="nota-footer">
                         <span style="font-size: 11px; color: #94a3b8;">
                             <i class="fas fa-hashtag"></i>
@@ -599,7 +599,7 @@
                     <i class="fas fa-clipboard"></i>
                 </div>
                 <h4>No hay notas registradas</h4>
-                <p>Las notas y anotaciones sobre el paciente aparecerán aquí</p>
+                <p>Las notas y anotaciones sobre el paciente aparecerÃ¡n aquÃ­</p>
                 <button class="btn-empty-tab" onclick="toggleFormNota()">
                     <i class="fas fa-plus-circle"></i>
                     Crear primera nota
@@ -614,7 +614,7 @@
         <div class="form-tab-header">
             <h3>
                 <i class="fas fa-pen"></i>
-                Nueva Anotación para {{ $paciente->nombre_completo }}
+                Nueva AnotaciÃ³n para {{ $paciente->nombre_completo }}
             </h3>
         </div>
 
@@ -627,18 +627,18 @@
                 <div class="form-group">
                     <label for="anotacion">
                         <i class="fas fa-pencil-alt"></i>
-                        Anotación
+                        AnotaciÃ³n
                     </label>
                     <textarea
                         name="anotacion"
                         id="anotacion"
                         rows="5"
                         class="form-control"
-                        placeholder="Escriba la anotación, observación o nota sobre el paciente..."
+                        placeholder="Escriba la anotaciÃ³n, observaciÃ³n o nota sobre el paciente..."
                         required>{{ old('anotacion') }}</textarea>
                     <small class="form-hint">
                         <i class="fas fa-info-circle"></i>
-                        Esta nota quedará registrada en el expediente del paciente
+                        Esta nota quedarÃ¡ registrada en el expediente del paciente
                     </small>
                 </div>
 
@@ -676,13 +676,13 @@
                 @else
                 <div class="sin-diario-aviso">
                     <i class="fas fa-info-circle"></i>
-                    <span>El paciente aún no tiene entradas en su diario. La nota se guardará sin vincular.</span>
+                    <span>El paciente aÃºn no tiene entradas en su diario. La nota se guardarÃ¡ sin vincular.</span>
                 </div>
                 @endif
                 @else
                 <div class="sin-acceso-aviso">
                     <i class="fas fa-user-lock"></i>
-                    <span>Este paciente no tiene acceso al sistema, por lo tanto no tiene diario. La nota se guardará sin vincular.</span>
+                    <span>Este paciente no tiene acceso al sistema, por lo tanto no tiene diario. La nota se guardarÃ¡ sin vincular.</span>
                 </div>
                 @endif
 
@@ -724,8 +724,8 @@
 
     function confirmarEliminarNota(form) {
         SIPCE_ALERT.confirmDelete({
-            title: '¿Eliminar nota?',
-            text: 'Esta acción no se puede deshacer.'
+            title: 'Â¿Eliminar nota?',
+            text: 'Esta acciÃ³n no se puede deshacer.'
         }).then(function(result) {
             if (result.isConfirmed) {
                 form.submit();

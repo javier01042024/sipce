@@ -1,12 +1,12 @@
-<div id="tab-sesiones" class="tab-panel">
+﻿<div id="tab-sesiones" class="tab-panel">
 
     <style>
         .sesiones-card {
             background: white;
             border-radius: 18px;
             overflow: hidden;
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.12);
-            border: 1px solid rgba(102, 126, 234, 0.08);
+            box-shadow: 0 15px 40px rgba(var(--sipce-primary-rgb), 0.12);
+            border: 1px solid rgba(var(--sipce-primary-rgb), 0.08);
             margin-bottom: 25px;
         }
         .sesiones-header {
@@ -127,7 +127,7 @@
         .btn-sesion-edit {
             padding: 6px 14px;
             background: white;
-            color: #667eea;
+            color: var(--sipce-primary);
             border: 1px solid #c7d2fe;
             border-radius: 8px;
             font-size: 12px;
@@ -139,7 +139,7 @@
             gap: 5px;
             transition: all 0.2s;
         }
-        .btn-sesion-edit:hover { background: #667eea; color: white; border-color: #667eea; }
+        .btn-sesion-edit:hover { background: var(--sipce-primary); color: white; border-color: var(--sipce-primary); }
         @media (max-width: 768px) {
             .sesion-cabecera { flex-direction: column; align-items: flex-start; }
             .sesion-meta { width: 100%; }
@@ -150,11 +150,11 @@
         <div class="sesiones-header">
             <h3>
                 <i class="fas fa-head-side-virus"></i>
-                Sesiones Clínicas
+                Sesiones ClÃ­nicas
             </h3>
             <a href="{{ route('sesiones.create') }}" class="btn-nueva-nota" style="background:white;color:#0ea5e9;">
                 <i class="fas fa-plus-circle"></i>
-                Nueva Sesión
+                Nueva SesiÃ³n
             </a>
         </div>
 
@@ -191,7 +191,7 @@
 
                     @if($sesion->observaciones_clinicas)
                     <div class="sesion-observaciones">
-                        <strong><i class="fas fa-notes-medical"></i> Observaciones clínicas</strong>
+                        <strong><i class="fas fa-notes-medical"></i> Observaciones clÃ­nicas</strong>
                         {{ $sesion->observaciones_clinicas }}
                     </div>
                     @endif
@@ -212,10 +212,10 @@
                         <i class="fas fa-clipboard"></i>
                     </div>
                     <h4>No hay sesiones registradas</h4>
-                    <p>Las sesiones clínicas de este paciente aparecerán aquí</p>
+                    <p>Las sesiones clÃ­nicas de este paciente aparecerÃ¡n aquÃ­</p>
                     <a href="{{ route('sesiones.create') }}" class="btn-empty-tab">
                         <i class="fas fa-plus-circle"></i>
-                        Registrar primera sesión
+                        Registrar primera sesiÃ³n
                     </a>
                 </div>
             @endif

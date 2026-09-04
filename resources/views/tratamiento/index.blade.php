@@ -1,11 +1,11 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
 <div class="estados-container">
-    <div class="page-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div class="page-header" style="background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);">
         <div class="header-content">
             <h1><i class="fas fa-clipboard-list me-2"></i> Planes de Tratamiento</h1>
-            <p>Gestión de planes terapéuticos por paciente</p>
+            <p>GestiÃ³n de planes terapÃ©uticos por paciente</p>
         </div>
         <div class="header-buttons">
             <a href="{{ route('tratamiento.create') }}" class="btn-nuevo">
@@ -23,7 +23,7 @@
                 <thead>
                     <tr>
                         <th>Paciente</th>
-                        <th>Título</th>
+                        <th>TÃ­tulo</th>
                         <th>Estado</th>
                         <th>Fecha Inicio</th>
                         <th>Objetivos</th>

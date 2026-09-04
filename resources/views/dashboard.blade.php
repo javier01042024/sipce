@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
 
@@ -24,7 +24,7 @@
             </div>
         </div>
         
-        <!-- ESTADÍSTICAS -->
+        <!-- ESTADÃSTICAS -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-content">
@@ -83,18 +83,18 @@
             </div>
         </div>
         
-        <!-- GRÁFICAS -->
+        <!-- GRÃFICAS -->
         <div class="charts-grid">
             <div class="chart-card">
                 <div class="chart-header">
                     <h3>
                         <i class="fas fa-chart-line"></i>
-                        Evolución de Pacientes
+                        EvoluciÃ³n de Pacientes
                     </h3>
                     <select class="chart-select" id="periodoSelect">
                         <option value="semana">Esta semana</option>
                         <option value="mes" selected>Este mes</option>
-                        <option value="año">Este año</option>
+                        <option value="aÃ±o">Este aÃ±o</option>
                     </select>
                 </div>
                 <div class="chart-container">
@@ -106,7 +106,7 @@
                 <div class="chart-header">
                     <h3>
                         <i class="fas fa-chart-bar"></i>
-                        Distribución por Prioridad
+                        DistribuciÃ³n por Prioridad
                     </h3>
                     <select class="chart-select" id="tipoChartSelect">
                         <option value="prioridad" selected>Por Prioridad</option>
@@ -147,7 +147,7 @@
                     </div>
                     @empty
                     <div class="activity-item">
-                        <div class="activity-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <div class="activity-icon" style="background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);">
                             <i class="fas fa-info-circle"></i>
                         </div>
                         <div class="activity-content">
@@ -165,7 +165,7 @@
                 <div class="activity-header">
                     <h3>
                         <i class="fas fa-calendar-alt"></i>
-                        Próximas Citas
+                        PrÃ³ximas Citas
                     </h3>
                     <a href="{{ route('citas.index') }}" class="btn-view-all">
                         Ver todas <i class="fas fa-arrow-right"></i>
@@ -180,7 +180,7 @@
                         </div>
                         <div class="cita-info">
                             <h4>{{ $cita->paciente->nombre_completo ?? 'Sin paciente' }}</h4>
-                            <p>{{ $cita->objetivo ?? 'Consulta' }} • {{ $cita->planificacion ?? 'General' }}</p>
+                            <p>{{ $cita->objetivo ?? 'Consulta' }} â€¢ {{ $cita->planificacion ?? 'General' }}</p>
                         </div>
                         <div class="cita-hora">{{ \Carbon\Carbon::parse($cita->fecha)->format('h:i A') }}</div>
                     </div>
@@ -189,18 +189,18 @@
                     
                     @forelse($citasFuturas as $cita)
                     <div class="cita-item futura">
-                        <div class="activity-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <div class="activity-icon" style="background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);">
                             <i class="fas fa-calendar"></i>
                         </div>
                         <div class="cita-info">
                             <h4>{{ $cita->paciente->nombre_completo ?? 'Sin paciente' }}</h4>
-                            <p>{{ $cita->objetivo ?? 'Consulta' }} • {{ $cita->planificacion ?? 'General' }}</p>
+                            <p>{{ $cita->objetivo ?? 'Consulta' }} â€¢ {{ $cita->planificacion ?? 'General' }}</p>
                         </div>
                         <div class="cita-hora">{{ $cita->fecha_formateada }}</div>
                     </div>
                     @empty
                     <div class="cita-item futura">
-                        <div class="activity-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <div class="activity-icon" style="background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);">
                             <i class="fas fa-calendar"></i>
                         </div>
                         <div class="cita-info">
@@ -214,10 +214,10 @@
             </div>
         </div>
         
-        <!-- ACCESOS RÁPIDOS -->
+        <!-- ACCESOS RÃPIDOS -->
         <div class="quick-actions">
             <a href="{{ route('pacientes.create') }}" class="quick-btn">
-                <div class="quick-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <div class="quick-icon" style="background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);">
                     <i class="fas fa-user-plus"></i>
                 </div>
                 <span>Nuevo Paciente</span>

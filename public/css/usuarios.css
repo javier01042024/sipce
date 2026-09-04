@@ -1,4 +1,4 @@
-/* CONTENEDOR PRINCIPAL */
+﻿/* CONTENEDOR PRINCIPAL */
 .usuarios-wrapper {
     max-width: 1200px;
     margin: 0 auto;
@@ -6,7 +6,7 @@
 }
 
 /* Estilos de page-header, header-content, header-buttons y btn-nuevo
-   ahora están en tables.css (global) */
+   ahora estÃ¡n en tables.css (global) */
 
 .btn-roles {
     background: rgba(255,255,255,0.2);
@@ -16,10 +16,10 @@
 
 .btn-roles:hover {
     background: white;
-    color: #667eea;
+    color: var(--sipce-primary);
 }
 
-/* ESTADÍSTICAS */
+/* ESTADÃSTICAS */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -31,7 +31,7 @@
     background: white;
     border-radius: 14px;
     padding: 20px;
-    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.1);
+    box-shadow: 0 5px 20px rgba(var(--sipce-primary-rgb), 0.1);
     display: flex;
     align-items: center;
     gap: 15px;
@@ -40,7 +40,7 @@
 
 .stat-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+    box-shadow: 0 8px 25px rgba(var(--sipce-primary-rgb), 0.15);
 }
 
 .stat-icon {
@@ -55,7 +55,7 @@
 }
 
 .stat-icon.total {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
 }
 
 .stat-icon.admin {
@@ -84,8 +84,8 @@
     background: white;
     border-radius: 18px;
     overflow: hidden;
-    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.12);
-    border: 1px solid rgba(102, 126, 234, 0.08);
+    box-shadow: 0 15px 40px rgba(var(--sipce-primary-rgb), 0.12);
+    border: 1px solid rgba(var(--sipce-primary-rgb), 0.08);
 }
 
 .card-header-custom {
@@ -151,7 +151,7 @@
     font-weight: 600;
     font-size: 14px;
     margin-right: 12px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
 }
 
 .user-info {
@@ -194,7 +194,7 @@
 }
 
 .badge-rol-user {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
 }
 
 .badge-rol-medico {
@@ -349,8 +349,8 @@
 
 .form-control:focus {
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: var(--sipce-primary);
+    box-shadow: 0 0 0 3px rgba(var(--sipce-primary-rgb), 0.1);
 }
 
 textarea.form-control {
@@ -361,7 +361,7 @@ textarea.form-control {
 .btn-submit {
     width: 100%;
     padding: 12px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
     color: white;
     border: none;
     border-radius: 10px;
@@ -373,7 +373,7 @@ textarea.form-control {
 
 .btn-submit:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 20px rgba(var(--sipce-primary-rgb), 0.3);
 }
 
 .btn-submit:disabled {
@@ -409,7 +409,7 @@ textarea.form-control {
 }
 
 .role-item:hover {
-    border-color: #667eea;
+    border-color: var(--sipce-primary);
     background: #f8fafc;
 }
 

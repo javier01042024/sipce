@@ -1,4 +1,4 @@
-/* ==========================================
+﻿/* ==========================================
    CSS EXCLUSIVO PARA LA TABLA DE PACIENTES
    ========================================== */
 
@@ -10,8 +10,8 @@
     background: white;
     border-radius: 18px;
     overflow: hidden;
-    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.12);
-    border: 1px solid rgba(102, 126, 234, 0.08);
+    box-shadow: 0 15px 40px rgba(var(--sipce-primary-rgb), 0.12);
+    border: 1px solid rgba(var(--sipce-primary-rgb), 0.08);
 }
 
 .card-header-custom {
@@ -41,7 +41,7 @@
 }
 
 /* ==========================================
-   BOTONES DE EXPORTACIÓN EN HEADER
+   BOTONES DE EXPORTACIÃ“N EN HEADER
    ========================================== */
 
 .export-buttons {
@@ -93,7 +93,7 @@
 }
 
 .btn-export-print {
-    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    background: linear-gradient(135deg, #6366f1 0%, var(--sipce-primary) 100%);
     box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
 }
 
@@ -143,7 +143,7 @@
 }
 
 .filter-group label i {
-    color: #667eea;
+    color: var(--sipce-primary);
     font-size: 13px;
 }
 
@@ -158,9 +158,9 @@
 }
 
 .filter-input:focus {
-    border-color: #667eea;
+    border-color: var(--sipce-primary);
     outline: none;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    box-shadow: 0 0 0 3px rgba(var(--sipce-primary-rgb), 0.1);
 }
 
 .btn-filter {
@@ -171,17 +171,17 @@
     font-size: 13px;
     cursor: pointer;
     transition: all 0.3s;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
     color: white;
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 4px 12px rgba(var(--sipce-primary-rgb), 0.3);
 }
 
 .btn-filter:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 6px 20px rgba(var(--sipce-primary-rgb), 0.4);
 }
 
 /* ==========================================
@@ -247,7 +247,7 @@
     width: 15px;
     height: 15px;
     cursor: pointer;
-    accent-color: #667eea;
+    accent-color: var(--sipce-primary);
 }
 
 .col-expediente {
@@ -256,7 +256,7 @@
 
 .expediente-number {
     font-weight: 700;
-    color: #667eea;
+    color: var(--sipce-primary);
     background: #eef2ff;
     padding: 3px 8px;
     border-radius: 6px;
@@ -278,7 +278,7 @@
 .paciente-avatar-small {
     width: 30px;
     height: 30px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
     border-radius: 6px;
     display: flex;
     align-items: center;
@@ -344,7 +344,7 @@
 }
 
 .email-link i {
-    color: #667eea;
+    color: var(--sipce-primary);
     font-size: 12px;
 }
 
@@ -435,7 +435,7 @@
 }
 
 .btn-edit:hover {
-    background: #4f46e5;
+    background: var(--sipce-primary);
 }
 
 .btn-delete {
@@ -447,7 +447,7 @@
 }
 
 /* ==========================================
-   ESTADO VACÍO
+   ESTADO VACÃO
    ========================================== */
 
 .empty-state {
@@ -490,7 +490,7 @@
 }
 
 /* ==========================================
-   PAGINACIÓN Y CONTROLES DATATABLES
+   PAGINACIÃ“N Y CONTROLES DATATABLES
    ========================================== */
 
 .dataTables_wrapper {
@@ -520,9 +520,9 @@
 }
 
 .dataTables_wrapper .dataTables_filter input:focus {
-    border-color: #667eea !important;
+    border-color: var(--sipce-primary) !important;
     outline: none !important;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+    box-shadow: 0 0 0 3px rgba(var(--sipce-primary-rgb), 0.1) !important;
 }
 
 .dataTables_wrapper .dataTables_paginate {
@@ -542,15 +542,15 @@
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    background: #667eea !important;
+    background: var(--sipce-primary) !important;
     color: white !important;
-    border-color: #667eea !important;
+    border-color: var(--sipce-primary) !important;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%) !important;
     color: white !important;
-    border-color: #667eea !important;
+    border-color: var(--sipce-primary) !important;
 }
 
 .dataTables_wrapper .dataTables_info {
@@ -560,7 +560,7 @@
 }
 
 /* ==========================================
-   RESPONSIVE - OCULTAR COLUMNAS EN MÓVIL
+   RESPONSIVE - OCULTAR COLUMNAS EN MÃ“VIL
    ========================================== */
 
 @media (max-width: 1024px) {

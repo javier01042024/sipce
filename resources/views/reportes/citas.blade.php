@@ -1,11 +1,11 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
 <div style="max-width: 1400px; margin: 0 auto; padding: 20px;">
     <div class="page-header">
         <div class="header-content">
             <h1><i class="fas fa-calendar-check me-2"></i> Reporte de Citas</h1>
-            <p>Estadísticas y listado de citas</p>
+            <p>EstadÃ­sticas y listado de citas</p>
         </div>
         <div class="header-buttons">
             <a href="{{ route('reportes.index') }}" class="btn-nuevo">
@@ -32,10 +32,10 @@
                     <option value="confirmada" {{ request('estado') === 'confirmada' ? 'selected' : '' }}>Confirmada</option>
                     <option value="atendida" {{ request('estado') === 'atendida' ? 'selected' : '' }}>Atendida</option>
                     <option value="cancelada" {{ request('estado') === 'cancelada' ? 'selected' : '' }}>Cancelada</option>
-                    <option value="no_asistio" {{ request('estado') === 'no_asistio' ? 'selected' : '' }}>No Asistió</option>
+                    <option value="no_asistio" {{ request('estado') === 'no_asistio' ? 'selected' : '' }}>No AsistiÃ³</option>
                 </select>
             </div>
-            <button type="submit" style="padding:8px 20px; background:linear-gradient(135deg,#667eea,#764ba2); color:white; border:none; border-radius:8px; font-weight:600; cursor:pointer; font-size:13px;">
+            <button type="submit" style="padding:8px 20px; background:linear-gradient(135deg,var(--sipce-primary),var(--sipce-primary-dark)); color:white; border:none; border-radius:8px; font-weight:600; cursor:pointer; font-size:13px;">
                 <i class="fas fa-filter"></i> Filtrar
             </button>
         </form>
@@ -43,7 +43,7 @@
 
     <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:16px; margin-bottom:24px;">
         <div style="background:white; border-radius:14px; padding:20px; box-shadow:0 4px 16px rgba(0,0,0,0.05); text-align:center;">
-            <div style="font-size:32px; font-weight:700; color:#667eea;">{{ $estadisticas['total'] ?? 0 }}</div>
+            <div style="font-size:32px; font-weight:700; color:var(--sipce-primary);">{{ $estadisticas['total'] ?? 0 }}</div>
             <div style="font-size:13px; color:#64748b; margin-top:4px;">Total Citas</div>
         </div>
         <div style="background:white; border-radius:14px; padding:20px; box-shadow:0 4px 16px rgba(0,0,0,0.05); text-align:center;">
@@ -60,7 +60,7 @@
         </div>
         <div style="background:white; border-radius:14px; padding:20px; box-shadow:0 4px 16px rgba(0,0,0,0.05); text-align:center;">
             <div style="font-size:32px; font-weight:700; color:#94a3b8;">{{ $estadisticas['no_asistio'] ?? 0 }}</div>
-            <div style="font-size:13px; color:#64748b; margin-top:4px;">No Asistió</div>
+            <div style="font-size:13px; color:#64748b; margin-top:4px;">No AsistiÃ³</div>
         </div>
         <div style="background:white; border-radius:14px; padding:20px; box-shadow:0 4px 16px rgba(0,0,0,0.05); text-align:center;">
             @php
@@ -74,7 +74,7 @@
     </div>
 
     <div style="background:white; border-radius:16px; padding:24px; box-shadow:0 4px 20px rgba(0,0,0,0.06); margin-bottom:24px;">
-        <h4 style="margin:0 0 16px 0; color:#1e293b; font-size:16px;"><i class="fas fa-chart-bar" style="color:#667eea;"></i> Citas por Mes</h4>
+        <h4 style="margin:0 0 16px 0; color:#1e293b; font-size:16px;"><i class="fas fa-chart-bar" style="color:var(--sipce-primary);"></i> Citas por Mes</h4>
         <div style="display:flex; align-items:end; gap:8px; height:180px; padding-top:10px;">
             @php
                 $meses = $estadisticas['por_mes'] ?? collect();
@@ -83,7 +83,7 @@
             @forelse($meses as $mes)
             <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%;">
                 <span style="font-size:11px; color:#475569; font-weight:600; margin-bottom:4px;">{{ $mes->total }}</span>
-                <div style="width:100%; max-width:50px; height:{{ $maxCitas > 0 ? round(($mes->total / $maxCitas) * 130) : 0 }}px; background:linear-gradient(180deg,#667eea,#764ba2); border-radius:6px 6px 0 0; transition:height 0.3s;"></div>
+                <div style="width:100%; max-width:50px; height:{{ $maxCitas > 0 ? round(($mes->total / $maxCitas) * 130) : 0 }}px; background:linear-gradient(180deg,var(--sipce-primary),var(--sipce-primary-dark)); border-radius:6px 6px 0 0; transition:height 0.3s;"></div>
                 <span style="font-size:10px; color:#94a3b8; margin-top:6px; text-align:center;">{{ $mes->mes }}</span>
             </div>
             @empty

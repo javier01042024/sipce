@@ -1,4 +1,4 @@
-@php use Illuminate\Support\Facades\DB; @endphp
+﻿@php use Illuminate\Support\Facades\DB; @endphp
 
 <div class="modal-overlay" id="userModal">
     <div class="modal-content">
@@ -24,7 +24,7 @@
             
             <div class="form-group">
                 <label for="email">
-                    <i class="fas fa-envelope me-2"></i>Correo Electrónico
+                    <i class="fas fa-envelope me-2"></i>Correo ElectrÃ³nico
                 </label>
                 <input type="email" class="form-control" id="email" name="email" required 
                        placeholder="ejemplo@correo.com">
@@ -32,21 +32,21 @@
             
             <div class="form-group">
                 <label for="password">
-                    <i class="fas fa-lock me-2"></i>Contraseña
+                    <i class="fas fa-lock me-2"></i>ContraseÃ±a
                 </label>
                 <input type="password" class="form-control" id="password" name="password" 
-                       placeholder="Mínimo 8 caracteres">
+                       placeholder="MÃ­nimo 8 caracteres">
                 <small class="text-muted" id="passwordHelp" style="display:none;">
-                    Dejar en blanco para mantener la contraseña actual
+                    Dejar en blanco para mantener la contraseÃ±a actual
                 </small>
             </div>
             
             <div class="form-group">
                 <label for="password_confirmation">
-                    <i class="fas fa-lock me-2"></i>Confirmar Contraseña
+                    <i class="fas fa-lock me-2"></i>Confirmar ContraseÃ±a
                 </label>
                 <input type="password" class="form-control" id="password_confirmation" 
-                       name="password_confirmation" placeholder="Repite la contraseña">
+                       name="password_confirmation" placeholder="Repite la contraseÃ±a">
             </div>
             
             <div class="form-group">
@@ -65,11 +65,11 @@
                 <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: #f8fafc; border-radius: 10px;">
                     <input type="checkbox" id="es_paciente" name="es_paciente" value="1" style="width: 20px; height: 20px;">
                     <label for="es_paciente" style="margin: 0; font-weight: 600; color: #1e293b;">
-                        <i class="fas fa-hospital-user me-2" style="color: #667eea;"></i>
+                        <i class="fas fa-hospital-user me-2" style="color: var(--sipce-primary);"></i>
                         Este usuario es un paciente
                     </label>
                 </div>
-                <small class="text-muted">Si es paciente, podrá acceder al sistema y escribir en su diario</small>
+                <small class="text-muted">Si es paciente, podrÃ¡ acceder al sistema y escribir en su diario</small>
             </div>
             
             <div class="form-group" id="pacienteSelectGroup" style="display: none;">

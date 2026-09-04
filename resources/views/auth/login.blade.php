@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>SIPCE - Iniciar Sesión</title>
+    <title>SIPCE - Iniciar SesiÃ³n</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -48,7 +48,7 @@
         /* Lado izquierdo - Branding */
         .brand-side {
             flex: 1;
-            background: linear-gradient(145deg, #4f46e5, #7c3aed);
+            background: linear-gradient(145deg, var(--sipce-primary), var(--sipce-primary-dark));
             padding: 2rem;
             display: flex;
             flex-direction: column;
@@ -115,7 +115,7 @@
             color: #6b7280;
             margin-bottom: 1.2rem;
             font-size: 0.8rem;
-            border-left: 3px solid #7c3aed;
+            border-left: 3px solid var(--sipce-primary-dark);
             padding-left: 10px;
         }
 
@@ -133,7 +133,7 @@
 
         label i {
             margin-right: 5px;
-            color: #7c3aed;
+            color: var(--sipce-primary-dark);
         }
 
         .password-wrapper {
@@ -154,7 +154,7 @@
 
         .password-wrapper input:focus {
             outline: none;
-            border-color: #7c3aed;
+            border-color: var(--sipce-primary-dark);
             background: white;
             box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
         }
@@ -183,7 +183,7 @@
         }
 
         .toggle-password:hover {
-            color: #7c3aed;
+            color: var(--sipce-primary-dark);
         }
 
         input {
@@ -198,7 +198,7 @@
 
         input:focus {
             outline: none;
-            border-color: #7c3aed;
+            border-color: var(--sipce-primary-dark);
             background: white;
             box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
         }
@@ -236,11 +236,11 @@
             width: 14px;
             height: 14px;
             margin: 0;
-            accent-color: #7c3aed;
+            accent-color: var(--sipce-primary-dark);
         }
 
         .forgot {
-            color: #7c3aed;
+            color: var(--sipce-primary-dark);
             text-decoration: none;
             font-weight: 500;
         }
@@ -249,7 +249,7 @@
 
         button[type="submit"] {
             width: 100%;
-            background: linear-gradient(105deg, #4f46e5, #7c3aed);
+            background: linear-gradient(105deg, var(--sipce-primary), var(--sipce-primary-dark));
             border: none;
             padding: 0.65rem;
             border-radius: 10px;
@@ -324,7 +324,9 @@
             .form-side { padding: 1.2rem; }
         }
     </style>
-</head>
+<style>:root{--sipce-primary:#667eea;--sipce-primary-dark:#5a6bd9;--sipce-primary-rgb:102, 126, 234}</style>
+
+  </head>
 <body>
     <div class="login-card">
         <!-- Lado izquierdo -->
@@ -372,7 +374,7 @@
                 @csrf
 
                 <div class="input-group">
-                    <label><i class="fas fa-envelope"></i> Correo electrónico</label>
+                    <label><i class="fas fa-envelope"></i> Correo electrÃ³nico</label>
                     <input type="email" name="email" value="{{ old('email') }}" 
                            class="@error('email') is-invalid @enderror"
                            placeholder="ejemplo@empresa.com" autocomplete="email">
@@ -382,11 +384,11 @@
                 </div>
 
                 <div class="input-group">
-                    <label><i class="fas fa-lock"></i> Contraseña</label>
+                    <label><i class="fas fa-lock"></i> ContraseÃ±a</label>
                     <div class="password-wrapper">
                         <input type="password" name="password" id="password"
                                class="@error('password') is-invalid @enderror"
-                               placeholder="••••••••" autocomplete="current-password">
+                               placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" autocomplete="current-password">
                         <button type="button" class="toggle-password" onclick="togglePassword()">
                             <i class="far fa-eye" id="toggleIcon"></i>
                         </button>
@@ -401,11 +403,11 @@
                         <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
                         <span>Recordarme</span>
                     </label>
-                    <a href="{{ route('password.request') }}" class="forgot">¿Olvidaste tu contraseña?</a>
+                    <a href="{{ route('password.request') }}" class="forgot">Â¿Olvidaste tu contraseÃ±a?</a>
                 </div>
 
                 <button type="submit" id="submitBtn">
-                    <i class="fas fa-sign-in-alt"></i> Iniciar sesión
+                    <i class="fas fa-sign-in-alt"></i> Iniciar sesiÃ³n
                 </button>
             </form>
         </div>
@@ -446,23 +448,23 @@
                 
                 // Validar email
                 if(!email.value.trim()) {
-                    markError(email, 'El correo electrónico es obligatorio');
+                    markError(email, 'El correo electrÃ³nico es obligatorio');
                     hasErr = true;
                 } else if(!email.value.includes('@')) {
-                    markError(email, 'Ingresa un correo electrónico válido');
+                    markError(email, 'Ingresa un correo electrÃ³nico vÃ¡lido');
                     hasErr = true;
                 }
                 
-                // Validar contraseña
+                // Validar contraseÃ±a
                 if(!pass.value.trim()) {
-                    markError(pass, 'La contraseña es obligatoria');
+                    markError(pass, 'La contraseÃ±a es obligatoria');
                     hasErr = true;
                 }
                 
                 if(hasErr) {
                     e.preventDefault();
                 } else {
-                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Iniciando sesión...';
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Iniciando sesiÃ³n...';
                     submitBtn.disabled = true;
                 }
             });

@@ -1,4 +1,4 @@
-/* ============================================ */
+﻿/* ============================================ */
 /* CONTENEDOR PRINCIPAL
 /* ============================================ */
 .citas-wrapper {
@@ -11,11 +11,11 @@
 /* HEADER - VIEJO
 /* ============================================ */
 .citas-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
     padding: 25px 30px;
     border-radius: 16px;
     margin-bottom: 30px;
-    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 4px 20px rgba(var(--sipce-primary-rgb), 0.3);
 }
 
 .citas-header h3 {
@@ -27,7 +27,7 @@
 
 .btn-nueva-cita {
     background: white;
-    color: #667eea;
+    color: var(--sipce-primary);
     border: none;
     padding: 10px 24px;
     border-radius: 25px;
@@ -44,7 +44,7 @@
 .btn-nueva-cita:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-    color: #764ba2;
+    color: var(--sipce-primary-dark);
 }
 
 /* ============================================ */
@@ -136,7 +136,7 @@
 
 .expediente-badge {
     font-size: 11px;
-    color: #667eea;
+    color: var(--sipce-primary);
     font-weight: 700;
     background: #eef2ff;
     padding: 2px 10px;
@@ -296,7 +296,7 @@
 }
 
 /* ============================================ */
-/* ESTADO VACÍO - VIEJO
+/* ESTADO VACÃO - VIEJO
 /* ============================================ */
 .empty-state {
     text-align: center;
@@ -308,7 +308,7 @@
 
 .empty-state i {
     font-size: 60px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(135deg, var(--sipce-primary), var(--sipce-primary-dark));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 15px;
