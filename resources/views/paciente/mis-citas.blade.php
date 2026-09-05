@@ -36,7 +36,7 @@
                             @endphp
                             <span class="sipce-badge {{ $badgeClass }}">{{ $cita->estado_texto }}</span>
                         </td>
-                        <td>{{ $cita->objetivo ? Str::limit($cita->objetivo, 60) : 'â€”' }}</td>
+                        <td>{{ $cita->objetivo ? Str::limit($cita->objetivo, 60) : '—' }}</td>
                     </tr>
                     @empty
                     <tr>

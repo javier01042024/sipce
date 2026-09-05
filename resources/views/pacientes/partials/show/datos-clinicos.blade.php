@@ -258,7 +258,7 @@
             <tbody>
                 @foreach($paciente->diagnosticos as $diag)
                 <tr style="border-bottom: 1px solid #f1f5f9;">
-                    <td style="padding: 8px 10px; font-weight: 600; color: var(--sipce-primary);">{{ $diag->codigo_cie ?? 'â€”' }}</td>
+                    <td style="padding: 8px 10px; font-weight: 600; color: var(--sipce-primary);">{{ $diag->codigo_cie ?? '—' }}</td>
                     <td style="padding: 8px 10px;">
                         {{ $diag->diagnostico }}
                         @if($diag->observaciones)
@@ -269,10 +269,10 @@
                         @if($diag->es_principal)
                         <span style="background: #d1fae5; color: #065f46; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600;">Principal</span>
                         @else
-                        <span style="color: #cbd5e1;">â€”</span>
+                        <span style="color: #cbd5e1;">—</span>
                         @endif
                     </td>
-                    <td style="padding: 8px 10px; color: #64748b; font-size: 12px;">{{ $diag->fecha ? $diag->fecha->format('d/m/Y') : 'â€”' }}</td>
+                    <td style="padding: 8px 10px; color: #64748b; font-size: 12px;">{{ $diag->fecha ? $diag->fecha->format('d/m/Y') : '—' }}</td>
                     <td style="padding: 8px 10px; text-align: center;">
                         <button type="button" onclick='editarDiagnostico({{ $paciente->id }}, @json($diag))' title="Editar" style="background:none;border:none;color:var(--sipce-primary);cursor:pointer;font-size:13px;margin:0 3px;">
                             <i class="fas fa-pen"></i>

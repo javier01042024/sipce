@@ -388,7 +388,7 @@
                     <div class="password-wrapper">
                         <input type="password" name="password" id="password"
                                class="@error('password') is-invalid @enderror"
-                               placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" autocomplete="current-password">
+                               placeholder="••••••••" autocomplete="current-password">
                         <button type="button" class="toggle-password" onclick="togglePassword()">
                             <i class="far fa-eye" id="toggleIcon"></i>
                         </button>

@@ -91,7 +91,7 @@
                                 <span class="sipce-cell-sub">Exp: {{ $user->paciente->numero_expediente }}</span>
                             </div>
                         @else
-                            <span class="sipce-cell-muted">â€”</span>
+                            <span class="sipce-cell-muted">—</span>
                         @endif
                     </td>
                     <td>

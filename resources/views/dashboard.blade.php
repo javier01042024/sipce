@@ -180,7 +180,7 @@
                         </div>
                         <div class="cita-info">
                             <h4>{{ $cita->paciente->nombre_completo ?? 'Sin paciente' }}</h4>
-                            <p>{{ $cita->objetivo ?? 'Consulta' }} â€¢ {{ $cita->planificacion ?? 'General' }}</p>
+                            <p>{{ $cita->objetivo ?? 'Consulta' }} • {{ $cita->planificacion ?? 'General' }}</p>
                         </div>
                         <div class="cita-hora">{{ \Carbon\Carbon::parse($cita->fecha)->format('h:i A') }}</div>
                     </div>
@@ -194,7 +194,7 @@
                         </div>
                         <div class="cita-info">
                             <h4>{{ $cita->paciente->nombre_completo ?? 'Sin paciente' }}</h4>
-                            <p>{{ $cita->objetivo ?? 'Consulta' }} â€¢ {{ $cita->planificacion ?? 'General' }}</p>
+                            <p>{{ $cita->objetivo ?? 'Consulta' }} • {{ $cita->planificacion ?? 'General' }}</p>
                         </div>
                         <div class="cita-hora">{{ $cita->fecha_formateada }}</div>
                     </div>

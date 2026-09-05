@@ -17,7 +17,7 @@
         </div>
         <p style="color: #475569; margin: 0;">
             {{ \Carbon\Carbon::parse($proximaCita->fecha)->format('d/m/Y') }}
-            @if($proximaCita->objetivo) â€” {{ Str::limit($proximaCita->objetivo, 60) }} @endif
+            @if($proximaCita->objetivo) — {{ Str::limit($proximaCita->objetivo, 60) }} @endif
         </p>
     </div>
     @endif
