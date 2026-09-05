@@ -1,7 +1,7 @@
 ﻿<div class="citas-header d-flex justify-content-between align-items-center flex-wrap">
     <h3>
         <i class="fas fa-calendar-alt me-2"></i>
-        GestiÃ³n de Citas
+        Gestión de Citas
     </h3>
     <div style="display: flex; gap: 10px; align-items: center;">
         <div class="view-toggle" style="display: flex; background: #f1f5f9; border-radius: 10px; padding: 3px;">

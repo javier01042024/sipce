@@ -1,24 +1,24 @@
-﻿{{-- DATOS CLÃNICOS SEGÃšN TIPO DE PACIENTE --}}
+﻿{{-- DATOS CLÍNICOS SEGÚN TIPO DE PACIENTE --}}
 
 @if($paciente->tipo_paciente === 'adulto')
-    {{-- DATOS ESPECÃFICOS DE ADULTO --}}
+    {{-- DATOS ESPECÍFICOS DE ADULTO --}}
     
-    {{-- DIRECCIÃ“N --}}
+    {{-- DIRECCIÓN --}}
     <div class="text-section">
         <h4>
             <i class="fas fa-map-marker-alt"></i>
-            DirecciÃ³n
+            Dirección
         </h4>
         <div class="text-box">
             {{ $paciente->detalle->direccion ?? 'No registrada' }}
         </div>
     </div>
 
-    {{-- OCUPACIÃ“N --}}
+    {{-- OCUPACIÓN --}}
     <div class="text-section">
         <h4>
             <i class="fas fa-briefcase"></i>
-            OcupaciÃ³n
+            Ocupación
         </h4>
         <div class="text-box">
             {{ $paciente->detalle->ocupacion ?? 'No registrada' }}
@@ -47,12 +47,12 @@
     </div>
     @endif
 
-    {{-- ESTADO CIVIL Y GÃ‰NERO --}}
+    {{-- ESTADO CIVIL Y GÉNERO --}}
     <div class="info-grid" style="margin-top: 20px;">
         <div class="info-item">
             <div class="info-label">
                 <i class="fas fa-venus-mars"></i>
-                GÃ©nero
+                Género
             </div>
             <div class="info-value">
                 {{ $paciente->detalle->genero ?? 'No especificado' }}
@@ -70,17 +70,17 @@
     </div>
 
 @elseif($paciente->tipo_paciente === 'adolescente')
-    {{-- DATOS ESPECÃFICOS DE ADOLESCENTE --}}
+    {{-- DATOS ESPECÍFICOS DE ADOLESCENTE --}}
     
     {{-- DATOS ESCOLARES --}}
     <div class="text-section">
         <h4>
             <i class="fas fa-school"></i>
-            InformaciÃ³n Educativa
+            Información Educativa
         </h4>
         <div class="text-box">
             @if($paciente->detalle->institucion_educativa)
-                <strong>InstituciÃ³n:</strong> {{ $paciente->detalle->institucion_educativa }}<br>
+                <strong>Institución:</strong> {{ $paciente->detalle->institucion_educativa }}<br>
             @endif
             @if($paciente->detalle->nivel_educativo)
                 <strong>Nivel:</strong> {{ $paciente->detalle->nivel_educativo }}<br>
@@ -107,7 +107,7 @@
                 ({{ $paciente->detalle->parentesco }})
             @endif
             @if($paciente->detalle->cedula_representante)
-                <br>CÃ©dula: {{ $paciente->detalle->cedula_representante }}
+                <br>Cédula: {{ $paciente->detalle->cedula_representante }}
             @endif
             @if($paciente->detalle->telefono_representante)
                 <br>Tel: {{ $paciente->detalle->telefono_representante }}
@@ -138,20 +138,20 @@
         </div>
     </div>
 
-@elseif($paciente->tipo_paciente === 'niÃ±o')
-    {{-- DATOS ESPECÃFICOS DE NIÃ‘O --}}
+@elseif($paciente->tipo_paciente === 'niño')
+    {{-- DATOS ESPECÍFICOS DE NIÑO --}}
     
     {{-- DATOS DE LOS PADRES --}}
     <div class="text-section">
         <h4>
             <i class="fas fa-people-arrows"></i>
-            InformaciÃ³n de los Padres
+            Información de los Padres
         </h4>
         <div class="text-box">
             @if($paciente->detalle->nombre_padre)
                 <strong>Padre:</strong> {{ $paciente->detalle->nombre_padre }}
                 @if($paciente->detalle->edad_padre)
-                    ({{ $paciente->detalle->edad_padre }} aÃ±os)
+                    ({{ $paciente->detalle->edad_padre }} años)
                 @endif
                 @if($paciente->detalle->ocupacion_padre)
                     - {{ $paciente->detalle->ocupacion_padre }}
@@ -161,7 +161,7 @@
             @if($paciente->detalle->nombre_madre)
                 <strong>Madre:</strong> {{ $paciente->detalle->nombre_madre }}
                 @if($paciente->detalle->edad_madre)
-                    ({{ $paciente->detalle->edad_madre }} aÃ±os)
+                    ({{ $paciente->detalle->edad_madre }} años)
                 @endif
                 @if($paciente->detalle->ocupacion_madre)
                     - {{ $paciente->detalle->ocupacion_madre }}
@@ -209,7 +209,7 @@
                 <strong>Dificultades:</strong> {{ $paciente->detalle->dificultades_parto }}<br>
             @endif
             @if($paciente->detalle->comportamiento_bebe)
-                <strong>Comportamiento bebÃ©:</strong> {{ $paciente->detalle->comportamiento_bebe }}
+                <strong>Comportamiento bebé:</strong> {{ $paciente->detalle->comportamiento_bebe }}
             @endif
             @if(!$paciente->detalle->tipo_parto && !$paciente->detalle->dificultades_parto && !$paciente->detalle->comportamiento_bebe)
                 No registrados
@@ -231,12 +231,12 @@
     </div>
 </div>
 
-{{-- DIAGNÃ“STICOS --}}
+{{-- DIAGNÓSTICOS --}}
 <div class="text-section">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
         <h4 style="margin: 0;">
             <i class="fas fa-stethoscope"></i>
-            DiagnÃ³sticos
+            Diagnósticos
         </h4>
         <button type="button" onclick="abrirModalDiagnostico({{ $paciente->id }})" style="padding: 6px 14px; background: #11998e; color: #fff; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;">
             <i class="fas fa-plus"></i> Nuevo
@@ -249,7 +249,7 @@
             <thead>
                 <tr style="background: #f1f5f9;">
                     <th style="padding: 8px 10px; text-align: left; border-bottom: 2px solid #e2e8f0; color: #64748b; font-size: 11px;">CIE-10</th>
-                    <th style="padding: 8px 10px; text-align: left; border-bottom: 2px solid #e2e8f0; color: #64748b; font-size: 11px;">DIAGNÃ“STICO</th>
+                    <th style="padding: 8px 10px; text-align: left; border-bottom: 2px solid #e2e8f0; color: #64748b; font-size: 11px;">DIAGNÓSTICO</th>
                     <th style="padding: 8px 10px; text-align: center; border-bottom: 2px solid #e2e8f0; color: #64748b; font-size: 11px;">PRINCIPAL</th>
                     <th style="padding: 8px 10px; text-align: left; border-bottom: 2px solid #e2e8f0; color: #64748b; font-size: 11px;">FECHA</th>
                     <th style="padding: 8px 10px; text-align: center; border-bottom: 2px solid #e2e8f0; color: #64748b; font-size: 11px;">ACCIONES</th>
@@ -289,7 +289,7 @@
     @else
     <div style="text-align: center; padding: 20px; color: #94a3b8; font-size: 13px;">
         <i class="fas fa-stethoscope" style="font-size: 24px; margin-bottom: 8px; display: block;"></i>
-        Sin diagnÃ³sticos registrados
+        Sin diagnósticos registrados
     </div>
     @endif
 </div>

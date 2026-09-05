@@ -5,7 +5,7 @@
             Ficha del Paciente
         </h1>
         <p style="color: rgba(255, 255, 255, 0.9); margin: 8px 0 0 0; font-size: 15px;">
-            Expediente clÃ­nico - InformaciÃ³n detallada
+            Expediente clínico - Información detallada
         </p>
     </div>
 

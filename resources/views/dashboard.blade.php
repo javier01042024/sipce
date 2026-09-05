@@ -24,7 +24,7 @@
             </div>
         </div>
         
-        <!-- ESTADÃSTICAS -->
+        <!-- ESTADÍSTICAS -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-content">
@@ -83,18 +83,18 @@
             </div>
         </div>
         
-        <!-- GRÃFICAS -->
+        <!-- GRÁFICAS -->
         <div class="charts-grid">
             <div class="chart-card">
                 <div class="chart-header">
                     <h3>
                         <i class="fas fa-chart-line"></i>
-                        EvoluciÃ³n de Pacientes
+                        Evolución de Pacientes
                     </h3>
                     <select class="chart-select" id="periodoSelect">
                         <option value="semana">Esta semana</option>
                         <option value="mes" selected>Este mes</option>
-                        <option value="aÃ±o">Este aÃ±o</option>
+                        <option value="año">Este año</option>
                     </select>
                 </div>
                 <div class="chart-container">
@@ -106,7 +106,7 @@
                 <div class="chart-header">
                     <h3>
                         <i class="fas fa-chart-bar"></i>
-                        DistribuciÃ³n por Prioridad
+                        Distribución por Prioridad
                     </h3>
                     <select class="chart-select" id="tipoChartSelect">
                         <option value="prioridad" selected>Por Prioridad</option>
@@ -165,7 +165,7 @@
                 <div class="activity-header">
                     <h3>
                         <i class="fas fa-calendar-alt"></i>
-                        PrÃ³ximas Citas
+                        Próximas Citas
                     </h3>
                     <a href="{{ route('citas.index') }}" class="btn-view-all">
                         Ver todas <i class="fas fa-arrow-right"></i>
@@ -214,7 +214,7 @@
             </div>
         </div>
         
-        <!-- ACCESOS RÃPIDOS -->
+        <!-- ACCESOS RÁPIDOS -->
         <div class="quick-actions">
             <a href="{{ route('pacientes.create') }}" class="quick-btn">
                 <div class="quick-icon" style="background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);">

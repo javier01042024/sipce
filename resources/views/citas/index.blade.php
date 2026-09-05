@@ -26,12 +26,12 @@
         </div>
     @endif
 
-    {{-- CITAS PÃšBLICAS DE HOY --}}
+    {{-- CITAS PÚBLICAS DE HOY --}}
     @if(isset($citasHoyPublicas) && $citasHoyPublicas->count() > 0)
         <div class="citas-section">
             <div class="section-title hoy" style="background: #fef3c7; border-left: 4px solid #d97706; color: #92400e;">
                 <i class="fas fa-hospital"></i>
-                Citas PÃºblicas de Hoy (<span class="section-count">{{ $citasHoyPublicas->count() }}</span>)
+                Citas Públicas de Hoy (<span class="section-count">{{ $citasHoyPublicas->count() }}</span>)
             </div>
             <div class="citas-grid">
                 @foreach($citasHoyPublicas as $cita)
@@ -41,12 +41,12 @@
         </div>
     @endif
 
-    {{-- PRÃ“XIMAS CITAS PRIVADAS --}}
+    {{-- PRÓXIMAS CITAS PRIVADAS --}}
     @if(isset($citasProximasPrivadas) && $citasProximasPrivadas->count() > 0)
         <div class="citas-section">
             <div class="section-title proximas" style="background: #f0f9ff; border-left: 4px solid #0ea5e9; color: #0369a1;">
                 <i class="fas fa-building"></i>
-                PrÃ³ximas Citas Privadas (<span class="section-count">{{ $citasProximasPrivadas->count() }}</span>)
+                Próximas Citas Privadas (<span class="section-count">{{ $citasProximasPrivadas->count() }}</span>)
             </div>
             <div class="citas-grid">
                 @foreach($citasProximasPrivadas as $cita)
@@ -56,12 +56,12 @@
         </div>
     @endif
 
-    {{-- PRÃ“XIMAS CITAS PÃšBLICAS --}}
+    {{-- PRÓXIMAS CITAS PÚBLICAS --}}
     @if(isset($citasProximasPublicas) && $citasProximasPublicas->count() > 0)
         <div class="citas-section">
             <div class="section-title proximas" style="background: #fef3c7; border-left: 4px solid #d97706; color: #92400e;">
                 <i class="fas fa-hospital"></i>
-                PrÃ³ximas Citas PÃºblicas (<span class="section-count">{{ $citasProximasPublicas->count() }}</span>)
+                Próximas Citas Públicas (<span class="section-count">{{ $citasProximasPublicas->count() }}</span>)
             </div>
             <div class="citas-grid">
                 @foreach($citasProximasPublicas as $cita)
@@ -108,7 +108,7 @@
                             </div>
                             <div class="cita-info-row">
                                 <i class="fas fa-clock"></i>
-                                <strong>Tipo:</strong> {{ $tipoAtencion === 'privado' ? 'Privado' : 'PÃºblico' }}
+                                <strong>Tipo:</strong> {{ $tipoAtencion === 'privado' ? 'Privado' : 'Público' }}
                             </div>
                             @if($cita->motivo_cancelacion)
                             <div class="cita-info-row text-danger">
@@ -132,7 +132,7 @@
         </div>
     </div>
 
-    {{-- ESTADO VACÃO --}}
+    {{-- ESTADO VACÍO --}}
     <div id="estadoVacio" style="{{ $mostrarVacio ? '' : 'display: none;' }}">
         @include('citas.partials.empty-state')
     </div>
@@ -185,9 +185,9 @@ function initCalendar() {
     var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
         locale: 'es',
         initialView: 'dayGridMonth',
-        buttonText: { today: 'Hoy', month: 'Mes', week: 'Semana', day: 'DÃ­a', list: 'Lista', prev: 'Anterior', next: 'Siguiente' },
+        buttonText: { today: 'Hoy', month: 'Mes', week: 'Semana', day: 'Día', list: 'Lista', prev: 'Anterior', next: 'Siguiente' },
         headerToolbar: { left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek,timeGridDay' },
-        allDayText: 'Todo el dÃ­a',
+        allDayText: 'Todo el día',
         noEventsText: 'No hay eventos para mostrar',
         events: '{{ route("calendario.eventos") }}',
         eventColor: 'var(--sipce-primary)',

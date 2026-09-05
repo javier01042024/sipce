@@ -28,7 +28,7 @@
             position: relative;
         }
 
-        /* PatrÃ³n de fondo sutil */
+        /* Patrón de fondo sutil */
         body::before {
             content: '';
             position: fixed;
@@ -181,7 +181,7 @@
         
         <div class="subtitle">
             <i class="fas fa-heartbeat me-1" style="color: var(--sipce-primary-dark);"></i>
-            Sistema Integral para PsicologÃ­a ClÃ­nica Especializada
+            Sistema Integral para Psicología Clínica Especializada
         </div>
 
         @if (Route::has('login'))
@@ -191,7 +191,7 @@
                 </a>
             @else
                 <a href="{{ route('login') }}" class="btn-login">
-                    <i class="fas fa-sign-in-alt"></i> Iniciar SesiÃ³n
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
                 </a>
             @endauth
         @endif

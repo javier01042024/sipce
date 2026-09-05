@@ -4,7 +4,7 @@
 <div style="max-width: 1400px; margin: 0 auto; padding: 20px;">
     <div class="page-header">
         <div class="header-content">
-            <h1><i class="fas fa-chart-line me-2"></i> Reporte de EvoluciÃ³n</h1>
+            <h1><i class="fas fa-chart-line me-2"></i> Reporte de Evolución</h1>
             <p>Tendencias de pacientes, estados y diarios del sistema</p>
         </div>
         <div class="header-buttons">

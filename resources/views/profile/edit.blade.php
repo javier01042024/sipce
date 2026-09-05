@@ -4,7 +4,7 @@
 <div class="page-header">
     <div class="header-content">
         <h1><i class="fas fa-user-circle"></i> Mi Perfil</h1>
-        <p>Administra tu informaciÃ³n de cuenta</p>
+        <p>Administra tu información de cuenta</p>
     </div>
 </div>
 
@@ -44,8 +44,8 @@
 
 <!-- Info del perfil -->
 <div class="profile-section">
-    <h2><i class="fas fa-user" style="color:var(--sipce-primary-dark);margin-right:5px;"></i> InformaciÃ³n del perfil</h2>
-    <p class="sub">Actualiza la informaciÃ³n de tu cuenta y direcciÃ³n de correo.</p>
+    <h2><i class="fas fa-user" style="color:var(--sipce-primary-dark);margin-right:5px;"></i> Información del perfil</h2>
+    <p class="sub">Actualiza la información de tu cuenta y dirección de correo.</p>
 
     <form method="post" action="{{ route('profile.update') }}">
         @csrf
@@ -58,19 +58,19 @@
         </div>
 
         <div class="field">
-            <label><i class="fas fa-envelope" style="color:var(--sipce-primary-dark);margin-right:4px;"></i> Correo electrÃ³nico</label>
+            <label><i class="fas fa-envelope" style="color:var(--sipce-primary-dark);margin-right:4px;"></i> Correo electrónico</label>
             <input type="email" name="email" value="{{ old('email', auth()->user()->email) }}" required autocomplete="username">
             @error('email') <p class="err">{{ $message }}</p> @enderror
 
             @if (auth()->user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !auth()->user()->hasVerifiedEmail())
                 <div class="unverified">
-                    Tu correo no estÃ¡ verificado.
+                    Tu correo no está verificado.
                     <form id="send-verification" method="post" action="{{ route('verification.send') }}" style="display:inline;">
                         @csrf
-                        <button type="submit" class="btn-send-verify">Haz clic aquÃ­ para reenviar el correo</button>
+                        <button type="submit" class="btn-send-verify">Haz clic aquí para reenviar el correo</button>
                     </form>
                     @if (session('status') === 'verification-link-sent')
-                        <p style="color:#059669;margin-top:0.3rem;">Se enviÃ³ un nuevo enlace a tu correo.</p>
+                        <p style="color:#059669;margin-top:0.3rem;">Se envió un nuevo enlace a tu correo.</p>
                     @endif
                 </div>
             @endif
@@ -86,34 +86,34 @@
     </form>
 </div>
 
-<!-- Cambiar contraseÃ±a -->
+<!-- Cambiar contraseña -->
 <div class="profile-section">
-    <h2><i class="fas fa-lock" style="color:var(--sipce-primary-dark);margin-right:5px;"></i> Cambiar contraseÃ±a</h2>
-    <p class="sub">AsegÃºrate de usar una contraseÃ±a larga y segura.</p>
+    <h2><i class="fas fa-lock" style="color:var(--sipce-primary-dark);margin-right:5px;"></i> Cambiar contraseña</h2>
+    <p class="sub">Asegúrate de usar una contraseña larga y segura.</p>
 
     <form method="post" action="{{ route('password.update') }}">
         @csrf
         @method('put')
 
         <div class="field">
-            <label><i class="fas fa-key" style="color:var(--sipce-primary-dark);margin-right:4px;"></i> ContraseÃ±a actual</label>
+            <label><i class="fas fa-key" style="color:var(--sipce-primary-dark);margin-right:4px;"></i> Contraseña actual</label>
             <input type="password" name="current_password" autocomplete="current-password">
             @error('current_password') <p class="err">{{ $message }}</p> @enderror
         </div>
 
         <div class="field">
-            <label><i class="fas fa-key" style="color:var(--sipce-primary-dark);margin-right:4px;"></i> Nueva contraseÃ±a</label>
+            <label><i class="fas fa-key" style="color:var(--sipce-primary-dark);margin-right:4px;"></i> Nueva contraseña</label>
             <input type="password" name="password" autocomplete="new-password">
             @error('password') <p class="err">{{ $message }}</p> @enderror
         </div>
 
         <div class="field">
-            <label><i class="fas fa-key" style="color:var(--sipce-primary-dark);margin-right:4px;"></i> Confirmar contraseÃ±a</label>
+            <label><i class="fas fa-key" style="color:var(--sipce-primary-dark);margin-right:4px;"></i> Confirmar contraseña</label>
             <input type="password" name="password_confirmation" autocomplete="new-password">
         </div>
 
         <button type="submit" class="btn-save">
-            <i class="fas fa-save"></i> Guardar contraseÃ±a
+            <i class="fas fa-save"></i> Guardar contraseña
         </button>
     </form>
 </div>
@@ -121,18 +121,18 @@
 <!-- Eliminar cuenta -->
 <div class="profile-section danger-zone">
     <h2 style="color:#ef4444;"><i class="fas fa-trash-alt" style="margin-right:5px;"></i> Eliminar cuenta</h2>
-    <p class="sub">Una vez eliminada tu cuenta, no hay vuelta atrÃ¡s. Por favor asegÃºrate de querer hacer esto.</p>
+    <p class="sub">Una vez eliminada tu cuenta, no hay vuelta atrás. Por favor asegúrate de querer hacer esto.</p>
 
     <form method="post" action="{{ route('profile.destroy') }}" id="formDeleteAccount">
         @csrf
         @method('delete')
         <div class="field">
-            <label><i class="fas fa-lock" style="color:#ef4444;margin-right:4px;"></i> ContraseÃ±a</label>
-            <input type="password" name="password" placeholder="Confirma tu contraseÃ±a" autocomplete="current-password">
+            <label><i class="fas fa-lock" style="color:#ef4444;margin-right:4px;"></i> Contraseña</label>
+            <input type="password" name="password" placeholder="Confirma tu contraseña" autocomplete="current-password">
             @error('password') <p class="err">{{ $message }}</p> @enderror
         </div>
         <button type="button" class="btn-danger"
-            onclick="SIPCE_ALERT.confirmDelete({title:'Â¿Eliminar tu cuenta?',html:'Esta acciÃ³n es <strong>irreversible</strong>. Se eliminarÃ¡n todos tus datos.'}).then(r=>{if(r.isConfirmed)document.getElementById('formDeleteAccount').submit()})">
+            onclick="SIPCE_ALERT.confirmDelete({title:'¿Eliminar tu cuenta?',html:'Esta acción es <strong>irreversible</strong>. Se eliminarán todos tus datos.'}).then(r=>{if(r.isConfirmed)document.getElementById('formDeleteAccount').submit()})">
             <i class="fas fa-trash-alt"></i> Eliminar cuenta
         </button>
     </form>

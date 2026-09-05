@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>SIPCE - Resumen ClÃ­nico</title>
+    <title>SIPCE - Resumen Clínico</title>
     <style>
         body { font-family: 'Helvetica', 'Arial', sans-serif; color: #333; font-size: 12px; line-height: 1.5; margin: 0; padding: 20px; }
         .header { text-align: center; border-bottom: 3px solid var(--sipce-primary); padding-bottom: 15px; margin-bottom: 20px; }

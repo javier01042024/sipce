@@ -23,7 +23,7 @@
                     <th>Rol</th>
                     <th>Paciente Vinculado</th>
                     <th>Estado</th>
-                    <th>Ãšltimo Acceso</th>
+                    <th>Último Acceso</th>
                     <th>Acciones</th>
                 </tr>
             </thead>

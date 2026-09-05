@@ -5,7 +5,7 @@
     <div class="page-header">
         <div class="header-content">
             <h1><i class="fas fa-chart-bar me-2"></i> Reportes</h1>
-            <p>EstadÃ­sticas y anÃ¡lisis del sistema</p>
+            <p>Estadísticas y análisis del sistema</p>
         </div>
     </div>
 
@@ -18,7 +18,7 @@
                     </div>
                     <div>
                         <h3 style="margin:0; color:#1e293b; font-size:18px;">Pacientes</h3>
-                        <p style="margin:4px 0 0 0; color:#64748b; font-size:13px;">EstadÃ­sticas de pacientes</p>
+                        <p style="margin:4px 0 0 0; color:#64748b; font-size:13px;">Estadísticas de pacientes</p>
                     </div>
                 </div>
             </div>
@@ -45,8 +45,8 @@
                         <i class="fas fa-chart-line" style="font-size:24px; color:white;"></i>
                     </div>
                     <div>
-                        <h3 style="margin:0; color:#1e293b; font-size:18px;">EvoluciÃ³n</h3>
-                        <p style="margin:4px 0 0 0; color:#64748b; font-size:13px;">EvoluciÃ³n de pacientes</p>
+                        <h3 style="margin:0; color:#1e293b; font-size:18px;">Evolución</h3>
+                        <p style="margin:4px 0 0 0; color:#64748b; font-size:13px;">Evolución de pacientes</p>
                     </div>
                 </div>
             </div>

@@ -12,7 +12,7 @@
                 @csrf
                 @method('PATCH')
                 <button type="submit" class="btn-nuevo">
-                    <i class="fas fa-check-double"></i> Marcar todas como leÃ­das
+                    <i class="fas fa-check-double"></i> Marcar todas como leídas
                 </button>
             </form>
         </div>
@@ -39,7 +39,7 @@
                 <form method="POST" action="{{ route('notificaciones.marcar-leida', $notificacion) }}" style="display:inline;">
                     @csrf
                     @method('PATCH')
-                    <button type="submit" class="sipce-btn-icon sipce-btn-view" title="Marcar como leÃ­da">
+                    <button type="submit" class="sipce-btn-icon sipce-btn-view" title="Marcar como leída">
                         <i class="fas fa-check"></i>
                     </button>
                 </form>
@@ -48,7 +48,7 @@
                     @csrf
                     @method('DELETE')
                     <button type="button" class="sipce-btn-icon sipce-btn-delete" title="Eliminar"
-                        onclick="SIPCE_ALERT.confirmDelete({title:'Â¿Eliminar esta notificaciÃ³n?'}).then(r=>{if(r.isConfirmed)document.getElementById('formDeleteNotif{{ $notificacion->id }}').submit()})">
+                        onclick="SIPCE_ALERT.confirmDelete({title:'¿Eliminar esta notificación?'}).then(r=>{if(r.isConfirmed)document.getElementById('formDeleteNotif{{ $notificacion->id }}').submit()})">
                         <i class="fas fa-trash"></i>
                     </button>
                 </form>
@@ -58,7 +58,7 @@
         <div class="sipce-empty">
             <i class="fas fa-bell-slash sipce-empty-icon"></i>
             <p class="sipce-empty-title">No tienes notificaciones</p>
-            <p class="sipce-empty-text">EstÃ¡s al dÃ­a con todas tus notificaciones</p>
+            <p class="sipce-empty-text">Estás al día con todas tus notificaciones</p>
         </div>
         @endforelse
 

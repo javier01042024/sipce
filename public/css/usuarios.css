@@ -6,7 +6,7 @@
 }
 
 /* Estilos de page-header, header-content, header-buttons y btn-nuevo
-   ahora estÃ¡n en tables.css (global) */
+   ahora están en tables.css (global) */
 
 .btn-roles {
     background: rgba(255,255,255,0.2);
@@ -19,7 +19,7 @@
     color: var(--sipce-primary);
 }
 
-/* ESTADÃSTICAS */
+/* ESTADÍSTICAS */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

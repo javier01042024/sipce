@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>SIPCE - Iniciar SesiÃ³n</title>
+    <title>SIPCE - Iniciar Sesión</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -374,7 +374,7 @@
                 @csrf
 
                 <div class="input-group">
-                    <label><i class="fas fa-envelope"></i> Correo electrÃ³nico</label>
+                    <label><i class="fas fa-envelope"></i> Correo electrónico</label>
                     <input type="email" name="email" value="{{ old('email') }}" 
                            class="@error('email') is-invalid @enderror"
                            placeholder="ejemplo@empresa.com" autocomplete="email">
@@ -384,7 +384,7 @@
                 </div>
 
                 <div class="input-group">
-                    <label><i class="fas fa-lock"></i> ContraseÃ±a</label>
+                    <label><i class="fas fa-lock"></i> Contraseña</label>
                     <div class="password-wrapper">
                         <input type="password" name="password" id="password"
                                class="@error('password') is-invalid @enderror"
@@ -403,11 +403,11 @@
                         <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
                         <span>Recordarme</span>
                     </label>
-                    <a href="{{ route('password.request') }}" class="forgot">Â¿Olvidaste tu contraseÃ±a?</a>
+                    <a href="{{ route('password.request') }}" class="forgot">¿Olvidaste tu contraseña?</a>
                 </div>
 
                 <button type="submit" id="submitBtn">
-                    <i class="fas fa-sign-in-alt"></i> Iniciar sesiÃ³n
+                    <i class="fas fa-sign-in-alt"></i> Iniciar sesión
                 </button>
             </form>
         </div>
@@ -448,23 +448,23 @@
                 
                 // Validar email
                 if(!email.value.trim()) {
-                    markError(email, 'El correo electrÃ³nico es obligatorio');
+                    markError(email, 'El correo electrónico es obligatorio');
                     hasErr = true;
                 } else if(!email.value.includes('@')) {
-                    markError(email, 'Ingresa un correo electrÃ³nico vÃ¡lido');
+                    markError(email, 'Ingresa un correo electrónico válido');
                     hasErr = true;
                 }
                 
-                // Validar contraseÃ±a
+                // Validar contraseña
                 if(!pass.value.trim()) {
-                    markError(pass, 'La contraseÃ±a es obligatoria');
+                    markError(pass, 'La contraseña es obligatoria');
                     hasErr = true;
                 }
                 
                 if(hasErr) {
                     e.preventDefault();
                 } else {
-                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Iniciando sesiÃ³n...';
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Iniciando sesión...';
                     submitBtn.disabled = true;
                 }
             });

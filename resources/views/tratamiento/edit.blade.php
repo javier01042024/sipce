@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div style="margin-bottom: 16px;">
-                <label style="display: block; font-weight: 600; color: #475569; margin-bottom: 6px;">TÃ­tulo *</label>
+                <label style="display: block; font-weight: 600; color: #475569; margin-bottom: 6px;">Título *</label>
                 <input type="text" name="titulo" value="{{ old('titulo', $plan->titulo) }}" required style="width:100%;padding:10px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;">
             </div>
             <div style="margin-bottom: 16px;">

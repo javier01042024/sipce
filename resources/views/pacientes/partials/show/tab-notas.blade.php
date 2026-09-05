@@ -156,7 +156,7 @@
             margin-bottom: 10px;
         }
 
-        /* VÃ­nculo con diario */
+        /* Vínculo con diario */
         .nota-vinculo-diario {
             margin-top: 12px;
             padding: 10px 14px;
@@ -416,7 +416,7 @@
             box-shadow: 0 6px 20px rgba(var(--sipce-primary-rgb), 0.4);
         }
 
-        /* Estado vacÃ­o */
+        /* Estado vacío */
         .empty-state-tab {
             text-align: center;
             padding: 50px 20px;
@@ -558,7 +558,7 @@
                         {{ $nota->anotacion }}
                     </div>
 
-                    {{-- VÃNCULO CON DIARIO --}}
+                    {{-- VÍNCULO CON DIARIO --}}
                     @if($nota->diario_id && $nota->diario)
                     <div class="nota-vinculo-diario">
                         <i class="fas fa-link"></i>
@@ -572,7 +572,7 @@
                     </div>
                     @endif
 
-                    {{-- FOOTER CON BOTÃ“N ELIMINAR --}}
+                    {{-- FOOTER CON BOTÓN ELIMINAR --}}
                     <div class="nota-footer">
                         <span style="font-size: 11px; color: #94a3b8;">
                             <i class="fas fa-hashtag"></i>
@@ -599,7 +599,7 @@
                     <i class="fas fa-clipboard"></i>
                 </div>
                 <h4>No hay notas registradas</h4>
-                <p>Las notas y anotaciones sobre el paciente aparecerÃ¡n aquÃ­</p>
+                <p>Las notas y anotaciones sobre el paciente aparecerán aquí</p>
                 <button class="btn-empty-tab" onclick="toggleFormNota()">
                     <i class="fas fa-plus-circle"></i>
                     Crear primera nota
@@ -614,7 +614,7 @@
         <div class="form-tab-header">
             <h3>
                 <i class="fas fa-pen"></i>
-                Nueva AnotaciÃ³n para {{ $paciente->nombre_completo }}
+                Nueva Anotación para {{ $paciente->nombre_completo }}
             </h3>
         </div>
 
@@ -627,18 +627,18 @@
                 <div class="form-group">
                     <label for="anotacion">
                         <i class="fas fa-pencil-alt"></i>
-                        AnotaciÃ³n
+                        Anotación
                     </label>
                     <textarea
                         name="anotacion"
                         id="anotacion"
                         rows="5"
                         class="form-control"
-                        placeholder="Escriba la anotaciÃ³n, observaciÃ³n o nota sobre el paciente..."
+                        placeholder="Escriba la anotación, observación o nota sobre el paciente..."
                         required>{{ old('anotacion') }}</textarea>
                     <small class="form-hint">
                         <i class="fas fa-info-circle"></i>
-                        Esta nota quedarÃ¡ registrada en el expediente del paciente
+                        Esta nota quedará registrada en el expediente del paciente
                     </small>
                 </div>
 
@@ -676,13 +676,13 @@
                 @else
                 <div class="sin-diario-aviso">
                     <i class="fas fa-info-circle"></i>
-                    <span>El paciente aÃºn no tiene entradas en su diario. La nota se guardarÃ¡ sin vincular.</span>
+                    <span>El paciente aún no tiene entradas en su diario. La nota se guardará sin vincular.</span>
                 </div>
                 @endif
                 @else
                 <div class="sin-acceso-aviso">
                     <i class="fas fa-user-lock"></i>
-                    <span>Este paciente no tiene acceso al sistema, por lo tanto no tiene diario. La nota se guardarÃ¡ sin vincular.</span>
+                    <span>Este paciente no tiene acceso al sistema, por lo tanto no tiene diario. La nota se guardará sin vincular.</span>
                 </div>
                 @endif
 
@@ -724,8 +724,8 @@
 
     function confirmarEliminarNota(form) {
         SIPCE_ALERT.confirmDelete({
-            title: 'Â¿Eliminar nota?',
-            text: 'Esta acciÃ³n no se puede deshacer.'
+            title: '¿Eliminar nota?',
+            text: 'Esta acción no se puede deshacer.'
         }).then(function(result) {
             if (result.isConfirmed) {
                 form.submit();

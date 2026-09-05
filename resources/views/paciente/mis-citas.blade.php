@@ -44,7 +44,7 @@
                             <div class="sipce-empty">
                                 <i class="fas fa-calendar-times sipce-empty-icon"></i>
                                 <p class="sipce-empty-title">No tienes citas registradas</p>
-                                <p class="sipce-empty-text">Tus prÃ³ximas citas aparecerÃ¡n aquÃ­</p>
+                                <p class="sipce-empty-text">Tus próximas citas aparecerán aquí</p>
                             </div>
                         </td>
                     </tr>

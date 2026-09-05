@@ -62,7 +62,7 @@
     margin: 0 auto;
 }
 
-/* ESTADÃSTICAS */
+/* ESTADÍSTICAS */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -136,7 +136,7 @@
 .icon-diarios { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
 .icon-prioridad { background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%); }
 
-/* GRÃFICAS */
+/* GRÁFICAS */
 .charts-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -345,7 +345,7 @@
     flex-shrink: 0;
 }
 
-/* ACCESOS RÃPIDOS */
+/* ACCESOS RÁPIDOS */
 .quick-actions {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -423,7 +423,7 @@
 }
 
 /* ============================================
-   RESPONSIVE - MÃ“VILES (480px - 768px)
+   RESPONSIVE - MÓVILES (480px - 768px)
    ============================================ */
 @media (max-width: 768px) {
     .dashboard-container {
@@ -466,7 +466,7 @@
 }
 
 /* ============================================
-   RESPONSIVE - MÃ“VILES PEQUEÃ‘OS (< 480px)
+   RESPONSIVE - MÓVILES PEQUEÑOS (< 480px)
    ============================================ */
 @media (max-width: 480px) {
     .dashboard-container {

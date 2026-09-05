@@ -24,7 +24,7 @@
                     <i class="fas fa-tag me-2"></i>Nombre del Rol
                 </label>
                 <input type="text" class="form-control" id="roleName" name="name" required 
-                       placeholder="Ej: MÃ©dico, Secretaria">
+                       placeholder="Ej: Médico, Secretaria">
             </div>
             
             <div class="form-group">
@@ -33,15 +33,15 @@
                 </label>
                 <input type="text" class="form-control" id="roleSlug" name="slug" required 
                        placeholder="Ej: medico, secretaria">
-                <small class="text-muted">Solo minÃºsculas, nÃºmeros y guiones</small>
+                <small class="text-muted">Solo minúsculas, números y guiones</small>
             </div>
             
             <div class="form-group">
                 <label for="roleDescription">
-                    <i class="fas fa-info-circle me-2"></i>DescripciÃ³n
+                    <i class="fas fa-info-circle me-2"></i>Descripción
                 </label>
                 <textarea class="form-control" id="roleDescription" name="description" rows="2" 
-                          placeholder="DescripciÃ³n del rol"></textarea>
+                          placeholder="Descripción del rol"></textarea>
             </div>
             
             <div class="form-group">

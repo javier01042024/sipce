@@ -95,7 +95,7 @@
     padding: 35px;
 }
 
-/* INFO DEL USUARIO (SESIÃ“N) */
+/* INFO DEL USUARIO (SESIÓN) */
 .usuario-session-info {
     background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
     padding: 20px;
@@ -237,7 +237,7 @@
     font-style: italic;
 }
 
-/* SUGERENCIAS RÃPIDAS */
+/* SUGERENCIAS RÁPIDAS */
 .quick-suggestions {
     margin-top: 15px;
     display: flex;
@@ -320,7 +320,7 @@
     color: #334155;
 }
 
-/* BOTONES DE ACCIÃ“N */
+/* BOTONES DE ACCIÓN */
 .form-actions {
     display: flex;
     justify-content: space-between;

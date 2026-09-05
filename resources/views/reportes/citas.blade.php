@@ -5,7 +5,7 @@
     <div class="page-header">
         <div class="header-content">
             <h1><i class="fas fa-calendar-check me-2"></i> Reporte de Citas</h1>
-            <p>EstadÃ­sticas y listado de citas</p>
+            <p>Estadísticas y listado de citas</p>
         </div>
         <div class="header-buttons">
             <a href="{{ route('reportes.index') }}" class="btn-nuevo">
@@ -32,7 +32,7 @@
                     <option value="confirmada" {{ request('estado') === 'confirmada' ? 'selected' : '' }}>Confirmada</option>
                     <option value="atendida" {{ request('estado') === 'atendida' ? 'selected' : '' }}>Atendida</option>
                     <option value="cancelada" {{ request('estado') === 'cancelada' ? 'selected' : '' }}>Cancelada</option>
-                    <option value="no_asistio" {{ request('estado') === 'no_asistio' ? 'selected' : '' }}>No AsistiÃ³</option>
+                    <option value="no_asistio" {{ request('estado') === 'no_asistio' ? 'selected' : '' }}>No Asistió</option>
                 </select>
             </div>
             <button type="submit" style="padding:8px 20px; background:linear-gradient(135deg,var(--sipce-primary),var(--sipce-primary-dark)); color:white; border:none; border-radius:8px; font-weight:600; cursor:pointer; font-size:13px;">
@@ -60,7 +60,7 @@
         </div>
         <div style="background:white; border-radius:14px; padding:20px; box-shadow:0 4px 16px rgba(0,0,0,0.05); text-align:center;">
             <div style="font-size:32px; font-weight:700; color:#94a3b8;">{{ $estadisticas['no_asistio'] ?? 0 }}</div>
-            <div style="font-size:13px; color:#64748b; margin-top:4px;">No AsistiÃ³</div>
+            <div style="font-size:13px; color:#64748b; margin-top:4px;">No Asistió</div>
         </div>
         <div style="background:white; border-radius:14px; padding:20px; box-shadow:0 4px 16px rgba(0,0,0,0.05); text-align:center;">
             @php

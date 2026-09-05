@@ -150,11 +150,11 @@
         <div class="sesiones-header">
             <h3>
                 <i class="fas fa-head-side-virus"></i>
-                Sesiones ClÃ­nicas
+                Sesiones Clínicas
             </h3>
             <a href="{{ route('sesiones.create') }}" class="btn-nueva-nota" style="background:white;color:#0ea5e9;">
                 <i class="fas fa-plus-circle"></i>
-                Nueva SesiÃ³n
+                Nueva Sesión
             </a>
         </div>
 
@@ -191,7 +191,7 @@
 
                     @if($sesion->observaciones_clinicas)
                     <div class="sesion-observaciones">
-                        <strong><i class="fas fa-notes-medical"></i> Observaciones clÃ­nicas</strong>
+                        <strong><i class="fas fa-notes-medical"></i> Observaciones clínicas</strong>
                         {{ $sesion->observaciones_clinicas }}
                     </div>
                     @endif
@@ -212,10 +212,10 @@
                         <i class="fas fa-clipboard"></i>
                     </div>
                     <h4>No hay sesiones registradas</h4>
-                    <p>Las sesiones clÃ­nicas de este paciente aparecerÃ¡n aquÃ­</p>
+                    <p>Las sesiones clínicas de este paciente aparecerán aquí</p>
                     <a href="{{ route('sesiones.create') }}" class="btn-empty-tab">
                         <i class="fas fa-plus-circle"></i>
-                        Registrar primera sesiÃ³n
+                        Registrar primera sesión
                     </a>
                 </div>
             @endif

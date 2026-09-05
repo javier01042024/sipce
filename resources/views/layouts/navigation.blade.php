@@ -1,4 +1,4 @@
-﻿<button class="mobile-menu-btn" onclick="openMobileSidebar()" aria-label="Abrir menÃº">
+﻿<button class="mobile-menu-btn" onclick="openMobileSidebar()" aria-label="Abrir menú">
     <i class="fas fa-bars"></i>
 </button>
 
@@ -73,11 +73,11 @@
         </a>
         @endif
 
-        {{-- CONFIGURACIÃ“N CON SUBMENÃš (visible para todos: incluye Apariencia personal) --}}
+        {{-- CONFIGURACIÓN CON SUBMENÚ (visible para todos: incluye Apariencia personal) --}}
         @if(auth()->user())
         <div class="nav-item has-submenu" onclick="toggleSubmenu(this)">
             <i class="fas fa-cog"></i>
-            <span>ConfiguraciÃ³n</span>
+            <span>Configuración</span>
             <i class="fas fa-chevron-down submenu-arrow"></i>
         </div>
 
@@ -115,12 +115,12 @@
             </a>
             @endif
 
-            {{-- BitÃ¡cora --}}
+            {{-- Bitácora --}}
             @if(auth()->user()->hasPermission('bitacora.index'))
             <a href="{{ route('configuracion.bitacora.index') }}"
                 class="submenu-item {{ request()->routeIs('configuracion.bitacora.*') ? 'active' : '' }}">
                 <i class="fas fa-history"></i>
-                <span>BitÃ¡cora</span>
+                <span>Bitácora</span>
             </a>
             @endif
         </div>
@@ -140,27 +140,27 @@
             @endif
         </a>
 
-        <div class="wifi-status" id="wifiStatus" title="Verificando conexiÃ³n...">
+        <div class="wifi-status" id="wifiStatus" title="Verificando conexión...">
             <i class="fas fa-wifi" id="wifiIcon"></i>
             <span id="wifiLabel">Verificando...</span>
         </div>
 
         <button onclick="openLogoutModal()" class="nav-item logout">
             <i class="fas fa-sign-out-alt"></i>
-            <span>Cerrar sesiÃ³n</span>
+            <span>Cerrar sesión</span>
         </button>
     </div>
 
 </div>
 
-<!-- MODAL DE CONFIRMACIÃ“N DE CIERRE DE SESIÃ“N -->
+<!-- MODAL DE CONFIRMACIÓN DE CIERRE DE SESIÓN -->
 <div id="logoutModal" class="logout-modal-overlay">
     <div class="logout-modal-box">
         <div class="logout-modal-icon">
             <i class="fas fa-sign-out-alt"></i>
         </div>
-        <h3>Cerrar sesiÃ³n</h3>
-        <p>Â¿EstÃ¡s seguro que deseas salir del sistema?</p>
+        <h3>Cerrar sesión</h3>
+        <p>¿Estás seguro que deseas salir del sistema?</p>
         <div class="logout-modal-actions">
             <button class="logout-btn logout-btn-ghost" onclick="closeLogoutModal()">
                 Cancelar
@@ -168,7 +168,7 @@
             <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                 @csrf
                 <button type="submit" class="logout-btn logout-btn-danger">
-                    Cerrar sesiÃ³n
+                    Cerrar sesión
                 </button>
             </form>
         </div>
@@ -433,7 +433,7 @@
         box-shadow: 0 4px 12px rgba(var(--sipce-primary-rgb), 0.3);
     }
 
-    /* SIDEBAR COLAPSADA - VERSIÃ“N 1: Apilado vertical */
+    /* SIDEBAR COLAPSADA - VERSIÓN 1: Apilado vertical */
     .sidebar.collapsed {
         width: 80px;
     }
@@ -635,7 +635,7 @@
         text-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
     }
 
-    /* Gris: sin conexiÃ³n de red */
+    /* Gris: sin conexión de red */
     .wifi-status.disconnected {
         color: #64748b;
     }
@@ -655,7 +655,7 @@
     }
 
     /* ============================================
-       RESPONSIVE MÃ“VILES / TABLETS PORTRAIT
+       RESPONSIVE MÓVILES / TABLETS PORTRAIT
        ============================================ */
     .sidebar-overlay {
         display: none;
@@ -691,7 +691,7 @@
             opacity: 1;
         }
 
-        /* BotÃ³n flotante para abrir el menÃº en mÃ³vil */
+        /* Botón flotante para abrir el menú en móvil */
         .mobile-menu-btn {
             display: inline-flex;
             align-items: center;
@@ -717,7 +717,7 @@
         }
     }
 
-    /* Ocultar botÃ³n mÃ³vil en pantallas grandes */
+    /* Ocultar botón móvil en pantallas grandes */
     @media (min-width: 769px) {
         .mobile-menu-btn {
             display: none;
@@ -754,7 +754,7 @@
         document.body.style.overflow = '';
     }
 
-    // Cerrar sidebar mÃ³vil al navegar (se re-renderiza la pÃ¡gina completa)
+    // Cerrar sidebar móvil al navegar (se re-renderiza la página completa)
     function handleMobileNav() {
         if (window.innerWidth <= 768) closeMobileSidebar();
     }
@@ -795,7 +795,7 @@
             });
         }
 
-        // Abrir submenÃº si hay una ruta activa dentro
+        // Abrir submenú si hay una ruta activa dentro
         const activeSubmenuItem = document.querySelector('.submenu-item.active');
         if (activeSubmenuItem) {
             const submenu = activeSubmenuItem.closest('.submenu');
@@ -815,7 +815,7 @@
     });
 
     // =============================================
-    // INDICADOR DE CONEXIÃ“N WiFi
+    // INDICADOR DE CONEXIÓN WiFi
     // =============================================
     (function() {
         const icon = document.getElementById('wifiIcon');
@@ -830,7 +830,7 @@
             status.className = 'wifi-status online';
             icon.className = 'fas fa-wifi';
             label.textContent = 'Conectado';
-            status.title = 'ConexiÃ³n estable';
+            status.title = 'Conexión estable';
         }
 
         function setOffline() {
@@ -843,8 +843,8 @@
         function setDisconnected() {
             status.className = 'wifi-status disconnected';
             icon.className = 'fas fa-wifi';
-            label.textContent = 'Sin conexiÃ³n';
-            status.title = 'No hay conexiÃ³n de red';
+            label.textContent = 'Sin conexión';
+            status.title = 'No hay conexión de red';
         }
 
         async function checkConnection() {
@@ -871,7 +871,7 @@
                     setOffline();
                 }
             } catch (e) {
-                // Fetch fallÃ³ = hay red local pero no internet/servidor
+                // Fetch falló = hay red local pero no internet/servidor
                 setOffline();
             }
         }

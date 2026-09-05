@@ -36,7 +36,7 @@
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
             <span style="width: 14px; height: 14px; border-radius: 3px; background: #94a3b8; display: inline-block;"></span>
-            <span style="font-size: 13px; color: #475569;">No AsistiÃ³</span>
+            <span style="font-size: 13px; color: #475569;">No Asistió</span>
         </div>
     </div>
 
@@ -71,19 +71,19 @@ document.addEventListener('DOMContentLoaded', function() {
             today: 'Hoy',
             month: 'Mes',
             week: 'Semana',
-            day: 'DÃ­a',
+            day: 'Día',
             list: 'Lista',
             prev: 'Anterior',
             next: 'Siguiente',
-            prevYear: 'AÃ±o anterior',
-            nextYear: 'AÃ±o siguiente'
+            prevYear: 'Año anterior',
+            nextYear: 'Año siguiente'
         },
         headerToolbar: {
             left: 'prev,next today',
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
-        allDayText: 'Todo el dÃ­a',
+        allDayText: 'Todo el día',
         noEventsText: 'No hay eventos para mostrar',
         events: '{{ route("calendario.eventos") }}',
         eventColor: 'var(--sipce-primary)',

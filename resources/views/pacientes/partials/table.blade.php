@@ -49,7 +49,7 @@
                     <th class="col-expediente">Expediente</th>
                     <th class="col-nombre">Paciente</th>
                     <th class="col-tipo">Tipo</th>
-                    <th class="col-atencion">AtenciÃ³n</th>
+                    <th class="col-atencion">Atención</th>
                     <th class="col-prioridad">Prioridad</th>
                     <th class="col-estado">Estado</th>
                     <th class="col-fecha">Registro</th>
@@ -109,14 +109,14 @@
                         @elseif($paciente->tipo_paciente === 'adolescente')
                         <span class="badge-tipo badge-tipo-adolescente"><i class="fas fa-user"></i> Adolescente</span>
                         @else
-                        <span class="badge-tipo badge-tipo-nino"><i class="fas fa-child"></i> NiÃ±o</span>
+                        <span class="badge-tipo badge-tipo-nino"><i class="fas fa-child"></i> Niño</span>
                         @endif
                     </td>
                     <td class="col-atencion">
                         @if($paciente->tipo_atencion === 'privado')
                         <span class="badge-atencion badge-privado"><i class="fas fa-building"></i> Privado</span>
                         @else
-                        <span class="badge-atencion badge-publico"><i class="fas fa-hospital"></i> PÃºblico</span>
+                        <span class="badge-atencion badge-publico"><i class="fas fa-hospital"></i> Público</span>
                         @endif
                     </td>
                     <td class="col-prioridad">
@@ -182,9 +182,9 @@ function confirmarEliminarPaciente(button) {
     const expedienteElement = row ? row.querySelector('.expediente-number') : null;
     const expediente = expedienteElement ? expedienteElement.textContent.trim() : '';
 
-    const detalle = 'EstÃ¡s a punto de eliminar a <strong>' + nombrePaciente + '</strong>' +
+    const detalle = 'Estás a punto de eliminar a <strong>' + nombrePaciente + '</strong>' +
         (expediente ? ' <span style="color:var(--sipce-primary);">(' + expediente + ')</span>' : '') +
-        '<br><br><small style="color:#64748b;">Esta acciÃ³n no se puede deshacer. Se eliminarÃ¡n todos los datos asociados.</small>';
+        '<br><br><small style="color:#64748b;">Esta acción no se puede deshacer. Se eliminarán todos los datos asociados.</small>';
 
     SIPCE_ALERT.confirmDelete({
         html: detalle
@@ -200,7 +200,7 @@ function confirmarEliminarPaciente(button) {
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.paciente-row').forEach(row => {
         row.addEventListener('click', function(e) {
-            // No redirigir si se hizo clic en checkbox, botÃ³n o formulario
+            // No redirigir si se hizo clic en checkbox, botón o formulario
             if (e.target.closest('.col-checkbox') || 
                 e.target.closest('.col-acciones') || 
                 e.target.closest('button') || 
@@ -259,7 +259,7 @@ document.addEventListener('DOMContentLoaded', function() {
         background-color: #f8fafc !important;
     }
 
-    /* Avatar animaciÃ³n */
+    /* Avatar animación */
     .paciente-avatar-small {
         transition: all 0.2s ease;
     }

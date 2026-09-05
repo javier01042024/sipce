@@ -1,8 +1,8 @@
 ﻿/* ==========================================
-   SISTEMA DE PESTAÃ‘AS (TABS)
+   SISTEMA DE PESTAÑAS (TABS)
    ========================================== */
 
-/* NavegaciÃ³n de pestaÃ±as */
+/* Navegación de pestañas */
 .tabs-navigation {
     display: flex;
     gap: 5px;
@@ -51,7 +51,7 @@
     color: white;
 }
 
-/* Contenido de pestaÃ±as */
+/* Contenido de pestañas */
 .tabs-content {
     position: relative;
 }
@@ -301,7 +301,7 @@
     padding-left: 22px;
 }
 
-/* Estados vacÃ­os */
+/* Estados vacíos */
 .empty-notas,
 .empty-diario {
     text-align: center;
@@ -521,7 +521,7 @@
         justify-content: center;
     }
 }/* ==========================================
-   ESTADÃSTICAS MINI DEL DIARIO
+   ESTADÍSTICAS MINI DEL DIARIO
    ========================================== */
 
 .diario-stats-mini {
@@ -718,7 +718,7 @@
     background: #6366f1;
 }
 
-/* Ver mÃ¡s */
+/* Ver más */
 .ver-mas-container {
     text-align: center;
     margin-top: 20px;
@@ -769,7 +769,7 @@
    NOTAS - ESTILOS MEJORADOS
    ========================================== */
 
-/* Avatar pequeÃ±o en notas */
+/* Avatar pequeño en notas */
 .nota-avatar-small {
     width: 36px;
     height: 36px;
@@ -813,7 +813,7 @@
     gap: 3px;
 }
 
-/* VÃ­nculo con diario */
+/* Vínculo con diario */
 .nota-vinculo-diario {
     margin-top: 12px;
     padding: 10px 14px;

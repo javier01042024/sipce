@@ -53,7 +53,7 @@
     color: var(--sipce-primary-dark);
 }
 
-/* ESTADÃSTICAS RÃPIDAS */
+/* ESTADÍSTICAS RÁPIDAS */
 .stats-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

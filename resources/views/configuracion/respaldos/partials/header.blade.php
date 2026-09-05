@@ -4,7 +4,7 @@
             <i class="fas fa-database me-2"></i>
             Respaldos del Sistema
         </h1>
-        <p>GestiÃ³n de copias de seguridad, restauraciÃ³n e importaciÃ³n de datos</p>
+        <p>Gestión de copias de seguridad, restauración e importación de datos</p>
     </div>
 
     <div style="display: flex; gap: 10px; flex-wrap: wrap;">

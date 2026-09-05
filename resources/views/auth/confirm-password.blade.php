@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>SIPCE - Confirmar contraseÃ±a</title>
+    <title>SIPCE - Confirmar contraseña</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -44,8 +44,8 @@
 <body>
     <div class="auth-card">
         <div class="icon"><i class="fas fa-lock"></i></div>
-        <h2>Confirmar contraseÃ±a</h2>
-        <p>Esta es un Ã¡rea segura. Por favor confirma tu contraseÃ±a antes de continuar.</p>
+        <h2>Confirmar contraseña</h2>
+        <p>Esta es un área segura. Por favor confirma tu contraseña antes de continuar.</p>
 
         @if($errors->has('password'))
             <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:0.6rem 0.8rem;margin-bottom:1rem;">
@@ -56,7 +56,7 @@
         <form method="POST" action="{{ route('password.confirm') }}">
             @csrf
             <div class="input-group">
-                <label><i class="fas fa-key"></i> ContraseÃ±a</label>
+                <label><i class="fas fa-key"></i> Contraseña</label>
                 <input type="password" name="password" required autocomplete="current-password" autofocus>
             </div>
             <button type="submit" class="btn-primary">

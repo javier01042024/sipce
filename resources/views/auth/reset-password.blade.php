@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>SIPCE - Restablecer contraseÃ±a</title>
+    <title>SIPCE - Restablecer contraseña</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -44,8 +44,8 @@
 <body>
     <div class="auth-card">
         <div class="icon"><i class="fas fa-key"></i></div>
-        <h2>Restablecer contraseÃ±a</h2>
-        <p>Ingresa tu nueva contraseÃ±a a continuaciÃ³n.</p>
+        <h2>Restablecer contraseña</h2>
+        <p>Ingresa tu nueva contraseña a continuación.</p>
 
         @if($errors->any())
             <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:0.6rem 0.8rem;margin-bottom:1rem;">
@@ -60,22 +60,22 @@
             <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
             <div class="input-group">
-                <label><i class="fas fa-envelope"></i> Correo electrÃ³nico</label>
+                <label><i class="fas fa-envelope"></i> Correo electrónico</label>
                 <input type="email" name="email" value="{{ old('email', $request->email) }}" required autofocus autocomplete="username">
             </div>
 
             <div class="input-group">
-                <label><i class="fas fa-lock"></i> Nueva contraseÃ±a</label>
+                <label><i class="fas fa-lock"></i> Nueva contraseña</label>
                 <input type="password" name="password" required autocomplete="new-password">
             </div>
 
             <div class="input-group">
-                <label><i class="fas fa-lock"></i> Confirmar contraseÃ±a</label>
+                <label><i class="fas fa-lock"></i> Confirmar contraseña</label>
                 <input type="password" name="password_confirmation" required autocomplete="new-password">
             </div>
 
             <button type="submit" class="btn-primary">
-                <i class="fas fa-check"></i> Restablecer contraseÃ±a
+                <i class="fas fa-check"></i> Restablecer contraseña
             </button>
         </form>
     </div>

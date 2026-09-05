@@ -4,7 +4,7 @@
 <div class="estados-container">
     <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
         <a href="{{ route('sesiones.show', $sesion) }}" style="color: var(--sipce-primary); text-decoration: none;"><i class="fas fa-arrow-left"></i> Volver</a>
-        <h2 style="margin: 0; color: #1e293b;">Editar SesiÃ³n</h2>
+        <h2 style="margin: 0; color: #1e293b;">Editar Sesión</h2>
     </div>
 
     <div style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
@@ -25,18 +25,18 @@
                 </div>
             </div>
             <div style="margin-bottom: 16px;">
-                <label style="display: block; font-weight: 600; color: #475569; margin-bottom: 6px;">DuraciÃ³n (minutos)</label>
+                <label style="display: block; font-weight: 600; color: #475569; margin-bottom: 6px;">Duración (minutos)</label>
                 <input type="number" name="duracion_minutos" value="{{ old('duracion_minutos', $sesion->duracion_minutos) }}" min="1" style="width:100%;padding:10px 14px;border:2px solid {{ $errors->has('duracion_minutos') ? '#ef4444' : '#e2e8f0' }};border-radius:10px;font-size:14px;">
             </div>
             <div style="margin-bottom: 16px;">
                 <label style="display: block; font-weight: 600; color: #475569; margin-bottom: 6px;">Resumen *</label>
-                <textarea name="resumen" rows="4" required placeholder="Resumen general de la sesiÃ³n (mÃ­nimo 5 caracteres)..." style="width:100%;padding:10px 14px;border:2px solid {{ $errors->has('resumen') ? '#ef4444' : '#e2e8f0' }};border-radius:10px;font-size:14px;">{{ old('resumen', $sesion->resumen) }}</textarea>
+                <textarea name="resumen" rows="4" required placeholder="Resumen general de la sesión (mínimo 5 caracteres)..." style="width:100%;padding:10px 14px;border:2px solid {{ $errors->has('resumen') ? '#ef4444' : '#e2e8f0' }};border-radius:10px;font-size:14px;">{{ old('resumen', $sesion->resumen) }}</textarea>
                 @if($errors->has('resumen'))
                 <small style="color:#dc2626;font-size:12px;">{{ $errors->first('resumen') }}</small>
                 @endif
             </div>
             <div style="margin-bottom: 16px;">
-                <label style="display: block; font-weight: 600; color: #475569; margin-bottom: 6px;">Observaciones ClÃ­nicas</label>
+                <label style="display: block; font-weight: 600; color: #475569; margin-bottom: 6px;">Observaciones Clínicas</label>
                 <textarea name="observaciones_clinicas" rows="3" style="width:100%;padding:10px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;">{{ old('observaciones_clinicas', $sesion->observaciones_clinicas) }}</textarea>
             </div>
             <div style="display: flex; gap: 10px; justify-content: flex-end;">

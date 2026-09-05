@@ -18,13 +18,13 @@
             <div class="form-group">
                 <label for="motivo">
                     <i class="fas fa-comment-alt me-2"></i>
-                    Motivo de cancelaciÃ³n
+                    Motivo de cancelación
                 </label>
                 <textarea 
                     name="motivo_cancelacion" 
                     id="motivo" 
                     required 
-                    placeholder="Explica brevemente el motivo de la cancelaciÃ³n..."
+                    placeholder="Explica brevemente el motivo de la cancelación..."
                 ></textarea>
             </div>
 
@@ -35,7 +35,7 @@
                         <i class="fas fa-calendar-alt me-2" style="color: var(--sipce-primary);"></i>
                         Reprogramar esta cita
                     </strong>
-                    <small style="color: #64748b;">Se abrirÃ¡ el formulario para agendar nueva fecha</small>
+                    <small style="color: #64748b;">Se abrirá el formulario para agendar nueva fecha</small>
                 </div>
             </label>
 
@@ -44,7 +44,7 @@
                     <i class="fas fa-times me-2"></i>Cerrar
                 </button>
                 <button type="submit" class="btn-confirm-cancel">
-                    <i class="fas fa-check me-2"></i>Confirmar CancelaciÃ³n
+                    <i class="fas fa-check me-2"></i>Confirmar Cancelación
                 </button>
             </div>
         </form>

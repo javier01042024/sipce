@@ -5,7 +5,7 @@
     <div class="page-header">
         <div class="header-content">
             <h1><i class="fas fa-users me-2"></i> Reporte de Pacientes</h1>
-            <p>EstadÃ­sticas y listado de pacientes</p>
+            <p>Estadísticas y listado de pacientes</p>
         </div>
         <div class="header-buttons">
             <a href="{{ route('reportes.index') }}" class="btn-nuevo">
@@ -67,7 +67,7 @@
         <div style="background:white; border-radius:14px; padding:20px; box-shadow:0 4px 16px rgba(0,0,0,0.05); text-align:center;">
             <div style="font-size:14px; font-weight:600; color:#475569; margin-bottom:8px;">Por Tipo</div>
             <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap;">
-                <span class="sipce-badge sipce-badge-info">PÃºblico: {{ $estadisticas['por_tipo']['publico'] ?? 0 }}</span>
+                <span class="sipce-badge sipce-badge-info">Público: {{ $estadisticas['por_tipo']['publico'] ?? 0 }}</span>
                 <span class="sipce-badge sipce-badge-primary">Privado: {{ $estadisticas['por_tipo']['privado'] ?? 0 }}</span>
             </div>
         </div>

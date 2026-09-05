@@ -42,25 +42,25 @@
 <body>
     <div class="auth-card">
         <div class="icon"><i class="fas fa-envelope-open-text"></i></div>
-        <h2>Verificar correo electrÃ³nico</h2>
-        <p>Gracias por registrarte. Antes de comenzar, verifica tu correo electrÃ³nico haciendo clic en el enlace que te enviamos.</p>
+        <h2>Verificar correo electrónico</h2>
+        <p>Gracias por registrarte. Antes de comenzar, verifica tu correo electrónico haciendo clic en el enlace que te enviamos.</p>
 
         @if (session('status') == 'verification-link-sent')
             <div class="success-msg">
-                <i class="fas fa-check-circle"></i> Se enviÃ³ un nuevo enlace de verificaciÃ³n a tu correo.
+                <i class="fas fa-check-circle"></i> Se envió un nuevo enlace de verificación a tu correo.
             </div>
         @endif
 
         <form method="POST" action="{{ route('verification.send') }}">
             @csrf
             <button type="submit" class="btn-primary">
-                <i class="fas fa-paper-plane"></i> Reenviar correo de verificaciÃ³n
+                <i class="fas fa-paper-plane"></i> Reenviar correo de verificación
             </button>
         </form>
 
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button type="submit" class="btn-ghost">Cerrar sesiÃ³n</button>
+            <button type="submit" class="btn-ghost">Cerrar sesión</button>
         </form>
     </div>
 </body>

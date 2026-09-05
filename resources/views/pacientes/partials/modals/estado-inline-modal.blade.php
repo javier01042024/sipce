@@ -10,8 +10,8 @@
                 <input type="text" id="estadoTipo" placeholder="Ej: Activo, Inactivo, Seguimiento..." style="width:100%;padding:10px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;">
             </div>
             <div style="margin-bottom:12px;">
-                <label style="display:block;font-weight:600;color:#475569;font-size:13px;margin-bottom:4px;">DescripciÃ³n *</label>
-                <input type="text" id="estadoDescripcion" placeholder="Breve descripciÃ³n del estado" style="width:100%;padding:10px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;">
+                <label style="display:block;font-weight:600;color:#475569;font-size:13px;margin-bottom:4px;">Descripción *</label>
+                <input type="text" id="estadoDescripcion" placeholder="Breve descripción del estado" style="width:100%;padding:10px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;">
             </div>
             <div style="margin-bottom:16px;">
                 <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:600;color:#475569;font-size:13px;">
@@ -50,7 +50,7 @@ function guardarEstadoInline() {
     var btn = document.getElementById('btnGuardarEstado');
 
     if (!tipo || !desc) {
-        errDiv.textContent = 'Tipo y descripciÃ³n son obligatorios.';
+        errDiv.textContent = 'Tipo y descripción son obligatorios.';
         errDiv.style.display = 'block';
         return;
     }
@@ -99,7 +99,7 @@ function guardarEstadoInline() {
         btn.innerHTML = '<i class="fas fa-save"></i> Guardar';
     })
     .catch(function() {
-        errDiv.textContent = 'Error de conexiÃ³n.';
+        errDiv.textContent = 'Error de conexión.';
         errDiv.style.display = 'block';
         btn.disabled = false;
         btn.innerHTML = '<i class="fas fa-save"></i> Guardar';

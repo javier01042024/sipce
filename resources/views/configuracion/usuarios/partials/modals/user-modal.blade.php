@@ -24,7 +24,7 @@
             
             <div class="form-group">
                 <label for="email">
-                    <i class="fas fa-envelope me-2"></i>Correo ElectrÃ³nico
+                    <i class="fas fa-envelope me-2"></i>Correo Electrónico
                 </label>
                 <input type="email" class="form-control" id="email" name="email" required 
                        placeholder="ejemplo@correo.com">
@@ -32,21 +32,21 @@
             
             <div class="form-group">
                 <label for="password">
-                    <i class="fas fa-lock me-2"></i>ContraseÃ±a
+                    <i class="fas fa-lock me-2"></i>Contraseña
                 </label>
                 <input type="password" class="form-control" id="password" name="password" 
-                       placeholder="MÃ­nimo 8 caracteres">
+                       placeholder="Mínimo 8 caracteres">
                 <small class="text-muted" id="passwordHelp" style="display:none;">
-                    Dejar en blanco para mantener la contraseÃ±a actual
+                    Dejar en blanco para mantener la contraseña actual
                 </small>
             </div>
             
             <div class="form-group">
                 <label for="password_confirmation">
-                    <i class="fas fa-lock me-2"></i>Confirmar ContraseÃ±a
+                    <i class="fas fa-lock me-2"></i>Confirmar Contraseña
                 </label>
                 <input type="password" class="form-control" id="password_confirmation" 
-                       name="password_confirmation" placeholder="Repite la contraseÃ±a">
+                       name="password_confirmation" placeholder="Repite la contraseña">
             </div>
             
             <div class="form-group">
@@ -69,7 +69,7 @@
                         Este usuario es un paciente
                     </label>
                 </div>
-                <small class="text-muted">Si es paciente, podrÃ¡ acceder al sistema y escribir en su diario</small>
+                <small class="text-muted">Si es paciente, podrá acceder al sistema y escribir en su diario</small>
             </div>
             
             <div class="form-group" id="pacienteSelectGroup" style="display: none;">

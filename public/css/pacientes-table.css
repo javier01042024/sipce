@@ -41,7 +41,7 @@
 }
 
 /* ==========================================
-   BOTONES DE EXPORTACIÃ“N EN HEADER
+   BOTONES DE EXPORTACIÓN EN HEADER
    ========================================== */
 
 .export-buttons {
@@ -447,7 +447,7 @@
 }
 
 /* ==========================================
-   ESTADO VACÃO
+   ESTADO VACÍO
    ========================================== */
 
 .empty-state {
@@ -490,7 +490,7 @@
 }
 
 /* ==========================================
-   PAGINACIÃ“N Y CONTROLES DATATABLES
+   PAGINACIÓN Y CONTROLES DATATABLES
    ========================================== */
 
 .dataTables_wrapper {
@@ -560,7 +560,7 @@
 }
 
 /* ==========================================
-   RESPONSIVE - OCULTAR COLUMNAS EN MÃ“VIL
+   RESPONSIVE - OCULTAR COLUMNAS EN MÓVIL
    ========================================== */
 
 @media (max-width: 1024px) {

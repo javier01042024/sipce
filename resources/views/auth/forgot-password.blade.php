@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>SIPCE - Recuperar ContraseÃ±a</title>
+        <title>SIPCE - Recuperar Contraseña</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <style>
             .auth-card img,
@@ -284,7 +284,7 @@
                 }
             }
 
-            /* MÃ³viles */
+            /* Móviles */
             @media (max-width: 480px) {
                 body {
                     padding: 0.5rem;
@@ -320,21 +320,21 @@
                 <h2>SIPCE</h2>
                 <p>Sistema Integral para el Cuidado y Bienestar Emocional</p>
                 <ul class="feature-list">
-                    <li><i class="fas fa-lock"></i> RecuperaciÃ³n segura</li>
+                    <li><i class="fas fa-lock"></i> Recuperación segura</li>
                     <li><i class="fas fa-envelope"></i> Enlace enviado por correo</li>
-                    <li><i class="fas fa-shield-alt"></i> ProtecciÃ³n de datos</li>
+                    <li><i class="fas fa-shield-alt"></i> Protección de datos</li>
                 </ul>
             </div>
 
             <!-- Lado derecho -->
             <div class="form-side">
                 <a href="{{ route('login') }}" class="back-link">
-                    <i class="fas fa-arrow-left"></i> Volver al inicio de sesiÃ³n
+                    <i class="fas fa-arrow-left"></i> Volver al inicio de sesión
                 </a>
 
-                <h1>Â¿Olvidaste tu contraseÃ±a?</h1>
+                <h1>¿Olvidaste tu contraseña?</h1>
                 <div class="description">
-                    {{ __('No hay problema. Ingresa tu correo electrÃ³nico y te enviaremos un enlace para restablecer tu contraseÃ±a.') }}
+                    {{ __('No hay problema. Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.') }}
                 </div>
 
                 @if (session('status'))
@@ -371,7 +371,7 @@
                     @csrf
 
                     <div class="input-group">
-                        <label for="email"><i class="fas fa-envelope"></i> Correo electrÃ³nico</label>
+                        <label for="email"><i class="fas fa-envelope"></i> Correo electrónico</label>
                         <input id="email" type="email" name="email" value="{{ old('email') }}" 
                                class="@error('email') is-invalid @enderror"
                                placeholder="ejemplo@empresa.com" required autofocus autocomplete="email">
@@ -401,7 +401,7 @@
                 emailInput.addEventListener('input', function() {
                     if (this.value.trim() !== '') {
                         if (!isValidEmail(this.value)) {
-                            showError(emailInput, emailFeedback, 'Ingresa un correo electrÃ³nico vÃ¡lido');
+                            showError(emailInput, emailFeedback, 'Ingresa un correo electrónico válido');
                         } else {
                             clearError(emailInput, emailFeedback);
                         }
@@ -420,10 +420,10 @@
                     let isValid = true;
                     
                     if (!emailInput.value.trim()) {
-                        showError(emailInput, emailFeedback, 'El correo electrÃ³nico es obligatorio');
+                        showError(emailInput, emailFeedback, 'El correo electrónico es obligatorio');
                         isValid = false;
                     } else if (!isValidEmail(emailInput.value)) {
-                        showError(emailInput, emailFeedback, 'Ingresa un correo electrÃ³nico vÃ¡lido');
+                        showError(emailInput, emailFeedback, 'Ingresa un correo electrónico válido');
                         isValid = false;
                     }
                     
@@ -462,7 +462,7 @@
                             }
                         } catch (error) {
                             console.error('Error:', error);
-                            showErrorMessage('Error de conexiÃ³n. Intenta nuevamente.');
+                            showErrorMessage('Error de conexión. Intenta nuevamente.');
                         } finally {
                             setLoadingState(false);
                         }
