@@ -160,16 +160,21 @@ COMO USARLA:
      bandeja (junto al reloj) -> Salir.
 
 DATOS:
-  - La aplicacion se conecta a la MISMA base de datos
-    de la nube (Neon), por lo que los datos son los
-    mismos que en la version web. Requiere internet.
+  - La aplicacion funciona SIN internet: usa una base de datos
+    local (SQLite) dentro de app\database, creada automaticamente
+    en el primer arranque.
+  - Cuando hay conexion, sincroniza con la version web (nube) en
+    segundo plano: los cambios offline se suben al volver la senal
+    y se descargan los de otras maquinas.
+  - Estado de sincronizacion: icono del reloj en la barra superior.
+    Clic en el icono fuerza una sincronizacion inmediata.
 
 ACCESOS:
   - Usuario administrador: admin@example.com / password123
 
 REQUISITOS:
   - Windows 10/11 (x64).
-  - Conexion a internet (por la base de datos en la nube).
+  - Internet solo para sincronizar con la nube (opcional).
 
 SOLUCION DE PROBLEMAS:
   - Si el navegador no se abre solo, ve a:
