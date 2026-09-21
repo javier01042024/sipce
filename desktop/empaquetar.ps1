@@ -88,6 +88,9 @@ foreach ($f in $AppFiles) {
 }
 # .env desktop (SQLite local + sesiones en archivo + sincronizacion contra el servidor)
 if (-not (Test-Path "$Root\.env")) { throw "No existe el .env del proyecto" }
+# la carpeta database del repo puede contener database.sqlite (desarrollo):
+# NO debe entrar en el paquete, el launcher crea la BD en el primer inicio.
+Get-ChildItem -Path "$appDir\database" -Recurse -Filter '*.sqlite' -ErrorAction SilentlyContinue | Remove-Item -Force
 $repoEnv = Get-Content "$Root\.env" -Raw
 $appKey = [regex]::Match($repoEnv, '(?m)^APP_KEY=(.+)$').Groups[1].Value.Trim()
 if (-not $appKey) { throw "El .env del proyecto no tiene APP_KEY" }
