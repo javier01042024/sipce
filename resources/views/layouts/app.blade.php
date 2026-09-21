@@ -59,6 +59,7 @@
 
     <!-- Contenido principal -->
     <div class="main-content" id="mainContent">
+        @include('layouts.partials.topbar')
         @yield('content')
     </div>
 

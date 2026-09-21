@@ -86,9 +86,42 @@ foreach ($f in $AppFiles) {
     $src = Join-Path $Root $f
     if (Test-Path $src) { Copy-Item $src -Destination $appDir -Force }
 }
-# .env local (misma Neon que la nube) -> la app usa los mismos datos
+# .env desktop (SQLite local + sesiones en archivo + sincronizacion contra el servidor)
 if (-not (Test-Path "$Root\.env")) { throw "No existe el .env del proyecto" }
-Copy-Item "$Root\.env" "$appDir\.env" -Force
+$repoEnv = Get-Content "$Root\.env" -Raw
+$appKey = [regex]::Match($repoEnv, '(?m)^APP_KEY=(.+)$').Groups[1].Value.Trim()
+if (-not $appKey) { throw "El .env del proyecto no tiene APP_KEY" }
+@"
+APP_NAME=SIPCE Desktop
+APP_ENV=local
+APP_KEY=$appKey
+APP_DEBUG=false
+APP_URL=http://127.0.0.1:8899
+
+LOG_CHANNEL=stack
+LOG_LEVEL=warning
+
+# Sin DB_DATABASE a proposito: Laravel usa database_path('database.sqlite')
+# que en el paquete es <app>\database\database.sqlite (donde el launcher la crea).
+# DB_URL vacio evita que la conexion sqlite herede la URL de pgsql/Neon.
+DB_CONNECTION=sqlite
+DB_URL=
+
+SESSION_DRIVER=file
+SESSION_LIFETIME=120
+CACHE_DRIVER=file
+QUEUE_CONNECTION=sync
+
+MAIL_MAILER=log
+
+SYNC_OUTBOX=true
+SYNC_API_URL=https://sipce.onrender.com
+SYNC_EMAIL=admin@example.com
+SYNC_PASSWORD=password123
+"@ | Set-Content -Path "$appDir\.env" -Encoding ASCII
+# Solo el directorio database: el launcher crea la BD con sipce:init-local
+# en el primer arranque (si existiera un archivo vacío, se saltaría la inicialización).
+New-Item -ItemType Directory -Force -Path "$appDir\database" | Out-Null
 # router del servidor PHP para el launcher (emula mod_rewrite)
 Copy-Item "$PSScriptRoot\launcher\server.php" "$appDir\public\server.php" -Force
 # estructura writable requerida por artisan

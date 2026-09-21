@@ -12,12 +12,14 @@ namespace SIPCE
     static class Program
     {
         static Process phpProc = null;
+        static Process syncProc = null;
         static NotifyIcon tray = null;
         static private int port = 8899;
         static private string baseUrl = "http://127.0.0.1:8899";
         static private string appDir = "";
         static private string phpExe = "";
         static private string logFile = "";
+        static private string localDb = "";
 
         [STAThread]
         static void Main(string[] args)
@@ -29,6 +31,7 @@ namespace SIPCE
             appDir = Path.Combine(here, "app");
             phpExe = Path.Combine(here, "php", "php.exe");
             logFile = Path.Combine(here, "app", "storage", "logs", "desktop.log");
+            localDb = Path.Combine(appDir, "database", "database.sqlite");
 
             bool isFirst = false;
             using (Mutex m = new Mutex(true, "SIPCE_Desktop_Launcher", out isFirst))
@@ -49,11 +52,12 @@ namespace SIPCE
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
 
-                bool ok = StartServer();
+                bool ok = RunInit() && StartServer();
                 SetupTray();
 
                 if (ok)
                 {
+                    StartSyncLoop();
                     if (!noBrowser) OpenBrowser();
                     Log("SIPCE listo en " + baseUrl);
                 }
@@ -83,6 +87,58 @@ namespace SIPCE
             tray.Visible = true;
             tray.ContextMenuStrip = menu;
             tray.DoubleClick += (s, e) => OpenBrowser();
+        }
+
+        static bool RunInit()
+        {
+            if (!File.Exists(localDb))
+            {
+                Log("No existe la BD local, inicializando (artisan sipce:init-local)...");
+                ProcessStartInfo psi = new ProcessStartInfo();
+                psi.FileName = phpExe;
+                psi.WorkingDirectory = appDir;
+                psi.Arguments = "artisan sipce:init-local --no-interaction";
+                psi.UseShellExecute = false;
+                psi.CreateNoWindow = true;
+                psi.RedirectStandardOutput = true;
+                psi.RedirectStandardError = true;
+                try
+                {
+                    Process p = Process.Start(psi);
+                    string outp = p.StandardOutput.ReadToEnd();
+                    string err = p.StandardError.ReadToEnd();
+                    if (!p.WaitForExit(180000)) { p.Kill(); Log("init-local expiro (180s)"); return false; }
+                    Log("init-local exit=" + p.ExitCode + (outp.Length > 0 ? " | " + outp.Trim() : ""));
+                    if (p.ExitCode != 0) { Log("init-local stderr: " + err); return false; }
+                    p.Dispose();
+                    return File.Exists(localDb);
+                }
+                catch (Exception ex) { Log("init-local error: " + ex.Message); return false; }
+            }
+            Log("BD local ya existe: " + localDb);
+            return true;
+        }
+
+        static void StartSyncLoop()
+        {
+            ProcessStartInfo psi = new ProcessStartInfo();
+            psi.FileName = phpExe;
+            psi.WorkingDirectory = appDir;
+            psi.Arguments = "artisan sipce:sync --loop";
+            psi.UseShellExecute = false;
+            psi.CreateNoWindow = true;
+            psi.RedirectStandardOutput = true;
+            psi.RedirectStandardError = true;
+            try
+            {
+                syncProc = Process.Start(psi);
+                syncProc.OutputDataReceived += (s, e) => { };
+                syncProc.ErrorDataReceived += (s, e) => { };
+                syncProc.BeginOutputReadLine();
+                syncProc.BeginErrorReadLine();
+                Log("Sync loop iniciado PID=" + syncProc.Id);
+            }
+            catch (Exception ex) { Log("Sync loop error: " + ex.Message); }
         }
 
         static bool StartServer()
@@ -171,6 +227,12 @@ namespace SIPCE
 
         static void Shutdown()
         {
+            if (syncProc != null && !syncProc.HasExited)
+            {
+                try { syncProc.Kill(); Log("Sync loop detenido"); } catch { }
+                syncProc.Dispose();
+                syncProc = null;
+            }
             if (phpProc != null && !phpProc.HasExited)
             {
                 try { phpProc.Kill(); Log("Servidor detenido"); } catch { }

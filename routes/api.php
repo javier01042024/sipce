@@ -27,6 +27,9 @@ Route::prefix('sync')->middleware('auth:sanctum')->group(function () {
     Route::get('/download', [SyncController::class, 'download'])
         ->name('api.sync.download');
 
+    Route::get('/bootstrap', [SyncController::class, 'bootstrap'])
+        ->name('api.sync.bootstrap');
+
     Route::get('/status', [SyncController::class, 'status'])
         ->name('api.sync.status');
 

@@ -19,6 +19,8 @@ use App\Models\Notificacion;
 use App\Models\PlanTratamiento;
 use App\Models\PlanObjetivo;
 use App\Models\Estado;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -70,6 +72,7 @@ class SyncController extends Controller
         $applied = 0;
         $conflicts = 0;
         $errors = 0;
+        $detalle = [];
 
         DB::beginTransaction();
 
@@ -82,6 +85,10 @@ class SyncController extends Controller
                     } elseif ($resultado === 'conflict') {
                         $conflicts++;
                     }
+                    $detalle[] = [
+                        'uuid' => $record['uuid'],
+                        'estado' => $resultado === 'applied' ? 'applied' : ($resultado === 'conflict' ? 'conflict' : 'error'),
+                    ];
                 } catch (\Exception $e) {
                     $errors++;
                     Log::warning('Sync upload error', [
@@ -90,16 +97,24 @@ class SyncController extends Controller
                         'error' => $e->getMessage(),
                     ]);
 
-                    SyncPending::create([
+                    $detalle[] = [
                         'uuid' => $record['uuid'],
-                        'tabla' => $record['tabla'],
-                        'accion' => $record['accion'],
-                        'datos' => $record['datos'] ?? null,
-                        'device_id' => $deviceId,
-                        'user_id' => $userId,
-                        'created_local' => $record['created_local'],
-                        'error_sync' => $e->getMessage(),
-                    ]);
+                        'estado' => 'error',
+                        'mensaje' => $e->getMessage(),
+                    ];
+
+                    SyncPending::updateOrCreate(
+                        ['uuid' => $record['uuid']],
+                        [
+                            'tabla' => $record['tabla'],
+                            'accion' => $record['accion'],
+                            'datos' => $record['datos'] ?? null,
+                            'device_id' => $deviceId,
+                            'user_id' => $userId,
+                            'created_local' => $record['created_local'],
+                            'error_sync' => $e->getMessage(),
+                        ]
+                    );
                 }
             }
 
@@ -118,6 +133,7 @@ class SyncController extends Controller
                 'applied' => $applied,
                 'conflicts' => $conflicts,
                 'errors' => $errors,
+                'detalle' => $detalle,
                 'server_time' => now()->toIso8601String(),
             ]);
 
@@ -183,8 +199,26 @@ class SyncController extends Controller
                     $accion = $row->wasRecentlyCreated ? 'CREATE' : 'UPDATE';
                 }
 
+                // Persistir un uuid estable: si se genera aquí sobre la marcha,
+                // el dispositivo vería un uuid distinto en cada descarga y
+                // duplicaría la fila en cada ciclo.
+                $uuid = $row->uuid;
+                if (! $uuid) {
+                    $uuid = (string) Str::uuid();
+                    try {
+                        $row->timestamps = false;
+                        $row->forceFill(['uuid' => $uuid])->save();
+                    } catch (\Throwable $e) {
+                        Log::warning('Sync download: no se pudo persistir uuid', [
+                            'tabla' => $tabla,
+                            'id' => $row->getKey(),
+                            'error' => $e->getMessage(),
+                        ]);
+                    }
+                }
+
                 $records[] = [
-                    'uuid' => $row->uuid ?? (string) Str::uuid(),
+                    'uuid' => $uuid,
                     'tabla' => $tabla,
                     'accion' => $accion,
                     'datos' => $row->toArray(),
@@ -277,6 +311,34 @@ class SyncController extends Controller
     }
 
     /**
+     * GET /api/sync/bootstrap
+     * Datos de usuario/roles necesarios para operar OFFLINE en el escritorio.
+     * Requiere un token válido (auth:sanctum). Además asegura que todos los
+     * usuarios tengan uuid para poder resolver user_id enviado como UUID.
+     */
+    public function bootstrap(Request $request): JsonResponse
+    {
+        // Backfill de uuid en usuarios que no lo tienen (los creados por la web)
+        User::whereNull('uuid')->chunk(200, function ($users) {
+            foreach ($users as $user) {
+                $user->uuid = (string) Str::uuid();
+                $user->save();
+            }
+        });
+
+        $roles = Role::get(['id', 'name', 'slug', 'description', 'permissions']);
+        $users = User::get(['id', 'uuid', 'name', 'email', 'password', 'email_verified_at', 'created_at', 'updated_at']);
+        $roleUser = DB::table('role_user')->select('user_id', 'role_id')->get();
+
+        return response()->json([
+            'success' => true,
+            'roles' => $roles,
+            'users' => $users,
+            'role_user' => $roleUser,
+        ]);
+    }
+
+    /**
      * Si pacientes requiere detalle polimórfica a una Niño/Adolescente/Adulto
      * referenciada por UUID (creadas offline), resolver a su id numérico.
      */
@@ -321,7 +383,8 @@ class SyncController extends Controller
             'acompanante_id' => Acompanante::class,
             'diario_id' => Diario::class,
             'plan_id' => PlanTratamiento::class,
-            'user_id' => \App\Models\User::class,
+            'estado_id' => Estado::class,
+            'user_id' => User::class,
         ];
 
         foreach ($mapas as $campo => $clase) {
@@ -408,15 +471,17 @@ class SyncController extends Controller
                 if ($serverUpdated && $serverUpdated->gt($clientUpdated)) {
                     // Conflicto — el servidor tiene datos más recientes
                     // Guardar en cola para resolución manual
-                    SyncPending::create([
-                        'uuid' => $record['uuid'],
-                        'tabla' => $tabla,
-                        'accion' => 'UPDATE',
-                        'datos' => $record['datos'],
-                        'device_id' => $deviceId,
-                        'user_id' => $userId,
-                        'created_local' => $record['created_local'],
-                    ]);
+                    SyncPending::updateOrCreate(
+                        ['uuid' => $record['uuid']],
+                        [
+                            'tabla' => $tabla,
+                            'accion' => 'UPDATE',
+                            'datos' => $record['datos'],
+                            'device_id' => $deviceId,
+                            'user_id' => $userId,
+                            'created_local' => $record['created_local'],
+                        ]
+                    );
                     return 'conflict';
                 }
                 // El cliente es más reciente — aplicar

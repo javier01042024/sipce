@@ -1,0 +1,9 @@
+feat(desktop): sincronizacion offline-first con SQLite local
+
+- Cola de outbox (sync_pending) alimentada por SyncOutboxObserver (CREATE/UPDATE/DELETE, upsert por uuid, desactivada en servidor)
+- comandos sipce:init-local (crea/migra/siembra BD sqlite) y sipce:sync (ciclo completo bootstrap+upload+download con lock)
+- API: /api/sync/bootstrap (roles/usuarios/role_user + backfill uuids), upload con resolucion de FK por uuid y estado por registro, download con remap server->local sin duplicados
+- sync_states.last_sync_at se inicializa en el primer arranque de un dispositivo nuevo
+- chip de sincronizacion en la barra superior (estado + disparo manual), rutas /up y /sync/*
+- .env desktop generado por empaquetar.ps1 (sqlite + sesiones archivo); el launcher crea la BD en el primer inicio
+- config: conexion sqlite aislada de la URL de pgsql (env SQLITE_URL) para que el escritorio no herede la URL de Neon

@@ -22,6 +22,7 @@ use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\DiagnosticoController;
 use App\Http\Controllers\AcompananteController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SyncController;
 use Illuminate\Support\Facades\Route;
 
 // ====================================================
@@ -30,6 +31,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Health check (usado por el launcher y el indicador de conexión)
+Route::get('/up', fn () => response('up'))->name('up');
 
 // ====================================================
 // DASHBOARD
@@ -42,6 +46,16 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 // RUTAS AUTENTICADAS
 // ====================================================
 Route::middleware('auth')->group(function () {
+
+    // --------------------------------------------------
+    // SINCRONIZACIÓN (modo escritorio): estado y disparo manual
+    // --------------------------------------------------
+    Route::get('/sync/status', [SyncController::class, 'status'])
+        ->name('sync.status')
+        ->middleware('verified');
+    Route::get('/sync/run', [SyncController::class, 'runNow'])
+        ->name('sync.run')
+        ->middleware('verified');
 
     // --------------------------------------------------
     // PERFIL

@@ -6,7 +6,14 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
+use Illuminate\Database\PostgresConnection;
+use App\Database\NeonPgsqlConnector;
+use App\Console\Commands\InitLocal;
+use App\Console\Commands\SyncCommand;
+use App\Observers\BitacoraObserver;
+use App\Observers\SyncOutboxObserver;
 use App\Models\Paciente;
 use App\Models\Cita;
 use App\Models\Diario;
@@ -14,17 +21,33 @@ use App\Models\Sesion;
 use App\Models\User;
 use App\Models\Nota;
 use App\Models\PlanTratamiento;
-use App\Observers\BitacoraObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        //
+        $this->commands([
+            InitLocal::class,
+            SyncCommand::class,
+        ]);
     }
 
     public function boot(): void
     {
+        // Conector PostgreSQL compatible con Neon para clientes sin SNI
+        // (inyecta options='endpoint=<id>' en el DSN cuando el host es .neon.tech).
+        DB::extend('pgsql', function ($config, $name) {
+            $pdo = (new NeonPgsqlConnector)->connect($config);
+            $config['name'] = $name;
+
+            return new PostgresConnection(
+                $pdo,
+                $config['database'] ?? '',
+                $config['prefix'] ?? '',
+                $config
+            );
+        });
+
         // Observers para bitácora automática
         Paciente::observe(BitacoraObserver::class);
         Cita::observe(BitacoraObserver::class);
@@ -33,6 +56,14 @@ class AppServiceProvider extends ServiceProvider
         User::observe(BitacoraObserver::class);
         Nota::observe(BitacoraObserver::class);
         PlanTratamiento::observe(BitacoraObserver::class);
+
+        // Outbox de sincronización (solo en el escritorio, que usa BD local).
+        // En la versión web los cambios ya están en el servidor: no se encolan.
+        if ((bool) env('SYNC_OUTBOX', false)) {
+            foreach (config('sync.tables') as [, $modelClass]) {
+                $modelClass::observe(SyncOutboxObserver::class);
+            }
+        }
 
         // Directiva Blade para verificar permisos
         Blade::if('canPermission', function (string $permission) {

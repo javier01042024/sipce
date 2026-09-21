@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('accion', 20)->comment('CREATE, UPDATE, DELETE');
             $table->json('datos')->nullable()->comment('Snapshot del registro completo');
             $table->string('device_id', 100)->comment('Dispositivo que originó el cambio');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamp('created_local')->comment('Fecha local cuando se hizo el cambio');
             $table->boolean('sincronizado')->default(false)->index();
             $table->timestamp('sincronizado_at')->nullable();
