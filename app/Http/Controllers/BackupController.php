@@ -132,6 +132,8 @@ class BackupController extends Controller
             
             if ($driver === 'pgsql') {
                 $this->dumpPostgres($filePath);
+            } elseif ($driver === 'sqlite') {
+                $this->dumpSqlite($filePath);
             } else {
                 $this->dumpMySql($filePath);
             }
@@ -140,13 +142,27 @@ class BackupController extends Controller
                 throw new \Exception('No se pudo crear el archivo de respaldo');
             }
             
-            $zipPath = str_replace('.sql', '.zip', $filePath);
-            $zip = new ZipArchive();
-            if ($zip->open($zipPath, ZipArchive::CREATE) === true) {
-                $zip->addFile($filePath, $filename);
-                $zip->close();
-                File::delete($filePath);
+$zipPath = str_replace('.sql', '.zip', $filePath);
+        $zip = new ZipArchive();
+        if ($zip->open($zipPath, ZipArchive::CREATE) === true) {
+            $zip->addFile($filePath, $filename);
+            if ($driver === 'sqlite') {
+                // en escritorio se incluye tambien la copia cruda del archivo
+                // SQLite para que la restauracion pueda ser atomica
+                $rawPath = str_replace('.sql', '.sqlite', $filePath);
+                File::copy((string) config('database.connections.sqlite.database'), $rawPath);
+                $zip->addFile($rawPath, basename($rawPath));
             }
+            // CERRAR antes de borrar: ZipArchive lee lazy los archivos en close()
+            $closed = $zip->close();
+            if ($driver === 'sqlite') {
+                File::delete(str_replace('.sql', '.sqlite', $filePath));
+            }
+            File::delete($filePath);
+        }
+        if (!File::exists($zipPath) || File::size($zipPath) == 0) {
+            throw new \Exception('No se pudo generar el archivo ZIP del respaldo');
+        }
             
             return response()->json([
                 'success' => true,
@@ -256,10 +272,75 @@ class BackupController extends Controller
     }
 
     /**
-     * Respaldo para PostgreSQL usando pg_dump.
-     * Genera SQL plano con INSERTs (no COPY) para que el parser de
-     * restauración pueda ejecutarlo statement a statement.
+     * Respaldo para SQLite (escritorio): SQL portable,
+     * sin backticks MySQL, usando sintaxis nativa de SQLite.
      */
+    private function dumpSqlite(string $filePath): void
+    {
+        $connection = DB::connection();
+        $dbName = $connection->getDatabaseName();
+        $tables = $connection->select("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' ORDER BY name");
+
+        $sql = "-- ====================================================\n";
+        $sql .= "-- RESPALDO DE BASE DE DATOS LOCAL (SIPCE Desktop)\n";
+        $sql .= "-- Base de datos: {$dbName}\n";
+        $sql .= "-- Fecha: " . date('Y-m-d H:i:s') . "\n";
+        $sql .= "-- -- Motor: SQLite\n";
+        $sql .= "-- ====================================================\n\n";
+        $sql .= "PRAGMA foreign_keys = OFF;\n";
+        $sql .= "BEGIN;\n\n";
+
+        foreach ($tables as $table) {
+            $tableName = $table->name;
+            $sql .= "-- ----------------------------------------------------\n";
+            $sql .= "-- Tabla: {$tableName}\n";
+            $sql .= "-- ----------------------------------------------------\n";
+            $sql .= "DROP TABLE IF EXISTS \"{$tableName}\";\n";
+
+            $create = $connection->selectOne(
+                "SELECT sql AS s FROM sqlite_master WHERE type = 'table' AND name = ?",
+                [$tableName]
+            );
+            if ($create && !empty($create->s)) {
+                $sql .= $create->s . ";\n\n";
+            }
+
+            $columns = $connection->select("PRAGMA table_info(\"{$tableName}\")");
+            $columnNames = [];
+            foreach ($columns as $column) {
+                $columnNames[] = $column->name;
+            }
+
+            $rows = $connection->table($tableName)->get();
+            if (count($rows) > 0) {
+                $quotedCols = '"' . implode('", "', $columnNames) . '"';
+                $sql .= "INSERT INTO \"{$tableName}\" ({$quotedCols}) VALUES\n";
+
+                $values = [];
+                foreach ($rows as $row) {
+                    $vals = [];
+                    foreach ($columnNames as $col) {
+                        $value = $row->{$col} ?? null;
+                        if ($value === null) {
+                            $vals[] = 'NULL';
+                        } else {
+                            $vals[] = $connection->getPdo()->quote((string) $value);
+                        }
+                    }
+                    $values[] = "(" . implode(', ', $vals) . ")";
+                }
+                $sql .= implode(",\n", $values) . ";\n\n";
+            }
+        }
+
+        $sql .= "COMMIT;\n";
+        $sql .= "PRAGMA foreign_keys = ON;\n";
+        $sql .= "\n-- ====================================================\n";
+        $sql .= "-- FIN DEL RESPALDO LOCAL\n";
+        $sql .= "-- ====================================================\n";
+
+        File::put($filePath, $sql);
+    }
     private function dumpPostgres(string $filePath): void
     {
         $pg = config('database.connections.pgsql');
@@ -347,16 +428,41 @@ class BackupController extends Controller
                 if ($zip->open($filePath) !== true) {
                     throw new \Exception('No se pudo abrir el archivo ZIP');
                 }
-                $sqlPath = storage_path('app/backups/temp_' . time() . '.sql');
-                $zip->extractTo(storage_path('app/backups/'), basename($sqlPath));
-                $zip->close();
-                
-                if (!File::exists($sqlPath)) {
-                    throw new \Exception('No se pudo extraer el archivo SQL del ZIP');
+                $tempDir = storage_path('app/backups/temp_' . time());
+                if (!File::exists($tempDir)) {
+                    File::makeDirectory($tempDir, 0755, true);
                 }
-                
-                $sqlContent = File::get($sqlPath);
-                File::delete($sqlPath);
+                $zip->extractTo($tempDir);
+                $zip->close();
+
+                // Si el ZIP incluye la copia cruda de la BD SQLite,
+                // restauramnos el archivo directamente (atómico y exacto).
+                foreach (glob($tempDir . '/*') ?: [] as $entry) {
+                    if (!is_file($entry)) {
+                        continue;
+                    }
+                    $header = @file_get_contents($entry, false, null, 0, 16);
+                    if (strlen((string) $header) === 16 && str_starts_with((string) $header, 'SQLite format 3')) {
+                        $result = $this->restoreSqliteFile($entry);
+                        foreach (glob($tempDir . '/*') ?: [] as $e) {
+                            if (is_file($e)) { File::delete($e); }
+                        }
+                        File::deleteDirectory($tempDir);
+                        return $result;
+                    }
+                }
+
+                $sqlCandidates = glob($tempDir . '/*.sql') ?: [];
+                if (empty($sqlCandidates)) {
+                    File::deleteDirectory($tempDir);
+                    throw new \Exception('El ZIP no contiene un respaldo SQL válido');
+                }
+                $sqlContent = File::get($sqlCandidates[0]);
+
+                foreach (glob($tempDir . '/*') ?: [] as $e) {
+                    if (is_file($e)) { File::delete($e); }
+                }
+                File::deleteDirectory($tempDir);
             } else {
                 $sqlContent = File::get($filePath);
             }
@@ -453,6 +559,75 @@ class BackupController extends Controller
         }
     }
     
+    /**
+     * Restaura la base de datos local (SQLite) reemplazando el archivo
+     * con la copia cruda incluida en el respaldo. Antes de reemplazar
+     * guarda una copia previa automatica en respaldos.
+     */
+    private function restoreSqliteFile(string $rawPath): \Illuminate\Http\JsonResponse
+    {
+        try {
+            if (DB::connection()->getDriverName() !== 'sqlite') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Este respaldo es de la version de escritorio (SQLite); no se puede restaurar aquí.'
+                ], 400);
+            }
+
+            $dbPath = (string) config('database.connections.sqlite.database');
+            if ($dbPath === ':memory:' || !is_file($dbPath)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No se encontró la base de datos local.'
+                ], 400);
+            }
+
+            $header = @file_get_contents($rawPath, false, null, 0, 16);
+            if (strlen((string) $header) !== 16 || !str_starts_with((string) $header, 'SQLite format 3')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'El archivo SQLite del respaldo no es válido.'
+                ], 400);
+            }
+
+            $backupPath = storage_path('app/backups');
+            if (!File::exists($backupPath)) {
+                File::makeDirectory($backupPath, 0755, true);
+            }
+            $preSnapshot = $backupPath . '/pre_restore_' . date('Y-m-d_His') . '.sqlite';
+            File::copy($dbPath, $preSnapshot);
+
+            // liberamos la conexion actual antes de reemplazar el archivo;
+            // las peticiones siguientes abren una conexion nueva sobre el archivo restaurado
+            DB::purge(DB::connection()->getName());
+            File::copy($rawPath, $dbPath);
+
+            \App\Helpers\BitacoraHelper::exito(
+                'restaurar',
+                'respaldos',
+                'Restauró la base de datos local desde archivo SQLite',
+                ['fuente' => basename($rawPath), 'copia_previa' => basename($preSnapshot)]
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Base de datos local restaurada correctamente. Se guardó una copia previa automática en Respaldos.'
+            ]);
+        } catch (\Exception $e) {
+            \App\Helpers\BitacoraHelper::error(
+                'restaurar',
+                'respaldos',
+                'Error al restaurar la base local desde archivo SQLite: ' . $e->getMessage(),
+                ['fuente' => basename($rawPath)]
+            );
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al restaurar la base de datos local: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
     /**
      * Elimina un archivo de respaldo del servidor.
      * 

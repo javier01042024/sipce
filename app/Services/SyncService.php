@@ -533,6 +533,19 @@ class SyncService
 
     private function localSyncUserId(): ?int
     {
+        // el escritorio escribe el usuario con sesion activa; el ciclo de sync
+        // (proceso CLI separado) lo lee para atribuir correctamente a cada doctor
+        $marker = $this->storageDir.'/active-user.txt';
+        if (file_exists($marker)) {
+            $email = trim((string) file_get_contents($marker));
+            if ($email !== '') {
+                $id = User::where('email', $email)->value('id');
+                if ($id) {
+                    return (int) $id;
+                }
+            }
+        }
+
         return User::where('email', config('sync.email'))->value('id');
     }
 

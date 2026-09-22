@@ -31,6 +31,8 @@ class AuthenticatedSessionController extends Controller
 
         BitacoraHelper::login();
 
+        $this->setActiveSyncUser($request->user());
+
         $user = $request->user();
         if ($user->hasRole('paciente')) {
             return redirect()->intended(route('paciente.dashboard', absolute: false));
@@ -50,6 +52,38 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
+        $this->clearActiveSyncUser();
+
         return redirect('/');
+    }
+
+    /**
+     * El proceso CLI de sincronizacion (proceso separado del servidor web)
+     * lee este marcador para atribuir la actividad de sync al doctor que
+     * tiene la sesion abierta en el escritorio en lugar de la cuenta de admin.
+     */
+    private function setActiveSyncUser(\Illuminate\Contracts\Auth\Authenticatable $user): void
+    {
+        try {
+            $dir = storage_path('app/sync');
+            if (!is_dir($dir)) {
+                @mkdir($dir, 0777, true);
+            }
+            @file_put_contents($dir.'/active-user.txt', (string) $user->email);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('No se pudo escribir el marcador de usuario activo', ['error' => $e->getMessage()]);
+        }
+    }
+
+    private function clearActiveSyncUser(): void
+    {
+        try {
+            $file = storage_path('app/sync/active-user.txt');
+            if (file_exists($file)) {
+                @unlink($file);
+            }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('No se pudo limpiar el marcador de usuario activo', ['error' => $e->getMessage()]);
+        }
     }
 }

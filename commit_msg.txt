@@ -1,9 +1,5 @@
-feat(desktop): sincronizacion offline-first con SQLite local
+feat(desktop): backup/restore SQLite y sincronizacion atribuida al doctor activo
 
-- Cola de outbox (sync_pending) alimentada por SyncOutboxObserver (CREATE/UPDATE/DELETE, upsert por uuid, desactivada en servidor)
-- comandos sipce:init-local (crea/migra/siembra BD sqlite) y sipce:sync (ciclo completo bootstrap+upload+download con lock)
-- API: /api/sync/bootstrap (roles/usuarios/role_user + backfill uuids), upload con resolucion de FK por uuid y estado por registro, download con remap server->local sin duplicados
-- sync_states.last_sync_at se inicializa en el primer arranque de un dispositivo nuevo
-- chip de sincronizacion en la barra superior (estado + disparo manual), rutas /up y /sync/*
-- .env desktop generado por empaquetar.ps1 (sqlite + sesiones archivo); el launcher crea la BD en el primer inicio
-- config: conexion sqlite aislada de la URL de pgsql (env SQLITE_URL) para que el escritorio no herede la URL de Neon
+- BackupController soporta el driver sqlite: dump SQL portable + copia cruda del archivo en el mismo ZIP; la restauracion detecta la BD SQLite y la reemplaza de forma atomica guardando una copia previa automatica (pre_restore_*.sqlite); el flujo SQL sigue funcionando como antes
+- correccion en create(): ZipArchive lee los archivos perezosamente en close(), se cerraba antes de borrar la copia cruda -> backup roto en sqlite
+- el login web escribe storage/app/sync/active-user.txt y el logout lo limpia; el ciclo de sync (proceso CLI) lee ese marcador para atribuir sync_states y la actividad al doctor con sesion activa en lugar de la cuenta de admin configurada (localSyncUserId con fallback a config sync.email)
