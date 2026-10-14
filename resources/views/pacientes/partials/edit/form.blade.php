@@ -11,7 +11,7 @@
                     Tipo: <strong>{{ ucfirst($paciente->tipo_paciente) }}</strong>
                 </p>
             </div>
-            <a href="{{ route('pacientes.index') }}" class="btn-export btn-export-excel">
+            <a href="{{ route('pacientes.index') }}" class="btn-volver">
                 <i class="fas fa-arrow-left"></i> Volver
             </a>
         </div>

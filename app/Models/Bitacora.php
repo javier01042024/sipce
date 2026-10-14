@@ -36,6 +36,47 @@ class Bitacora extends Model
     {
         return $this->belongsTo(User::class, 'usuario_id');
     }
+
+    /**
+     * Descripción legible del cambio, decodificando los datos JSON
+     * de la bitácora y enmascarando campos sensibles.
+     */
+    public function getDescripcionLegibleAttribute(): string
+    {
+        $viejo = $this->formatearDatos($this->datos_viejos);
+        $nuevo = $this->formatearDatos($this->datos_nuevos);
+
+        if ($viejo && $nuevo && $viejo !== $nuevo) {
+            return $viejo . '  →  ' . $nuevo;
+        }
+
+        return $nuevo ?: $viejo;
+    }
+
+    protected function formatearDatos($raw): string
+    {
+        if ($raw === null || $raw === '') {
+            return '';
+        }
+
+        $data = json_decode($raw, true);
+        if (!is_array($data)) {
+            return (string) $raw;
+        }
+
+        $partes = [];
+        foreach ($data as $clave => $valor) {
+            if (is_array($valor)) {
+                $valor = json_encode($valor, JSON_UNESCAPED_UNICODE);
+            }
+            if (in_array($clave, ['password', 'password_confirmation', 'token', 'remember_token'], true)) {
+                $valor = '***';
+            }
+            $partes[] = ucwords(str_replace('_', ' ', $clave)) . ': ' . $valor;
+        }
+
+        return implode('; ', $partes);
+    }
     
     /**
      * Scopes para filtrar

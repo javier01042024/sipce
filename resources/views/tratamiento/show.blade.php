@@ -3,7 +3,7 @@
 @section('content')
 <div class="estados-container">
     <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
-        <a href="{{ route('tratamiento.index') }}" style="color: var(--sipce-primary); text-decoration: none;"><i class="fas fa-arrow-left"></i> Volver</a>
+        <a href="{{ route('tratamiento.index') }}" class="btn-volver"><i class="fas fa-arrow-left"></i> Volver</a>
         <h2 style="margin: 0; color: #1e293b;">Detalle del Plan</h2>
     </div>
 
@@ -44,13 +44,13 @@
         @endif
 
         <div style="display: flex; gap: 10px; justify-content: flex-end; border-top: 1px solid #f1f5f9; padding-top: 20px;">
-            <a href="{{ route('tratamiento.edit', $plan) }}" style="padding:10px 20px;background:linear-gradient(135deg,#6366f1,#818cf8);color:white;border:none;border-radius:10px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
+            <a href="{{ route('tratamiento.edit', $plan) }}" class="btn btn-edit">
                 <i class="fas fa-edit"></i> Editar
             </a>
             <form method="POST" action="{{ route('tratamiento.destroy', $plan) }}" style="display:inline;" id="formDeletePlan">
                 @csrf
                 @method('DELETE')
-                <button type="button" style="padding:10px 20px;background:linear-gradient(135deg,#ef4444,#f87171);color:white;border:none;border-radius:10px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;"
+                <button type="button" class="btn btn-eliminar"
                     onclick="SIPCE_ALERT.confirmDelete({title:'¿Eliminar este plan?',html:'Se eliminarán todos los objetivos asociados.'}).then(r=>{if(r.isConfirmed)document.getElementById('formDeletePlan').submit()})">
                     <i class="fas fa-trash"></i> Eliminar
                 </button>
@@ -61,7 +61,7 @@
     <div class="sipce-table-card">
         <div class="sipce-table-header">
             <div><h3><i class="fas fa-bullseye"></i> Objetivos del Plan</h3></div>
-            <button onclick="document.getElementById('formNuevoObjetivo').style.display = document.getElementById('formNuevoObjetivo').style.display === 'none' ? 'block' : 'none'" style="padding:8px 16px;background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.3);border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;">
+            <button onclick="document.getElementById('formNuevoObjetivo').style.display = document.getElementById('formNuevoObjetivo').style.display === 'none' ? 'block' : 'none'" class="btn-nuevo">
                 <i class="fas fa-plus"></i> Nuevo Objetivo
             </button>
         </div>
@@ -75,7 +75,7 @@
                         <input type="text" name="descripcion" required style="width:100%;padding:10px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;">
                     </div>
                     <div>
-                        <button type="submit" style="padding:10px 24px;background:linear-gradient(135deg,var(--sipce-primary),var(--sipce-primary-dark));color:white;border:none;border-radius:10px;font-weight:600;cursor:pointer;width:100%;">
+                        <button type="submit" class="btn-save" style="width:100%;">
                             Agregar
                         </button>
                     </div>

@@ -3,110 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <title>SIPCE - Resumen Clínico</title>
+    @include('reportes.pdf.partials.estilos')
     <style>
-        body { font-family: 'Helvetica', 'Arial', sans-serif; color: #333; font-size: 12px; line-height: 1.5; margin: 0; padding: 20px; }
-        .header { text-align: center; border-bottom: 3px solid var(--sipce-primary); padding-bottom: 15px; margin-bottom: 20px; }
-        .header h1 { margin: 0; font-size: 22px; color: var(--sipce-primary); }
-        .header p { margin: 5px 0 0 0; color: #666; font-size: 11px; }
-        .section { margin-bottom: 20px; }
-        .section-title { font-size: 14px; font-weight: bold; color: var(--sipce-primary); border-bottom: 2px solid #e2e8f0; padding-bottom: 5px; margin-bottom: 10px; }
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .info-item { padding: 8px; background: #f8fafc; border-radius: 4px; }
-        .info-label { font-size: 10px; color: #94a3b8; text-transform: uppercase; font-weight: 600; }
-        .info-value { font-size: 12px; color: #1e293b; font-weight: 500; margin-top: 2px; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
-        th { background: #f1f5f9; padding: 8px 10px; text-align: left; font-size: 10px; text-transform: uppercase; color: #64748b; border-bottom: 2px solid #e2e8f0; }
-        td { padding: 8px 10px; border-bottom: 1px solid #f1f5f9; font-size: 11px; }
-        .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; }
-        .badge-success { background: #d1fae5; color: #065f46; }
-        .badge-warning { background: #fef3c7; color: #92400e; }
-        .badge-info { background: #e0f2fe; color: #0369a1; }
-        .badge-danger { background: #fee2e2; color: #991b1b; }
-        .notas-item { padding: 8px 0; border-bottom: 1px solid #f1f5f9; }
-        .notas-item:last-child { border-bottom: none; }
-        .notas-meta { font-size: 10px; color: #94a3b8; }
-        .footer { text-align: center; border-top: 2px solid #e2e8f0; padding-top: 15px; margin-top: 30px; color: #94a3b8; font-size: 10px; }
+        body { font-size: 11px; line-height: 1.5; }
+        .section { margin-bottom: 18px; }
+        .section-title { font-size: 13px; font-weight: bold; color: #1F3864; border-bottom: 2px solid #cbd5e1; padding-bottom: 5px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .info-grid { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+        .info-grid td { padding: 5px 8px; border: 0.5px solid #cbd5e1; vertical-align: top; }
+        .info-grid .label { font-size: 9px; color: #64748b; text-transform: uppercase; font-weight: 600; background: #f1f5f9; width: 28%; }
+        .info-grid .valor { font-size: 11px; color: #1e293b; font-weight: 500; }
+        .nota-item { padding: 8px; margin-bottom: 8px; background: #f8fafc; border-left: 3px solid #1F3864; }
+        .nota-meta { font-size: 9px; color: #94a3b8; margin-top: 4px; }
+        .plan-item { padding: 8px; margin-bottom: 8px; background: #f8fafc; border-left: 3px solid #1F3864; }
+        .plan-item ul { margin: 6px 0 0 0; padding-left: 18px; font-size: 10px; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>SIPCE - Resumen Clinico</h1>
-        <p>Fecha de generacion: {{ now()->format('d/m/Y H:i') }}</p>
-    </div>
+    @include('reportes.pdf.partials.encabezado')
+
+    <div class="titulo">RESUMEN CLÍNICO</div>
+    <p class="meta">Generado: {{ now()->format('d/m/Y H:i') }} &nbsp;|&nbsp; Expediente Nº {{ $paciente->numero_expediente }}</p>
 
     <div class="section">
-        <div class="section-title">Informacion del Paciente</div>
-        <div class="info-grid">
-            <div class="info-item">
-                <div class="info-label">Nombre Completo</div>
-                <div class="info-value">{{ $paciente->detalle->nombre ?? '' }} {{ $paciente->detalle->apellido ?? '' }}</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">No. Expediente</div>
-                <div class="info-value">{{ $paciente->numero_expediente }}</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">Fecha de Nacimiento</div>
-                <div class="info-value">{{ $paciente->detalle->fecha_nacimiento ? $paciente->detalle->fecha_nacimiento->format('d/m/Y') : 'N/A' }}</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">Telefono</div>
-                <div class="info-value">{{ $paciente->detalle->telefono ?? 'N/A' }}</div>
-            </div>
-        </div>
+        <div class="section-title">Datos del Paciente</div>
+        <table class="info-grid">
+            <tr>
+                <td class="label">Nombre completo</td>
+                <td class="valor">{{ $paciente->detalle->nombre ?? '' }} {{ $paciente->detalle->apellido ?? '' }}</td>
+                <td class="label">Nº de expediente</td>
+                <td class="valor">{{ $paciente->numero_expediente }}</td>
+            </tr>
+            <tr>
+                <td class="label">Cédula</td>
+                <td class="valor">{{ $paciente->cedula_paciente ?? 'N/A' }}</td>
+                <td class="label">Tipo de paciente</td>
+                <td class="valor">{{ ucfirst($paciente->tipo_paciente ?? 'N/A') }}</td>
+            </tr>
+            <tr>
+                <td class="label">Fecha de nacimiento</td>
+                <td class="valor">{{ $paciente->detalle->fecha_nacimiento ? $paciente->detalle->fecha_nacimiento->format('d/m/Y') : 'N/A' }}</td>
+                <td class="label">Teléfono</td>
+                <td class="valor">{{ $paciente->telefono ?? 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td class="label">Tipo de atención</td>
+                <td class="valor">{{ ucfirst($paciente->tipo_atencion ?? 'N/A') }}</td>
+                <td class="label">Prioridad</td>
+                <td class="valor">{{ ucfirst($paciente->prioridad ?? 'N/A') }}</td>
+            </tr>
+            <tr>
+                <td class="label">Municipio</td>
+                <td class="valor">{{ $paciente->municipio ?? 'N/A' }}</td>
+                <td class="label">Estado</td>
+                <td class="valor">{{ $paciente->estado?->tipo ?? 'N/A' }}</td>
+            </tr>
+        </table>
     </div>
 
     @if($paciente->motivo_consulta)
     <div class="section">
         <div class="section-title">Motivo de Consulta</div>
-        <p style="margin:0; font-size:12px;">{{ $paciente->motivo_consulta }}</p>
+        <p style="margin:0;">{{ $paciente->motivo_consulta }}</p>
     </div>
     @endif
 
     @if($paciente->diagnostico_preliminar)
     <div class="section">
-        <div class="section-title">Diagnostico Preliminar</div>
-        <p style="margin:0; font-size:12px;">{{ $paciente->diagnostico_preliminar }}</p>
+        <div class="section-title">Diagnóstico Preliminar</div>
+        <p style="margin:0;">{{ $paciente->diagnostico_preliminar }}</p>
     </div>
     @endif
 
-    @if(isset($paciente->notas) && $paciente->notas->count() > 0)
+    @if(isset($paciente->diagnosticos) && $paciente->diagnosticos->count() > 0)
     <div class="section">
-        <div class="section-title">Ultimas Notas ({{ min($paciente->notas->count(), 5) }})</div>
-        @foreach($paciente->notas->take(5) as $nota)
-        <div class="notas-item">
-            <p style="margin:0 0 4px 0; font-size:12px;">{{ $nota->contenido }}</p>
-            <div class="notas-meta">
-                <strong>{{ $nota->user->name ?? 'Usuario' }}</strong> - {{ $nota->created_at->format('d/m/Y H:i') }}
-            </div>
-        </div>
-        @endforeach
-    </div>
-    @endif
-
-    @if(isset($paciente->citas) && $paciente->citas->count() > 0)
-    <div class="section">
-        <div class="section-title">Ultimas Citas ({{ min($paciente->citas->count(), 10) }})</div>
+        <div class="section-title">Diagnósticos</div>
         <table>
             <thead>
                 <tr>
-                    <th>Fecha</th>
-                    <th>Estado</th>
+                    <th style="width: 60px;">CIE-10</th>
+                    <th>Diagnóstico</th>
+                    <th style="width: 70px;">Principal</th>
+                    <th style="width: 70px;">Fecha</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($paciente->citas->take(10) as $cita)
+                @foreach($paciente->diagnosticos as $diag)
                 <tr>
-                    <td>{{ $cita->fecha->format('d/m/Y') }}</td>
-                    <td>
-                        @php
-                            $badgeClass = 'badge-info';
-                            if ($cita->estado === 'atendida') $badgeClass = 'badge-success';
-                            elseif ($cita->estado === 'cancelada') $badgeClass = 'badge-danger';
-                            elseif ($cita->estado === 'pendiente') $badgeClass = 'badge-warning';
-                        @endphp
-                        <span class="badge {{ $badgeClass }}">{{ ucfirst(str_replace('_', ' ', $cita->estado)) }}</span>
-                    </td>
+                    <td>{{ $diag->codigo_cie ?? '—' }}</td>
+                    <td>{{ $diag->diagnostico }}</td>
+                    <td class="center">{{ $diag->es_principal ? 'Sí' : 'No' }}</td>
+                    <td class="center">{{ $diag->fecha ? $diag->fecha->format('d/m/Y') : '—' }}</td>
                 </tr>
                 @endforeach
             </tbody>
@@ -114,17 +100,60 @@
     </div>
     @endif
 
+    @if(isset($paciente->citas) && $paciente->citas->count() > 0)
+    <div class="section">
+        <div class="section-title">Historial de Citas</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 70px;">Fecha</th>
+                    <th style="width: 90px;">Estado</th>
+                    <th>Objetivo</th>
+                    <th style="width: 130px;">Planificación</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($paciente->citas as $cita)
+                <tr>
+                    <td class="center">{{ $cita->fecha ? $cita->fecha->format('d/m/Y') : '—' }}</td>
+                    <td class="center">{{ $cita->estado_texto }}</td>
+                    <td>{{ mb_substr($cita->objetivo ?? '', 0, 120) }}</td>
+                    <td>{{ mb_substr($cita->planificacion ?? '', 0, 120) }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    @endif
+
+    @if(isset($paciente->notas) && $paciente->notas->count() > 0)
+    <div class="section">
+        <div class="section-title">Notas Clínicas</div>
+        @foreach($paciente->notas as $nota)
+        <div class="nota-item">
+            <p style="margin:0;">{{ $nota->anotacion }}</p>
+            <div class="nota-meta">
+                <strong>{{ $nota->user->name ?? 'Usuario' }}</strong> &mdash; {{ $nota->created_at->format('d/m/Y H:i') }}
+            </div>
+        </div>
+        @endforeach
+    </div>
+    @endif
+
     @if(isset($paciente->planesTratamiento) && $paciente->planesTratamiento->count() > 0)
     <div class="section">
-        <div class="section-title">Planes de Tratamiento Activos</div>
-        @foreach($paciente->planesTratamiento->where('estado', 'activo') as $plan)
-        <div style="margin-bottom:10px; padding:8px; background:#f8fafc; border-radius:4px;">
-            <strong style="font-size:12px;">{{ $plan->titulo }}</strong>
-            <span class="badge {{ $plan->estado === 'activo' ? 'badge-success' : 'badge-warning' }}" style="margin-left:8px;">{{ ucfirst($plan->estado) }}</span>
+        <div class="section-title">Planes de Tratamiento</div>
+        @foreach($paciente->planesTratamiento as $plan)
+        <div class="plan-item">
+            <strong>{{ $plan->titulo }}</strong>
+            &nbsp;<span style="color:#64748b;">[{{ $plan->estado_texto }}]</span>
+            @if($plan->objetivo_general)
+            <br><span style="font-size:10px;"><em>Objetivo general:</em> {{ $plan->objetivo_general }}</span>
+            @endif
             @if($plan->objetivos->count() > 0)
-            <ul style="margin:6px 0 0 0; padding-left:18px; font-size:11px;">
+            <ul>
                 @foreach($plan->objetivos as $objetivo)
-                <li>{{ $objetivo->descripcion }} - <em>{{ str_replace('_', ' ', $objetivo->estado) }}</em></li>
+                <li>{{ $objetivo->descripcion }} <em>({{ $objetivo->estado_texto }})</em></li>
                 @endforeach
             </ul>
             @endif
@@ -133,8 +162,12 @@
     </div>
     @endif
 
-    <div class="footer">
-        <p>Documento generado automaticamente por SIPCE el {{ now()->format('d/m/Y a las H:i') }}</p>
+    @include('reportes.pdf.partials.firmas')
+
+    <div class="footer" style="text-align:center; border-top:1px solid #cbd5e1; margin-top:12px; padding-top:4px; font-size:7px; color:#94a3b8;">
+        SIPCE &mdash; Sistema de Información de Pacientes de Salud Mental &nbsp;|&nbsp; Documento generado automáticamente el {{ now()->format('d/m/Y H:i') }}
     </div>
+
+    @include('reportes.pdf.partials.pie')
 </body>
 </html>

@@ -238,9 +238,11 @@
             <i class="fas fa-stethoscope"></i>
             Diagnósticos
         </h4>
+        @if(Auth::user()->hasPermission('pacientes.edit'))
         <button type="button" onclick="abrirModalDiagnostico({{ $paciente->id }})" style="padding: 6px 14px; background: #11998e; color: #fff; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;">
             <i class="fas fa-plus"></i> Nuevo
         </button>
+        @endif
     </div>
 
     @if($paciente->diagnosticos->count())
@@ -274,12 +276,14 @@
                     </td>
                     <td style="padding: 8px 10px; color: #64748b; font-size: 12px;">{{ $diag->fecha ? $diag->fecha->format('d/m/Y') : '—' }}</td>
                     <td style="padding: 8px 10px; text-align: center;">
+                        @if(Auth::user()->hasPermission('pacientes.edit'))
                         <button type="button" onclick='editarDiagnostico({{ $paciente->id }}, @json($diag))' title="Editar" style="background:none;border:none;color:var(--sipce-primary);cursor:pointer;font-size:13px;margin:0 3px;">
                             <i class="fas fa-pen"></i>
                         </button>
                         <button type="button" onclick="eliminarDiagnostico({{ $diag->id }})" title="Eliminar" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:13px;margin:0 3px;">
                             <i class="fas fa-trash"></i>
                         </button>
+                        @endif
                     </td>
                 </tr>
                 @endforeach

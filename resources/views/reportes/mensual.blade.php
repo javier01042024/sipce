@@ -2,7 +2,7 @@
 
 @section('title', 'Reporte Mensual de Pacientes')
 
-@section('styles')
+@push('styles')
 <style>
     .reporte-container { max-width: 1400px; margin: 0 auto; }
     .reporte-header { background: #fff; border-radius: 12px; padding: 25px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
@@ -33,7 +33,7 @@
     .firma-box { text-align: center; }
     .firma-line { width: 200px; border-top: 1px solid #333; margin-top: 50px; padding-top: 5px; font-size: 12px; color: #64748b; }
 </style>
-@endsection
+@endpush
 
 @section('content')
 <div class="reporte-container">
@@ -43,7 +43,10 @@
                 <h2 style="margin: 0; color: #2d3748;"><i class="fas fa-file-excel"></i> Reporte Mensual de Pacientes</h2>
                 <p style="margin: 5px 0 0; color: #64748b; font-size: 14px;">Registro Individualizado de Pacientes de Salud Mental</p>
             </div>
-            <a href="{{ route('reportes.exportar-mensual', ['mes' => $mes, 'anio' => $anio, 'municipio' => $municipio]) }}" class="btn-exportar">
+            <a href="{{ route('reportes.exportar-mensual-pdf', ['mes' => $mes, 'anio' => $anio, 'municipio' => $municipio]) }}" class="btn-export btn-pdf">
+                <i class="fas fa-file-pdf"></i> Exportar PDF
+            </a>
+            <a href="{{ route('reportes.exportar-mensual', ['mes' => $mes, 'anio' => $anio, 'municipio' => $municipio]) }}" class="btn-export btn-excel">
                 <i class="fas fa-file-excel"></i> Exportar Excel
             </a>
         </div>

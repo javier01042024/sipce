@@ -29,8 +29,8 @@
                     style="width: 100%; padding: 10px 14px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 14px; resize: vertical;">{{ old('contenido') }}</textarea>
             </div>
             <div style="display: flex; gap: 10px;">
-                <button type="submit" style="padding: 10px 24px; background: linear-gradient(135deg, #11998e, #38ef7d); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer;">Guardar</button>
-                <button type="button" onclick="document.getElementById('nuevaEntrada').style.display='none'" style="padding: 10px 24px; background: #f1f5f9; color: #64748b; border: none; border-radius: 10px; font-weight: 600; cursor: pointer;">Cancelar</button>
+                <button type="submit" class="btn-save">Guardar</button>
+                <button type="button" class="btn-cancel" onclick="document.getElementById('nuevaEntrada').style.display='none'">Cancelar</button>
             </div>
         </form>
     </div>

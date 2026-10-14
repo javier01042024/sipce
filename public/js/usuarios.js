@@ -446,10 +446,12 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                         </div>
                         <div style="display: flex; gap: 8px;">
+                            ${(window.SIPCE_ROLE_PERMS && window.SIPCE_ROLE_PERMS.edit) ? `
                             <button class="btn-icon edit" onclick="event.preventDefault(); editRole(${role.id})" title="Editar">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            ${role.slug !== 'admin' ? `
+                            ` : ''}
+                            ${(window.SIPCE_ROLE_PERMS && window.SIPCE_ROLE_PERMS.destroy && role.slug !== 'admin') ? `
                                 <button class="btn-icon delete" onclick="event.preventDefault(); deleteRole(${role.id}, '${role.name.replace(/'/g, "\\'")}')" title="Eliminar">
                                     <i class="fas fa-trash"></i>
                                 </button>

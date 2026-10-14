@@ -20,8 +20,8 @@
                 </label>
             </div>
             <div style="display:flex;gap:10px;justify-content:flex-end;">
-                <button type="button" onclick="cerrarModalEstado()" style="padding:8px 18px;background:#f1f5f9;color:#64748b;border:none;border-radius:8px;font-weight:600;cursor:pointer;font-size:13px;">Cancelar</button>
-                <button type="button" id="btnGuardarEstado" onclick="guardarEstadoInline()" style="padding:8px 18px;background:linear-gradient(135deg,var(--sipce-primary),var(--sipce-primary-dark));color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;font-size:13px;">
+                <button type="button" onclick="cerrarModalEstado()" class="btn-cancel">Cancelar</button>
+                <button type="button" id="btnGuardarEstado" onclick="guardarEstadoInline()" class="btn-save">
                     <i class="fas fa-save"></i> Guardar
                 </button>
             </div>

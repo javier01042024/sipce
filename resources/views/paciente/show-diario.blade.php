@@ -3,7 +3,7 @@
 @section('content')
 <div style="max-width: 800px; margin: 0 auto;">
     <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
-        <a href="{{ route('paciente.mi-diario') }}" style="color: var(--sipce-primary); text-decoration: none;"><i class="fas fa-arrow-left"></i> Volver</a>
+        <a href="{{ route('paciente.mi-diario') }}" class="btn-volver"><i class="fas fa-arrow-left"></i> Volver</a>
         <h2 style="margin: 0; color: #1e293b;">Entrada del Diario</h2>
     </div>
 

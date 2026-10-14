@@ -9,10 +9,12 @@
         
         <div id="rolesList" style="margin-bottom: 20px;"></div>
         
+        @if(auth()->user()->hasPermission('roles.create'))
         <button class="btn-submit btn-submit-green" id="btnShowCreateRole" style="margin-bottom: 20px;">
             <i class="fas fa-plus-circle me-2"></i>
             Crear Nuevo Rol
         </button>
+        @endif
         
         <form id="roleForm" style="display: none;">
             @csrf
@@ -76,6 +78,14 @@
         </form>
     </div>
 </div>
+
+<script>
+    window.SIPCE_ROLE_PERMS = {
+        create: {{ auth()->user()->hasPermission('roles.create') ? 'true' : 'false' }},
+        edit: {{ auth()->user()->hasPermission('roles.edit') ? 'true' : 'false' }},
+        destroy: {{ auth()->user()->hasPermission('roles.destroy') ? 'true' : 'false' }},
+    };
+</script>
 
 <style>
     .perm-count-badge {

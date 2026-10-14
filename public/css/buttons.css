@@ -1,0 +1,405 @@
+/* ============================================================
+   SISTEMA UNIFICADO DE BOTONES SIPCE
+   Un solo diseño general por categoría de botón.
+   Se carga de ÚLTIMO en todos los layouts para ganar la cascada
+   y neutralizar estilos inline y definiciones locales/históricas.
+   NOTA: "display" NO lleva !important para respetar el toggle
+   display:none de asistentes y modales de varios pasos.
+   ============================================================ */
+
+/* ---------------- BASE COMÚN (forma) ---------------- */
+.btn-nuevo,
+.btn-primary, .btn-save, .btn-save-tab, .btn-save-apariencia,
+.btn-submit, .btn-submit-green, .btn-paciente, .btn-paciente-save,
+.btn-backup, .btn-filtrar, .btn-filter, .btn-send-verify,
+.btn-nueva-cita, .btn-nueva-nota, .btn-nuevo-diario, .btn-empty-tab,
+.btn-roles, .btn-accion,
+.btn-volver, .btn-cancel, .btn-cancelar, .btn-cancel-tab,
+.btn-paciente-cancel, .btn-limpiar, .btn-submit-gray,
+.btn-secondary-modal, .btn-back, .btn-ghost, .btn-no-asistio,
+.btn-edit, .btn-editar:not(.sipce-btn-icon):not(.btn-icon):not(.btn-icon-small),
+.btn-sesion-edit, .btn-accion.editar,
+.btn-delete:not(.sipce-btn-icon):not(.btn-icon):not(.btn-icon-small),
+.btn-danger,
+.btn-eliminar:not(.sipce-btn-icon):not(.btn-icon):not(.btn-icon-small),
+.btn-eliminar-nota,
+.btn-eliminar-diario:not(.sipce-btn-icon):not(.btn-icon):not(.btn-icon-small),
+.btn-confirm-cancel, .btn-accion.eliminar,
+.btn-restore:not(.sipce-btn-icon):not(.btn-icon):not(.btn-icon-small),
+.btn-view-all, .btn-ver-mas, .btn-ver-diario, .btn-sesion-ver,
+.btn-asistio,
+.btn-export, .btn-excel, .btn-pdf,
+.btn-export-excel, .btn-export-pdf, .btn-export-print, .btn-export-copy {
+    display: inline-flex;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    padding: 10px 18px !important;
+    font-family: inherit !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    line-height: 1.4 !important;
+    letter-spacing: 0.01em;
+    border-radius: 10px !important;
+    border: none !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    transition: all 0.2s ease !important;
+}
+
+/* Sombras de los botones rellenos / de cabecera */
+.btn-nuevo, .btn-volver, .btn-primary, .btn-save, .btn-save-tab,
+.btn-save-apariencia, .btn-submit, .btn-submit-green, .btn-backup,
+.btn-edit, .btn-editar:not(.sipce-btn-icon):not(.btn-icon):not(.btn-icon-small),
+.btn-sesion-edit,
+.btn-delete:not(.sipce-btn-icon):not(.btn-icon):not(.btn-icon-small),
+.btn-danger,
+.btn-eliminar:not(.sipce-btn-icon):not(.btn-icon):not(.btn-icon-small),
+.btn-eliminar-nota,
+.btn-eliminar-diario:not(.sipce-btn-icon):not(.btn-icon):not(.btn-icon-small),
+.btn-restore:not(.sipce-btn-icon):not(.btn-icon):not(.btn-icon-small),
+.btn-asistio, .btn-filtrar, .btn-filter,
+.btn-export, .btn-excel, .btn-pdf, .btn-export-excel, .btn-export-pdf,
+.btn-export-print, .btn-export-copy {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+}
+.btn-nuevo, .btn-volver {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18) !important;
+}
+
+/* ---------------- CATEGORÍA: PRIMARIA (crear/registrar/guardar/enviar/filtrar) ---------------- */
+.btn-primary, .btn-save, .btn-save-tab, .btn-save-apariencia,
+.btn-submit, .btn-submit-green, .btn-paciente-save, .btn-backup,
+.btn-filtrar, .btn-filter, .btn-send-verify, .btn-nueva-cita,
+.btn-nueva-nota, .btn-nuevo-diario, .btn-empty-tab, .btn-roles {
+    background: linear-gradient(135deg, var(--sipce-primary, #667eea) 0%, var(--sipce-primary-dark, #5a67d8) 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+.btn-primary:hover, .btn-save:hover, .btn-save-tab:hover,
+.btn-save-apariencia:hover, .btn-submit:hover, .btn-submit-green:hover,
+.btn-paciente-save:hover, .btn-backup:hover, .btn-filtrar:hover,
+.btn-filter:hover, .btn-send-verify:hover, .btn-nueva-cita:hover,
+.btn-nueva-nota:hover, .btn-nuevo-diario:hover, .btn-empty-tab:hover,
+.btn-roles:hover {
+    background: linear-gradient(135deg, var(--sipce-primary-dark, #5a67d8) 0%, var(--sipce-primary, #667eea) 100%) !important;
+    color: #ffffff !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18) !important;
+}
+.btn-primary i, .btn-save i, .btn-save-tab i, .btn-save-apariencia i,
+.btn-submit i, .btn-submit-green i, .btn-paciente-save i,
+.btn-backup i, .btn-filtrar i, .btn-filter i, .btn-send-verify i,
+.btn-nueva-cita i, .btn-nueva-nota i, .btn-nuevo-diario i,
+.btn-empty-tab i, .btn-roles i {
+    color: #ffffff !important;
+}
+
+/* ---------------- CATEGORÍA: NUEVO (píldora blanca, visible incluso sobre cabeceras degradadas) ---------------- */
+.btn-nuevo {
+    background: #ffffff !important;
+    color: var(--sipce-primary, #667eea) !important;
+    border: none !important;
+}
+.btn-nuevo:hover {
+    background: #ffffff !important;
+    color: var(--sipce-primary-dark, #5a67d8) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22) !important;
+}
+.btn-nuevo i {
+    color: var(--sipce-primary, #667eea) !important;
+}
+
+/* ---------------- CATEGORÍA: SECUNDARIA (volver/cancelar/limpiar/cerrar) ---------------- */
+.btn-volver, .btn-cancel, .btn-cancelar, .btn-cancel-tab,
+.btn-paciente-cancel, .btn-limpiar, .btn-submit-gray,
+.btn-secondary-modal, .btn-back, .btn-ghost, .btn-no-asistio,
+.btn-accion.volver-listado {
+    background: #ffffff !important;
+    color: #475569 !important;
+    border: 2px solid #e2e8f0 !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06) !important;
+}
+.btn-volver:hover, .btn-cancel:hover, .btn-cancelar:hover,
+.btn-cancel-tab:hover, .btn-paciente-cancel:hover, .btn-limpiar:hover,
+.btn-submit-gray:hover, .btn-secondary-modal:hover, .btn-back:hover,
+.btn-ghost:hover, .btn-no-asistio:hover, .btn-accion.volver-listado:hover {
+    background: #f8fafc !important;
+    color: #1e293b !important;
+    border-color: #cbd5e1 !important;
+    transform: translateY(-1px) !important;
+}
+.btn-volver i, .btn-cancel i, .btn-cancelar i, .btn-cancel-tab i,
+.btn-paciente-cancel i, .btn-limpiar i, .btn-submit-gray i,
+.btn-secondary-modal i, .btn-back i, .btn-ghost i, .btn-no-asistio i,
+.btn-accion.volver-listado i {
+    color: #64748b !important;
+}
+
+/* ---------------- CATEGORÍA: EDITAR ---------------- */
+.btn-edit, .btn-editar:not(.sipce-btn-icon):not(.btn-icon):not(.btn-icon-small),
+.btn-sesion-edit, .btn-accion.editar {
+    background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+.btn-edit:hover,
+.btn-editar:not(.sipce-btn-icon):not(.btn-icon):not(.btn-icon-small):hover,
+.btn-sesion-edit:hover,
+.btn-accion.editar:hover {
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%) !important;
+    color: #ffffff !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35) !important;
+}
+.btn-edit i,
+.btn-editar:not(.sipce-btn-icon):not(.btn-icon):not(.btn-icon-small) i,
+.btn-sesion-edit i, .btn-accion.editar i {
+    color: #ffffff !important;
+}
+
+/* ---------------- CATEGORÍA: ELIMINAR / PELIGRO (contorno rojo) ---------------- */
+.btn-delete:not(.sipce-btn-icon):not(.btn-icon):not(.btn-icon-small),
+.btn-danger,
+.btn-eliminar:not(.sipce-btn-icon):not(.btn-icon):not(.btn-icon-small),
+.btn-eliminar-nota,
+.btn-eliminar-diario:not(.sipce-btn-icon):not(.btn-icon):not(.btn-icon-small),
+.btn-confirm-cancel, .btn-accion.eliminar {
+    background: #ffffff !important;
+    color: #dc2626 !important;
+    border: 2px solid #fca5a5 !important;
+    box-shadow: 0 1px 4px rgba(220, 38, 38, 0.1) !important;
+}
+.btn-delete:not(.sipce-btn-icon):not(.btn-icon):not(.btn-icon-small):hover,
+.btn-danger:hover,
+.btn-eliminar:not(.sipce-btn-icon):not(.btn-icon):not(.btn-icon-small):hover,
+.btn-eliminar-nota:hover,
+.btn-eliminar-diario:not(.sipce-btn-icon):not(.btn-icon):not(.btn-icon-small):hover,
+.btn-confirm-cancel:hover, .btn-accion.eliminar:hover {
+    background: #fef2f2 !important;
+    color: #b91c1c !important;
+    border-color: #f87171 !important;
+    transform: translateY(-1px) !important;
+}
+.btn-delete:not(.sipce-btn-icon):not(.btn-icon):not(.btn-icon-small) i,
+.btn-danger i,
+.btn-eliminar:not(.sipce-btn-icon):not(.btn-icon):not(.btn-icon-small) i,
+.btn-eliminar-nota i,
+.btn-eliminar-diario:not(.sipce-btn-icon):not(.btn-icon):not(.btn-icon-small) i,
+.btn-confirm-cancel i, .btn-accion.eliminar i {
+    color: #dc2626 !important;
+}
+
+/* ---------------- CATEGORÍA: RESTAURAR ---------------- */
+.btn-restore:not(.sipce-btn-icon):not(.btn-icon):not(.btn-icon-small) {
+    background: linear-gradient(135deg, #14b8a6 0%, #2dd4bf 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+.btn-restore:not(.sipce-btn-icon):not(.btn-icon):not(.btn-icon-small):hover {
+    background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) !important;
+}
+.btn-restore:not(.sipce-btn-icon):not(.btn-icon):not(.btn-icon-small) i {
+    color: #ffffff !important;
+}
+
+/* ---------------- CATEGORÍA: VER / DETALLE (contorno del tema) ---------------- */
+.btn-view-all, .btn-ver-mas, .btn-ver-diario, .btn-sesion-ver {
+    background: #ffffff !important;
+    color: var(--sipce-primary, #667eea) !important;
+    border: 2px solid var(--sipce-primary, #667eea) !important;
+}
+.btn-view-all:hover, .btn-ver-mas:hover, .btn-ver-diario:hover,
+.btn-sesion-ver:hover {
+    background: var(--sipce-primary, #667eea) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) !important;
+}
+.btn-view-all i, .btn-ver-mas i, .btn-ver-diario i, .btn-sesion-ver i {
+    color: var(--sipce-primary, #667eea) !important;
+}
+.btn-view-all:hover i, .btn-ver-mas:hover i, .btn-ver-diario:hover i,
+.btn-sesion-ver:hover i {
+    color: #ffffff !important;
+}
+
+/* ---------------- CATEGORÍA: CONFIRMAR POSITIVO (asistió) ---------------- */
+.btn-asistio {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+.btn-asistio:hover {
+    background: linear-gradient(135deg, #0d8a7f 0%, #2dd07a 100%) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) !important;
+}
+.btn-asistio i {
+    color: #ffffff !important;
+}
+
+/* ---------------- CATEGORÍA: EXPORTAR EXCEL / CSV ---------------- */
+.btn-export, .btn-excel, .btn-export-excel {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+.btn-export:hover, .btn-excel:hover, .btn-export-excel:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+    color: #ffffff !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35) !important;
+}
+.btn-export i, .btn-excel i, .btn-export-excel i {
+    color: #ffffff !important;
+}
+
+/* ---------------- CATEGORÍA: EXPORTAR PDF ---------------- */
+.btn-pdf, .btn-export-pdf {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+.btn-pdf:hover, .btn-export-pdf:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    color: #ffffff !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px rgba(220, 38, 38, 0.35) !important;
+}
+.btn-pdf i, .btn-export-pdf i {
+    color: #ffffff !important;
+}
+
+/* ---------------- CATEGORÍA: EXPORTAR IMPRIMIR / COPIAR ---------------- */
+.btn-export-print {
+    background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+.btn-export-print:hover {
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) !important;
+}
+.btn-export-print i {
+    color: #ffffff !important;
+}
+.btn-export-copy {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+.btn-export-copy:hover {
+    background: linear-gradient(135deg, #d97706 0%, #b45309 100%) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) !important;
+}
+.btn-export-copy i {
+    color: #ffffff !important;
+}
+
+/* ---------------- CONTEXTO: BOTONES SOBRE CABECERAS DEGRADADAS ----------------
+   Los botones de acción dentro de cabeceras con gradiente (página, notas, sesiones,
+   diario) adoptan la píldora blanca para no perderse sobre el fondo. */
+.page-header .btn-nuevo,
+.page-header .btn-volver,
+.page-header .btn-primary,
+.page-header .btn-save,
+.page-header .btn-save-tab,
+.page-header .btn-save-apariencia,
+.page-header .btn-submit,
+.page-header .btn-submit-green,
+.page-header .btn-backup,
+.page-header .btn-filtrar,
+.page-header .btn-filter,
+.page-header .btn-nueva-cita,
+.page-header .btn-roles,
+.page-header .btn-nueva-nota,
+.notas-header .btn-nueva-nota,
+.sesiones-header .btn-nueva-nota,
+.diario-header .btn-nuevo-diario,
+.citas-header .btn-nueva-cita {
+    background: #ffffff !important;
+    color: var(--sipce-primary, #667eea) !important;
+    border: none !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18) !important;
+}
+.page-header .btn-nuevo:hover,
+.page-header .btn-volver:hover,
+.page-header .btn-primary:hover,
+.page-header .btn-save:hover,
+.page-header .btn-save-tab:hover,
+.page-header .btn-save-apariencia:hover,
+.page-header .btn-submit:hover,
+.page-header .btn-submit-green:hover,
+.page-header .btn-backup:hover,
+.page-header .btn-filtrar:hover,
+.page-header .btn-filter:hover,
+.page-header .btn-nueva-cita:hover,
+.page-header .btn-roles:hover,
+.notas-header .btn-nueva-nota:hover,
+.sesiones-header .btn-nueva-nota:hover,
+.diario-header .btn-nuevo-diario:hover,
+.citas-header .btn-nueva-cita:hover {
+    background: #ffffff !important;
+    color: var(--sipce-primary-dark, #5a67d8) !important;
+    border: none !important;
+}
+.page-header .btn-nuevo i,
+.page-header .btn-volver i,
+.page-header .btn-primary i,
+.page-header .btn-save i,
+.page-header .btn-roles i,
+.page-header .btn-nueva-cita i,
+.page-header .btn-filtrar i,
+.notas-header .btn-nueva-nota i,
+.sesiones-header .btn-nueva-nota i,
+.diario-header .btn-nuevo-diario i,
+.citas-header .btn-nueva-cita i {
+    color: var(--sipce-primary, #667eea) !important;
+}
+
+/* ---------------- MODO NOCTURNO ---------------- */
+body.theme-dark .btn-volver,
+body.theme-dark .btn-cancel,
+body.theme-dark .btn-cancelar,
+body.theme-dark .btn-cancel-tab,
+body.theme-dark .btn-paciente-cancel,
+body.theme-dark .btn-limpiar,
+body.theme-dark .btn-submit-gray,
+body.theme-dark .btn-secondary-modal,
+body.theme-dark .btn-back,
+body.theme-dark .btn-ghost,
+body.theme-dark .btn-no-asistio,
+body.theme-dark .btn-accion.volver-listado {
+    background: #1e293b !important;
+    color: #cbd5e1 !important;
+    border-color: #475569 !important;
+}
+body.theme-dark .btn-volver i,
+body.theme-dark .btn-cancel i,
+body.theme-dark .btn-cancelar i,
+body.theme-dark .btn-cancel-tab i,
+body.theme-dark .btn-paciente-cancel i,
+body.theme-dark .btn-limpiar i,
+body.theme-dark .btn-submit-gray i,
+body.theme-dark .btn-secondary-modal i,
+body.theme-dark .btn-back i,
+body.theme-dark .btn-ghost i,
+body.theme-dark .btn-no-asistio i,
+body.theme-dark .btn-accion.volver-listado i {
+    color: #94a3b8 !important;
+}
+
+body.theme-dark .btn-view-all,
+body.theme-dark .btn-ver-mas,
+body.theme-dark .btn-ver-diario,
+body.theme-dark .btn-sesion-ver {
+    background: #1e293b !important;
+    color: #a5b4fc !important;
+    border-color: #4f46e5 !important;
+}

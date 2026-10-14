@@ -690,24 +690,33 @@
 
 .diario-item-actions {
     display: flex;
-    gap: 6px;
+    align-items: center;
+    gap: 8px;
 }
 
 .btn-icon-mini {
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
-    display: flex;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     color: white;
     text-decoration: none;
-    transition: all 0.2s;
-    font-size: 11px;
+    transition: all 0.25s;
+    font-size: 13px;
+    line-height: 1;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+}
+
+.btn-icon-mini i {
+    line-height: 1;
+    display: block;
 }
 
 .btn-icon-mini:hover {
     transform: translateY(-2px);
+    box-shadow: 0 5px 14px rgba(15, 23, 42, 0.2);
 }
 
 .btn-icon-mini.view {

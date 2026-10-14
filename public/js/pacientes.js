@@ -165,17 +165,41 @@ document.addEventListener('DOMContentLoaded', function() {
         format: { body: textoCeldaExportacion }
     };
 
+// Normaliza texto para búsqueda sin acentos ni mayúsculas (p. ej. "publico" encuentra "Público")
+function quitarAcentos(texto) {
+    return (texto == null ? '' : String(texto))
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+}
+
 const pacientesTable = document.getElementById('pacientesTable');
 if (pacientesTable && typeof $.fn.DataTable !== 'undefined') {
     const table = $(pacientesTable).DataTable({
         language: {
-            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json'
+            search: 'Buscar:',
+            searchPlaceholder: 'Buscar...',
+            info: 'Mostrando _START_ a _END_ de _TOTAL_ registros',
+            infoEmpty: 'Mostrando 0 a 0 de 0 registros',
+            infoFiltered: '(filtrado de _MAX_ registros totales)',
+            zeroRecords: 'No se encontraron resultados',
+            emptyTable: 'No hay datos disponibles',
+            paginate: { first: 'Primero', last: 'Último', next: 'Siguiente', previous: 'Anterior' }
         },
         pageLength: 10,
         lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "Todos"]],
         order: [[1, 'asc']],
         columnDefs: [
-            { orderable: false, targets: [0, 7, 8] }
+            { orderable: false, targets: [0, 7, 8] },
+            {
+                targets: '_all',
+                render: function(data, type) {
+                    if (type === 'filter') {
+                        return quitarAcentos(data);
+                    }
+                    return data;
+                }
+            }
         ],
         dom: 'Bfrtip',
         buttons: [
@@ -435,34 +459,43 @@ if (pacientesTable && typeof $.fn.DataTable !== 'undefined') {
         showToast(`${filasSeleccionadas.length} pacientes exportados`, 'success');
     });
     
-    // Exportar por rango de fechas
-    $('#exportPorFechaBtn').on('click', function() {
-        const desde = $('#exportFechaDesde').val();
-        const hasta = $('#exportFechaHasta').val();
-        
-        if (!desde || !hasta) {
-            SIPCE_ALERT.warning('Debe seleccionar una fecha de inicio y fin', 'Seleccione rango');
-            return;
-        }
-        
-        const filasFiltradas = [];
-        $('#pacientesTable tbody tr').each(function() {
-            const fechaTexto = $(this).find('td:eq(6)').text().trim();
-            const [dia, mes, anio] = fechaTexto.split('/');
-            const fechaFila = `${anio}-${mes}-${dia}`;
-            
-            if (fechaFila >= desde && fechaFila <= hasta) {
-                filasFiltradas.push($(this));
+    // Construye la URL de exportación aplicando los filtros seleccionados
+    function construirUrlExportacion(formato) {
+        const url = new URL('/reportes/exportar-pacientes', window.location.origin);
+        url.searchParams.set('formato', formato);
+
+        const filtros = {
+            tipo_atencion: $('#exportTipoAtencion').val(),
+            tipo_paciente: $('#exportTipoPaciente').val(),
+            prioridad: $('#exportPrioridad').val(),
+            fecha_inicio: $('#exportFechaDesde').val(),
+            fecha_fin: $('#exportFechaHasta').val(),
+        };
+
+        Object.keys(filtros).forEach(function (clave) {
+            if (filtros[clave]) {
+                url.searchParams.set(clave, filtros[clave]);
             }
         });
-        
-        if (filasFiltradas.length === 0) {
-            SIPCE_ALERT.info('No hay pacientes en el rango de fechas seleccionado', 'Sin resultados');
-            return;
-        }
-        
-        exportarDatos($(filasFiltradas), `pacientes_${desde}_a_${hasta}`);
-        showToast(`${filasFiltradas.length} pacientes exportados`, 'success');
+
+        return url.toString();
+    }
+
+    // Exportar Excel / PDF con los filtros aplicados (plantilla institucional del servidor)
+    $('.btn-export-excel').on('click', function (e) {
+        e.preventDefault();
+        window.location.href = construirUrlExportacion('xlsx');
+    });
+
+    $('.btn-export-pdf').on('click', function (e) {
+        e.preventDefault();
+        window.location.href = construirUrlExportacion('pdf');
+    });
+
+    // Limpiar filtros de exportación
+    $('#exportLimpiarBtn').on('click', function () {
+        $('#exportTipoAtencion, #exportTipoPaciente, #exportPrioridad').val('');
+        $('#exportFechaDesde, #exportFechaHasta').val('');
     });
 }
 // ==========================================

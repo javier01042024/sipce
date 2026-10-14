@@ -516,10 +516,12 @@
                 <i class="fas fa-sticky-note"></i>
                 Notas y Anotaciones
             </h3>
+            @if(Auth::user()->hasPermission('pacientes.show'))
             <button class="btn-nueva-nota" onclick="toggleFormNota()">
                 <i class="fas fa-plus-circle"></i>
                 Nueva Nota
             </button>
+            @endif
         </div>
 
         <div class="notas-body">
@@ -578,6 +580,7 @@
                             <i class="fas fa-hashtag"></i>
                             ID: {{ $nota->id }}
                         </span>
+                        @if(Auth::user()->hasPermission('pacientes.show'))
                         <form action="{{ route('notas.destroy', $nota) }}"
                             method="POST"
                             onsubmit="return confirmarEliminarNota(this);"
@@ -589,6 +592,7 @@
                                 Eliminar
                             </button>
                         </form>
+                        @endif
                     </div>
                 </div>
                 @endforeach
@@ -600,10 +604,12 @@
                 </div>
                 <h4>No hay notas registradas</h4>
                 <p>Las notas y anotaciones sobre el paciente aparecerán aquí</p>
+                @if(Auth::user()->hasPermission('pacientes.show'))
                 <button class="btn-empty-tab" onclick="toggleFormNota()">
                     <i class="fas fa-plus-circle"></i>
                     Crear primera nota
                 </button>
+                @endif
             </div>
             @endif
         </div>

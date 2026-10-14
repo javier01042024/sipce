@@ -44,6 +44,7 @@
         @endif
     </div>
     <div class="cita-card-footer">
+        @if(Auth::user()->hasPermission('citas.edit'))
         @if($cita->es_hoy)
         <button type="button" class="btn-icon btn-asistio" onclick="CitasManager.cambiarEstado(this, {{ $cita->id }}, 'atendida')" title="Asistió">
             <i class="fas fa-check-circle"></i>
@@ -55,5 +56,6 @@
         <button type="button" class="btn-icon btn-cancelar" onclick="abrirModalCancelar({{ $cita->id }})" title="Cancelar">
             <i class="fas fa-times-circle"></i>
         </button>
+        @endif
     </div>
 </div>

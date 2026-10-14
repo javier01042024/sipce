@@ -5,13 +5,13 @@
         <p>Gestión de pacientes del sistema</p>
     </div>
     <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-        <button class="btn-nuevo" onclick="openModalAdulto()" style="background: white; color: var(--sipce-primary);">
+        <button class="btn-nuevo" onclick="openModalAdulto()">
             <i class="fas fa-user-tie"></i> Adulto
         </button>
-        <button class="btn-nuevo" onclick="openModalAdolescente()" style="background: white; color: #f59e0b;">
+        <button class="btn-nuevo" onclick="openModalAdolescente()">
             <i class="fas fa-user"></i> Adolescente
         </button>
-        <button class="btn-nuevo" onclick="openModalNino()" style="background: white; color: #10b981;">
+        <button class="btn-nuevo" onclick="openModalNino()">
             <i class="fas fa-child"></i> Niño
         </button>
     </div>

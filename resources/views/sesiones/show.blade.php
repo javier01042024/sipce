@@ -3,7 +3,7 @@
 @section('content')
 <div class="estados-container">
     <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
-        <a href="{{ route('sesiones.index') }}" style="color: var(--sipce-primary); text-decoration: none;"><i class="fas fa-arrow-left"></i> Volver</a>
+        <a href="{{ route('sesiones.index') }}" class="btn-volver"><i class="fas fa-arrow-left"></i> Volver</a>
         <h2 style="margin: 0; color: #1e293b;">Detalle de Sesión</h2>
     </div>
 
@@ -45,10 +45,10 @@
         @endif
 
         <div style="display: flex; gap: 10px; justify-content: flex-end; border-top: 1px solid #f1f5f9; padding-top: 20px;">
-            <a href="{{ route('pacientes.show', $sesion->paciente) }}" style="padding:10px 20px;background:#f1f5f9;color:#475569;border-radius:10px;text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:8px;">
+            <a href="{{ route('pacientes.show', $sesion->paciente) }}" class="btn-view-all">
                 <i class="fas fa-user"></i> Ver Paciente
             </a>
-            <a href="{{ route('sesiones.edit', $sesion) }}" style="padding:10px 20px;background:linear-gradient(135deg,#6366f1,#818cf8);color:white;border-radius:10px;text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:8px;">
+            <a href="{{ route('sesiones.edit', $sesion) }}" class="btn btn-edit">
                 <i class="fas fa-edit"></i> Editar
             </a>
         </div>
@@ -72,10 +72,10 @@
                 <strong id="fechaProximaLabel"></strong>.
             </p>
             <div style="display:flex;gap:10px;justify-content:center;">
-                <button type="button" onclick="cerrarModalAgendar()" style="padding:10px 24px;background:#f1f5f9;color:#64748b;border:none;border-radius:10px;font-weight:600;cursor:pointer;font-size:14px;">
+                <button type="button" class="btn-cancel" onclick="cerrarModalAgendar()">
                     No, gracias
                 </button>
-                <button type="button" id="btnAgendarSi" onclick="agendarProximaCita()" style="padding:10px 24px;background:linear-gradient(135deg,#11998e,#38ef7d);color:white;border:none;border-radius:10px;font-weight:600;cursor:pointer;font-size:14px;">
+                <button type="button" id="btnAgendarSi" class="btn-save" onclick="agendarProximaCita()">
                     <i class="fas fa-check"></i> Sí, agendar
                 </button>
             </div>
@@ -132,7 +132,7 @@ function agendarProximaCita() {
                 '<h3 style="margin:0;color:white;font-size:18px;">¡Cita agendada!</h3></div>' +
                 '<div style="padding:24px;text-align:center;">' +
                 '<p style="color:#475569;font-size:15px;">' + data.message + '</p>' +
-                '<button onclick="cerrarModalAgendar()" style="margin-top:16px;padding:10px 24px;background:#11998e;color:white;border:none;border-radius:10px;font-weight:600;cursor:pointer;">Aceptar</button>' +
+                '<button onclick="cerrarModalAgendar()" class="btn-save" style="margin-top:16px;">Aceptar</button>' +
                 '</div></div>';
         } else {
             document.getElementById('modalAgendar').innerHTML =
@@ -142,7 +142,7 @@ function agendarProximaCita() {
                 '<h3 style="margin:0;color:white;font-size:18px;">No se pudo agendar</h3></div>' +
                 '<div style="padding:24px;text-align:center;">' +
                 '<p style="color:#475569;font-size:15px;">' + data.message + '</p>' +
-                '<button onclick="cerrarModalAgendar()" style="margin-top:16px;padding:10px 24px;background:#64748b;color:white;border:none;border-radius:10px;font-weight:600;cursor:pointer;">Aceptar</button>' +
+                '<button onclick="cerrarModalAgendar()" class="btn-cancel" style="margin-top:16px;">Aceptar</button>' +
                 '</div></div>';
         }
     })

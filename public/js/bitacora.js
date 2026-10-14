@@ -1,18 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
     
-    // Exportar bitácora
-    const btnExport = document.getElementById('btnExport');
-    if (btnExport) {
-        btnExport.addEventListener('click', function() {
-            const form = document.getElementById('filtrosForm');
-            if (form) {
-                const formData = new FormData(form);
-                const params = new URLSearchParams(formData);
-                window.location.href = '/configuracion/bitacora/exportar?' + params.toString();
-            }
-        });
-    }
-    
     // Limpiar filtros
     const btnLimpiar = document.getElementById('btnLimpiar');
     if (btnLimpiar) {

@@ -9,8 +9,10 @@
     <p>
         {{ Auth::id() == 1 ? 'Comienza registrando el primer seguimiento emocional de tus pacientes' : 'Comienza escribiendo tu primer registro para hacer seguimiento de tus emociones' }}
     </p>
+    @if(Auth::user()->hasPermission('diarios.create'))
     <a href="{{ route('diarios.create') }}" class="btn-nuevo" style="display: inline-flex;">
         <i class="fas fa-plus-circle"></i>
         Crear primer registro
     </a>
+    @endif
 </div>

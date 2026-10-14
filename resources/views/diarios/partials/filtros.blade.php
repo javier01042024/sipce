@@ -1,8 +1,8 @@
 {{-- diarios/partials/filtros.blade.php --}}
 <div class="filtros-container">
-    @if(Auth::id() == 1)
+    @if(Auth::user()->isAdmin() || Auth::user()->hasRole('psicologa'))
     <select class="filtro-select" id="filtroUsuario">
-        <option value="">Todos los usuarios</option>
+        <option value="">Todos los pacientes</option>
         @foreach($diarios->unique('user_id') as $diario)
             <option value="{{ $diario->user_id }}">
                 {{ $diario->user->name }}

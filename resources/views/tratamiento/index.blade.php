@@ -8,9 +8,11 @@
             <p>Gestión de planes terapéuticos por paciente</p>
         </div>
         <div class="header-buttons">
+            @if(Auth::user()->hasPermission('pacientes.show'))
             <a href="{{ route('tratamiento.create') }}" class="btn-nuevo">
                 <i class="fas fa-plus-circle"></i> Nuevo Plan
             </a>
+            @endif
         </div>
     </div>
 
@@ -40,8 +42,10 @@
                         <td><span class="sipce-cell-bold">{{ $plan->objetivos->count() }}</span></td>
                         <td>
                             <div class="sipce-actions">
+                                @if(Auth::user()->hasPermission('pacientes.show'))
                                 <a href="{{ route('tratamiento.show', $plan) }}" class="sipce-btn-icon sipce-btn-view" title="Ver"><i class="fas fa-eye"></i></a>
                                 <a href="{{ route('tratamiento.edit', $plan) }}" class="sipce-btn-icon sipce-btn-edit" title="Editar"><i class="fas fa-edit"></i></a>
+                                @endif
                             </div>
                         </td>
                     </tr>

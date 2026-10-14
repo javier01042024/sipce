@@ -8,9 +8,11 @@
             <p>Registro de sesiones clínicas realizadas</p>
         </div>
         <div class="header-buttons">
+            @if(Auth::user()->hasPermission('pacientes.show'))
             <a href="{{ route('sesiones.create') }}" class="btn-nuevo">
                 <i class="fas fa-plus-circle"></i> Nueva Sesión
             </a>
+            @endif
         </div>
     </div>
 
@@ -43,8 +45,10 @@
                         <td><span class="sipce-cell-muted">{{ Str::limit($sesion->resumen, 60) }}</span></td>
                         <td>
                             <div class="sipce-actions">
+                                @if(Auth::user()->hasPermission('pacientes.show'))
                                 <a href="{{ route('sesiones.show', $sesion) }}" class="sipce-btn-icon sipce-btn-view" title="Ver"><i class="fas fa-eye"></i></a>
                                 <a href="{{ route('sesiones.edit', $sesion) }}" class="sipce-btn-icon sipce-btn-edit" title="Editar"><i class="fas fa-edit"></i></a>
+                                @endif
                             </div>
                         </td>
                     </tr>

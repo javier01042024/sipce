@@ -44,15 +44,21 @@
                     </td>
                     <td>
                         <div class="sipce-actions">
+                            @if(Auth::user()->hasPermission('estados.show'))
                             <button class="sipce-btn-icon sipce-btn-view" onclick="verEstado({{ $estado->id }})" title="Ver">
                                 <i class="fas fa-eye"></i>
                             </button>
+                            @endif
+                            @if(Auth::user()->hasPermission('estados.edit'))
                             <button class="sipce-btn-icon sipce-btn-edit" onclick="editarEstado({{ $estado->id }}, '{{ addslashes($estado->tipo) }}', '{{ addslashes($estado->descripcion) }}', {{ $estado->permite_citas ? 'true' : 'false' }})" title="Editar">
                                 <i class="fas fa-edit"></i>
                             </button>
+                            @endif
+                            @if(Auth::user()->hasPermission('estados.destroy'))
                             <button class="sipce-btn-icon sipce-btn-delete" onclick="confirmarEliminar({{ $estado->id }})" title="Eliminar">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
+                            @endif
                         </div>
                     </td>
                 </tr>

@@ -130,12 +130,14 @@
             </div>
 
             <div class="actions-right">
+                @if(Auth::user()->hasPermission('diarios.edit'))
                 <a href="{{ route('diarios.edit', $diario) }}" class="btn-accion editar">
                     <i class="fas fa-pen"></i>
                     Editar registro
                 </a>
+                @endif
 
-                @if(Auth::id() == 1 || Auth::id() == $diario->user_id)
+                @if(Auth::user()->hasPermission('diarios.destroy'))
                 <button type="button" class="btn-accion eliminar" id="btnEliminarDiario" 
                         data-id="{{ $diario->id }}" 
                         data-fecha="{{ \Carbon\Carbon::parse($diario->fecha)->format('d/m/Y') }}">

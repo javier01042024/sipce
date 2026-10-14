@@ -68,7 +68,7 @@ public function index()
             'password' => 'required|min:8|confirmed',
             'role' => 'required|exists:roles,id',
             'es_paciente' => 'sometimes|boolean',
-            'paciente_id' => 'required_if:es_paciente,true|exists:pacientes,id'
+            'paciente_id' => 'nullable|required_if:es_paciente,true|exists:pacientes,id'
         ], [
             'name.regex' => 'El nombre solo puede contener letras y espacios',
             'name.required' => 'El nombre completo es obligatorio',
@@ -80,6 +80,15 @@ public function index()
             'role.required' => 'Debes seleccionar un rol para el usuario',
             'paciente_id.required_if' => 'Debes seleccionar un paciente para vincular'
         ]);
+
+        $rolSeleccionado = Role::find($validated['role']);
+        if ($rolSeleccionado && $rolSeleccionado->slug === 'psicologa'
+            && User::whereHas('roles', fn ($q) => $q->where('slug', 'psicologa'))->exists()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ya existe una psicóloga en el sistema. Solo puede haber una.',
+            ], 422);
+        }
 
         DB::beginTransaction();
 
@@ -150,7 +159,7 @@ public function index()
             'password' => 'nullable|min:8|confirmed',
             'role' => 'required|exists:roles,id',
             'es_paciente' => 'sometimes|boolean',
-            'paciente_id' => 'required_if:es_paciente,true|exists:pacientes,id'
+            'paciente_id' => 'nullable|required_if:es_paciente,true|exists:pacientes,id'
         ], [
             'name.regex' => 'El nombre solo puede contener letras y espacios',
             'name.required' => 'El nombre completo es obligatorio',
@@ -161,6 +170,16 @@ public function index()
             'role.required' => 'Debes seleccionar un rol para el usuario',
             'paciente_id.required_if' => 'Debes seleccionar un paciente para vincular'
         ]);
+
+        $rolSeleccionado = Role::find($validated['role']);
+        if ($rolSeleccionado && $rolSeleccionado->slug === 'psicologa'
+            && User::whereHas('roles', fn ($q) => $q->where('slug', 'psicologa'))
+                ->where('id', '!=', $user->id)->exists()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ya existe una psicóloga en el sistema. Solo puede haber una.',
+            ], 422);
+        }
 
         DB::beginTransaction();
 

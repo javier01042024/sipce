@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('theme_color', 20)->nullable()->default('#667eea')->after('last_login_at');
+            $table->string('theme_color', 20)->nullable()->default('#667eea')->after('updated_at');
             $table->boolean('dark_mode')->default(false)->after('theme_color');
         });
     }

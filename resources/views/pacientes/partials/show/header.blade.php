@@ -9,7 +9,7 @@
         </p>
     </div>
 
-    <a href="{{ route('pacientes.index') }}" style="background: white; color: var(--sipce-primary); border: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; font-size: 14px; transition: all 0.3s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+    <a href="{{ route('pacientes.index') }}" class="btn-volver">
         <i class="fas fa-arrow-left"></i>
         Volver al listado
     </a>

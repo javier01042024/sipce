@@ -52,15 +52,15 @@
             </div>
         </a>
 
-        <a href="{{ route('reportes.exportar') }}" style="text-decoration:none;">
+        <a href="{{ route('reportes.pacientes') }}" style="text-decoration:none;">
             <div style="background:white; border-radius:16px; padding:30px; box-shadow:0 4px 20px rgba(0,0,0,0.06); border-left:4px solid #0ea5e9; transition:transform 0.2s, box-shadow 0.2s; cursor:pointer;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 30px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 4px 20px rgba(0,0,0,0.06)'">
                 <div style="display:flex; align-items:center; gap:16px;">
                     <div style="width:56px; height:56px; border-radius:14px; background:linear-gradient(135deg,#0ea5e9,#38bdf8); display:flex; align-items:center; justify-content:center;">
-                        <i class="fas fa-file-csv" style="font-size:24px; color:white;"></i>
+                        <i class="fas fa-file-export" style="font-size:24px; color:white;"></i>
                     </div>
                     <div>
-                        <h3 style="margin:0; color:#1e293b; font-size:18px;">Exportar CSV</h3>
-                        <p style="margin:4px 0 0 0; color:#64748b; font-size:13px;">Exportar datos del sistema</p>
+                        <h3 style="margin:0; color:#1e293b; font-size:18px;">Exportar Reportes</h3>
+                        <p style="margin:4px 0 0 0; color:#64748b; font-size:13px;">Excel y PDF con filtros avanzados</p>
                     </div>
                 </div>
             </div>

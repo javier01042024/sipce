@@ -50,15 +50,21 @@
                     </td>
                     <td>
                         <div class="sipce-actions">
+                            @if(Auth::user()->hasPermission('respaldos.restore'))
                             <button class="sipce-btn-icon sipce-btn-restore btn-restore" data-filename="{{ $backup->nombre }}" title="Restaurar respaldo">
                                 <i class="fas fa-undo-alt"></i>
                             </button>
+                            @endif
+                            @if(Auth::user()->hasPermission('respaldos.download'))
                             <button class="sipce-btn-icon sipce-btn-download btn-download" data-filename="{{ $backup->nombre }}" title="Descargar respaldo">
                                 <i class="fas fa-download"></i>
                             </button>
+                            @endif
+                            @if(Auth::user()->hasPermission('respaldos.delete'))
                             <button class="sipce-btn-icon sipce-btn-delete btn-delete" data-filename="{{ $backup->nombre }}" title="Eliminar respaldo">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
+                            @endif
                         </div>
                     </td>
                 </tr>

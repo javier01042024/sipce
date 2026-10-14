@@ -12,17 +12,19 @@
             <h1><i class="fas fa-users"></i> Pacientes</h1>
             <p>Gestión de pacientes del sistema</p>
         </div>
+        @if(Auth::user()->hasPermission('pacientes.create'))
         <div style="display: flex; gap: 10px;">
-            <button class="btn-nuevo" onclick="abrirModal('adulto')" style="background:white;color:var(--sipce-primary);">
+            <button class="btn-nuevo" onclick="abrirModal('adulto')">
                 <i class="fas fa-user-tie"></i> Adulto
             </button>
-            <button class="btn-nuevo" onclick="abrirModal('adolescente')" style="background:white;color:#f59e0b;">
+            <button class="btn-nuevo" onclick="abrirModal('adolescente')">
                 <i class="fas fa-user"></i> Adolescente
             </button>
-            <button class="btn-nuevo" onclick="abrirModal('niño')" style="background:white;color:#10b981;">
+            <button class="btn-nuevo" onclick="abrirModal('niño')">
                 <i class="fas fa-child"></i> Niño
             </button>
         </div>
+        @endif
     </div>
     
     {{-- La tabla debe tener el mismo número de <th> que de <td> --}}

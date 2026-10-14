@@ -18,18 +18,28 @@
 }
 
 /* Botones primarios reutilizados */
-.btn-nuevo,
 .btn-backup,
-.btn-volver,
 .btn-save,
 .btn-primary,
 .btn-filter,
-.btn-success,
-.btn-export {
+.btn-success {
     background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%) !important;
     border-color: var(--sipce-primary) !important;
 }
-.btn-nuevo { color: #ffffff !important; }
+
+/* Botones sobre cabecera con degradado del tema:
+   fondo blanco + color del tema para garantizar visibilidad
+   en cualquier tema y en modo nocturno. */
+.btn-nuevo,
+.btn-volver {
+    background: #ffffff !important;
+    color: var(--sipce-primary, #667eea) !important;
+}
+.btn-nuevo:hover,
+.btn-volver:hover {
+    color: var(--sipce-primary-dark, #5a6bd9) !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
 
 /* Links y acentos de color principal */
 a,

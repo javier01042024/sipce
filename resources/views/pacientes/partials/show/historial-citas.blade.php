@@ -65,10 +65,12 @@
             <div class="empty-citas">
                 <i class="fas fa-calendar-times"></i>
                 <p>No hay citas registradas para este paciente</p>
+                @if(Auth::user()->hasPermission('citas.create'))
                 <a href="{{ route('citas.create', ['paciente_id' => $paciente->id]) }}" class="btn-nueva-cita">
                     <i class="fas fa-plus-circle"></i>
                     Programar primera cita
                 </a>
+                @endif
             </div>
         @endif
     </div>

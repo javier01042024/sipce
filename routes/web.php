@@ -284,10 +284,6 @@ Route::middleware('auth')->group(function () {
         ->middleware('permission:bitacora.index')
         ->name('configuracion.bitacora.index');
 
-    Route::get('/configuracion/bitacora/exportar', [BitacoraController::class, 'exportar'])
-        ->middleware('permission:bitacora.index')
-        ->name('configuracion.bitacora.exportar');
-
     // Apariencia (colores y modo nocturno) - preferencia personal de cada usuario
     Route::prefix('configuracion/apariencia')
         ->name('configuracion.apariencia.')
@@ -399,7 +395,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/evolucion', [ReportesController::class, 'evolucion'])->name('evolucion');
         Route::get('/mensual', [ReportesController::class, 'mensual'])->name('mensual');
         Route::get('/exportar-mensual', [ReportesController::class, 'exportarMensual'])->name('exportar-mensual');
+        Route::get('/exportar-mensual-pdf', [ReportesController::class, 'exportarMensualPdf'])->name('exportar-mensual-pdf');
         Route::get('/exportar', [ReportesController::class, 'exportar'])->name('exportar');
+        Route::get('/exportar-pacientes', [ReportesController::class, 'exportarPacientes'])->name('exportar-pacientes');
+        Route::get('/exportar-citas', [ReportesController::class, 'exportarCitas'])->name('exportar-citas');
     });
 
     // --------------------------------------------------
@@ -417,6 +416,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/pacientes/{paciente}/exportar-pdf', [ExpedienteController::class, 'exportarResumen'])
         ->middleware('permission:pacientes.show')
         ->name('pacientes.exportar-pdf');
+
+    Route::get('/pacientes/{paciente}/exportar-ficha', [ExpedienteController::class, 'exportarFicha'])
+        ->middleware('permission:pacientes.show')
+        ->name('pacientes.exportar-ficha');
 
     // --------------------------------------------------
     // DIAGNÓSTICOS

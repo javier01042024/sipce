@@ -9,12 +9,12 @@
         </div>
         <div class="sipce-table-header-actions">
             <div class="export-buttons">
-                <button id="exportExcelBtn" class="btn-export btn-export-excel">
+                <a href="{{ route('reportes.exportar-pacientes', ['formato' => 'xlsx']) }}" class="btn-export btn-export-excel">
                     <i class="fas fa-file-excel"></i> Excel
-                </button>
-                <button id="exportPdfBtn" class="btn-export btn-export-pdf">
+                </a>
+                <a href="{{ route('reportes.exportar-pacientes', ['formato' => 'pdf']) }}" class="btn-export btn-export-pdf">
                     <i class="fas fa-file-pdf"></i> PDF
-                </button>
+                </a>
                 <button id="printBtn" class="btn-export btn-export-print">
                     <i class="fas fa-print"></i> Imprimir
                 </button>
@@ -28,6 +28,33 @@
     <div class="export-filters">
         <div class="filters-body">
             <div class="filter-group">
+                <label for="exportTipoAtencion"><i class="fas fa-hospital"></i> Atención</label>
+                <select id="exportTipoAtencion" class="filter-input">
+                    <option value="">Todas</option>
+                    <option value="publico">Pública</option>
+                    <option value="privado">Privada</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="exportTipoPaciente"><i class="fas fa-users"></i> Tipo de paciente</label>
+                <select id="exportTipoPaciente" class="filter-input">
+                    <option value="">Todos</option>
+                    <option value="niño">Niños</option>
+                    <option value="adolescente">Adolescentes</option>
+                    <option value="adulto">Adultos</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="exportPrioridad"><i class="fas fa-exclamation-circle"></i> Prioridad</label>
+                <select id="exportPrioridad" class="filter-input">
+                    <option value="">Todas</option>
+                    <option value="urgencia">Urgencia</option>
+                    <option value="alta">Alta</option>
+                    <option value="media">Media</option>
+                    <option value="baja">Baja</option>
+                </select>
+            </div>
+            <div class="filter-group">
                 <label for="exportFechaDesde"><i class="far fa-calendar-alt"></i> Desde</label>
                 <input type="date" id="exportFechaDesde" class="filter-input">
             </div>
@@ -35,8 +62,8 @@
                 <label for="exportFechaHasta"><i class="far fa-calendar-alt"></i> Hasta</label>
                 <input type="date" id="exportFechaHasta" class="filter-input">
             </div>
-            <button id="exportPorFechaBtn" class="btn-filter">
-                <i class="fas fa-filter"></i> Filtrar por fecha
+            <button id="exportLimpiarBtn" type="button" class="btn-filter btn-filter-clear">
+                <i class="fas fa-eraser"></i> Limpiar
             </button>
         </div>
     </div>
@@ -142,9 +169,12 @@
                     </td>
                     <td class="col-acciones">
                         <div class="actions">
+                            @if(Auth::user()->hasPermission('pacientes.edit'))
                             <a href="{{ route('pacientes.edit', $paciente) }}" class="btn-icon btn-edit" title="Editar">
                                 <i class="fas fa-edit"></i>
                             </a>
+                            @endif
+                            @if(Auth::user()->hasPermission('pacientes.destroy'))
                             <form action="{{ route('pacientes.destroy', $paciente) }}" method="POST" style="display: inline;" class="delete-form">
                                 @csrf
                                 @method('DELETE')
@@ -152,6 +182,7 @@
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </form>
+                            @endif
                         </div>
                     </td>
                 </tr>

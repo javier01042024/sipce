@@ -2,17 +2,13 @@
 
 namespace App\Exports;
 
+use App\Exports\Concerns\PlantillaInstitucional;
 use App\Models\Paciente;
-use Illuminate\Support\Facades\DB;
-use PhpOffice\PhpSpreadsheet\Style\Alignment;
-use PhpOffice\PhpSpreadsheet\Style\Border;
-use PhpOffice\PhpSpreadsheet\Style\Color;
-use PhpOffice\PhpSpreadsheet\Style\Font;
-use PhpOffice\PhpSpreadsheet\Style\Style;
-use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
 
 class ReporteMensualExport
 {
+    use PlantillaInstitucional;
+
     protected $mes;
     protected $anio;
     protected $municipioFiltro;
@@ -29,58 +25,36 @@ class ReporteMensualExport
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle('Registro Mensual');
 
-        // Configurar orientación landscape y tamaño de papel
-        $sheet->getPageSetup()->setOrientation(PageSetup::ORIENTATION_LANDSCAPE);
-        $sheet->getPageSetup()->setPaperSize(PageSetup::PAPERSIZE_A4);
-        $sheet->getPageSetup()->setFitToPage(true);
-        $sheet->getPageSetup()->setFitToWidth(1);
-        $sheet->getPageSetup()->setFitToHeight(0);
+        $this->configurarPagina($sheet);
 
         // =============================================
-        // ENCABEZADOS INSTITUCIONALES
+        // ENCABEZADO INSTITUCIONAL, TÍTULO, META Y FILTROS
         // =============================================
-        $sheet->mergeCells('A1:L1');
-        $sheet->setCellValue('A1', 'VICEMINISTERIO DE REDES DE SALUD COLECTIVA');
-        $sheet->getStyle('A1')->getFont()->setBold(true)->setSize(12);
-        $sheet->getStyle('A1')->getAlignment()->setHorizontal('left');
+        $cols = 12;
+        $lastCol = chr(64 + $cols);
 
-        $sheet->mergeCells('A2:L2');
-        $sheet->setCellValue('A2', 'DIRECCIÓN GENERAL DE PROGRAMAS DE SALUD');
-        $sheet->getStyle('A2')->getFont()->setBold(true)->setSize(11);
-        $sheet->getStyle('A2')->getAlignment()->setHorizontal('left');
+        $this->encabezadoInstitucional($sheet, $lastCol);
 
-        $sheet->mergeCells('A3:L3');
-        $sheet->setCellValue('A3', 'PROGRAMA NACIONAL SALUD MENTAL');
-        $sheet->getStyle('A3')->getFont()->setBold(true)->setSize(11);
-        $sheet->getStyle('A3')->getAlignment()->setHorizontal('left');
-
-        // Título en rojo
-        $sheet->mergeCells('A5:L5');
-        $sheet->setCellValue('A5', 'REGISTRO INDIVIDUALIZADO DE PACIENTES DE SALUD MENTAL');
-        $titleStyle = $sheet->getStyle('A5');
-        $titleStyle->getFont()->setBold(true)->setSize(14)->setColor(new Color('FF0000'));
-        $titleStyle->getAlignment()->setHorizontal('center');
-
-        // Año
-        $sheet->mergeCells('A6:L6');
-        $sheet->setCellValue('A6', 'AÑO ' . $this->anio);
-        $sheet->getStyle('A6')->getFont()->setBold(true)->setSize(12);
-        $sheet->getStyle('A6')->getAlignment()->setHorizontal('center');
-
-        // Mes
         $meses = [
             1 => 'ENERO', 2 => 'FEBRERO', 3 => 'MARZO', 4 => 'ABRIL',
             5 => 'MAYO', 6 => 'JUNIO', 7 => 'JULIO', 8 => 'AGOSTO',
             9 => 'SEPTIEMBRE', 10 => 'OCTUBRE', 11 => 'NOVIEMBRE', 12 => 'DICIEMBRE'
         ];
-        $sheet->mergeCells('A7:L7');
-        $sheet->setCellValue('A7', 'MES: ' . ($meses[$this->mes] ?? ''));
-        $sheet->getStyle('A7')->getFont()->setBold(true)->setSize(11);
-        $sheet->getStyle('A7')->getAlignment()->setHorizontal('center');
+        $nombreMes = $meses[$this->mes] ?? '';
+
+        $this->tituloReporte($sheet, 'REGISTRO INDIVIDUALIZADO DE PACIENTES DE SALUD MENTAL', $lastCol);
+        $this->metaReporte($sheet, 'Generado: ' . now()->format('d/m/Y H:i') . '   |   Año: ' . $this->anio . '   |   Mes: ' . $nombreMes, $lastCol);
+
+        $filtros = [];
+        if ($this->municipioFiltro) {
+            $filtros['Municipio'] = $this->municipioFiltro;
+        }
+        $this->lineaFiltros($sheet, $filtros, $lastCol);
 
         // =============================================
-        // ENCABEZADOS DE LA TABLA (Fila 9)
+        // ENCABEZADOS DE LA TABLA
         // =============================================
+        $filaHeader = $this->filaEncabezadoTabla;
         $headers = [
             'A' => 'Nº',
             'B' => 'APELLIDO Y NOMBRE',
@@ -97,29 +71,13 @@ class ReporteMensualExport
         ];
 
         foreach ($headers as $col => $header) {
-            $sheet->setCellValue($col . '9', $header);
+            $sheet->setCellValue($col . $filaHeader, $header);
         }
 
-        // Estilo de encabezados
-        $headerStyle = $sheet->getStyle('A9:L9');
-        $headerStyle->getFont()->setBold(true)->setSize(9);
-        $headerStyle->getAlignment()->setHorizontal('center')->setVertical('center')->setWrapText(true);
-        $headerStyle->getFill()->setFillType('solid')->getStartColor()->setRGB('D9E2F3');
-        $headerStyle->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+        $this->estilizarEncabezadoTabla($sheet, $filaHeader, $lastCol);
 
         // Ancho de columnas
-        $sheet->getColumnDimension('A')->setWidth(5);   // Nº
-        $sheet->getColumnDimension('B')->setWidth(28);  // Apellido y Nombre
-        $sheet->getColumnDimension('C')->setWidth(15);  // Cédula
-        $sheet->getColumnDimension('D')->setWidth(6);   // Edad
-        $sheet->getColumnDimension('E')->setWidth(18);  // Municipio
-        $sheet->getColumnDimension('F')->setWidth(35);  // Dirección
-        $sheet->getColumnDimension('G')->setWidth(15);  // Teléfono
-        $sheet->getColumnDimension('H')->setWidth(18);  // Consultorio Popular
-        $sheet->getColumnDimension('I')->setWidth(10);  // ASIC
-        $sheet->getColumnDimension('J')->setWidth(8);   // Sexo
-        $sheet->getColumnDimension('K')->setWidth(15);  // Tipo Consulta
-        $sheet->getColumnDimension('L')->setWidth(25);  // DX
+        $this->anchoColumnas($sheet, [5, 28, 15, 6, 18, 35, 15, 18, 10, 8, 18, 30]);
 
         // =============================================
         // OBTENER PACIENTES
@@ -135,7 +93,7 @@ class ReporteMensualExport
         }
 
         $pacientes = $query->get();
-        $row = 10;
+        $row = $filaHeader + 1;
         $num = 1;
 
         foreach ($pacientes as $paciente) {
@@ -183,47 +141,32 @@ class ReporteMensualExport
                 $sheet->setCellValue($col . $row, $value);
             }
 
-            // Estilo de celdas de datos
-            $dataStyle = $sheet->getStyle('A' . $row . ':L' . $row);
-            $dataStyle->getAlignment()->setVertical('center')->setWrapText(true);
-            $dataStyle->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
-            $dataStyle->getFont()->setSize(9);
+            $this->estilizarFilaDatos($sheet, $row, $lastCol, $num);
 
             $row++;
             $num++;
         }
 
+        // Auto-filtro y congelar panel
+        $sheet->setAutoFilter("A{$filaHeader}:{$lastCol}" . max($filaHeader, $row - 1));
+        $sheet->freezePane('A' . ($filaHeader + 1));
+
+        // =============================================
+        // RESUMEN
+        // =============================================
+        $resumenRow = $row + 1;        $sheet->mergeCells("A{$resumenRow}:L{$resumenRow}");
+        $resumenTexto = 'Resumen: Total: ' . $pacientes->count()
+            . '   |   Niños: ' . $pacientes->where('tipo_paciente', 'niño')->count()
+            . '   |   Adolescentes: ' . $pacientes->where('tipo_paciente', 'adolescente')->count()
+            . '   |   Adultos: ' . $pacientes->where('tipo_paciente', 'adulto')->count();
+        $sheet->setCellValue("A{$resumenRow}", $resumenTexto);
+        $sheet->getStyle("A{$resumenRow}")->getFont()->setBold(true)->setSize(10);
+        $sheet->getStyle("A{$resumenRow}")->getAlignment()->setHorizontal('left');
+
         // =============================================
         // PIE DE PÁGINA - Firmas
         // =============================================
-        $pieRow = $row + 2;
-        $sheet->mergeCells('A' . $pieRow . ':C' . $pieRow);
-        $sheet->setCellValue('A' . $pieRow, '_________________________');
-        $sheet->getStyle('A' . $pieRow)->getAlignment()->setHorizontal('center');
-
-        $sheet->mergeCells('D' . $pieRow . ':F' . $pieRow);
-        $sheet->setCellValue('D' . $pieRow, '_________________________');
-        $sheet->getStyle('D' . $pieRow)->getAlignment()->setHorizontal('center');
-
-        $sheet->mergeCells('H' . $pieRow . ':J' . $pieRow);
-        $sheet->setCellValue('H' . $pieRow, '_________________________');
-        $sheet->getStyle('H' . $pieRow)->getAlignment()->setHorizontal('center');
-
-        $labelRow = $pieRow + 1;
-        $sheet->mergeCells('A' . $labelRow . ':C' . $labelRow);
-        $sheet->setCellValue('A' . $labelRow, 'Firma del Profesional');
-        $sheet->getStyle('A' . $labelRow)->getAlignment()->setHorizontal('center');
-        $sheet->getStyle('A' . $labelRow)->getFont()->setSize(9);
-
-        $sheet->mergeCells('D' . $labelRow . ':F' . $labelRow);
-        $sheet->setCellValue('D' . $labelRow, 'Sello de la Institución');
-        $sheet->getStyle('D' . $labelRow)->getAlignment()->setHorizontal('center');
-        $sheet->getStyle('D' . $labelRow)->getFont()->setSize(9);
-
-        $sheet->mergeCells('H' . $labelRow . ':J' . $labelRow);
-        $sheet->setCellValue('H' . $labelRow, 'Vo.Bo. Coordinación');
-        $sheet->getStyle('H' . $labelRow)->getAlignment()->setHorizontal('center');
-        $sheet->getStyle('H' . $labelRow)->getFont()->setSize(9);
+        $this->firmasInstitucionales($sheet, $resumenRow + 3, $lastCol, $cols);
 
         return $spreadsheet;
     }

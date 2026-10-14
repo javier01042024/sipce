@@ -88,6 +88,9 @@
     </script>
     <script src="{{ asset('js/alerts.js') }}"></script>
     @stack('scripts')
+
+    <!-- Sistema unificado de botones (se carga de último para homogeneizar el diseño) -->
+    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
 </body>
 
 </html>

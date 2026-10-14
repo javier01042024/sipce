@@ -49,7 +49,7 @@
                 <input type="password" name="password_confirmation" required
                     style="width: 100%; padding: 10px 14px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 14px;">
             </div>
-            <button type="submit" style="padding: 10px 24px; background: linear-gradient(135deg, var(--sipce-primary), var(--sipce-primary-dark)); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer;">Actualizar Contraseña</button>
+            <button type="submit" class="btn-save">Actualizar Contraseña</button>
         </form>
     </div>
 </div>

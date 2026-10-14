@@ -12,10 +12,12 @@
                 <i class="fas fa-calendar"></i> Calendario
             </button>
         </div>
+        @if(Auth::user()->hasPermission('citas.create'))
         <a href="{{ route('citas.create') }}" class="btn-nueva-cita">
             <i class="fas fa-plus-circle"></i>
             Nueva Cita
         </a>
+        @endif
     </div>
 </div>
 

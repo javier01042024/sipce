@@ -184,6 +184,22 @@
     box-shadow: 0 6px 20px rgba(var(--sipce-primary-rgb), 0.4);
 }
 
+select.filter-input {
+    width: 150px;
+    cursor: pointer;
+}
+
+.btn-filter-clear {
+    background: #e2e8f0;
+    color: #475569;
+    box-shadow: none;
+}
+
+.btn-filter-clear:hover {
+    background: #cbd5e1;
+    box-shadow: none;
+}
+
 /* ==========================================
    CONTENEDOR DE TABLA - SIN SCROLL
    ========================================== */

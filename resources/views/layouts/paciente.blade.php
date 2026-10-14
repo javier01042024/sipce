@@ -165,5 +165,8 @@
         })();
     </script>
     @stack('scripts')
+
+    <!-- Sistema unificado de botones -->
+    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
 </body>
 </html>

@@ -152,10 +152,12 @@
                 <i class="fas fa-head-side-virus"></i>
                 Sesiones Clínicas
             </h3>
-            <a href="{{ route('sesiones.create') }}" class="btn-nueva-nota" style="background:white;color:#0ea5e9;">
+            @if(Auth::user()->hasPermission('pacientes.show'))
+            <a href="{{ route('sesiones.create') }}" class="btn-nueva-nota">
                 <i class="fas fa-plus-circle"></i>
                 Nueva Sesión
             </a>
+            @endif
         </div>
 
         <div class="sesiones-body">
@@ -196,6 +198,7 @@
                     </div>
                     @endif
 
+                    @if(Auth::user()->hasPermission('pacientes.show'))
                     <div class="sesion-footer">
                         <a href="{{ route('sesiones.show', $sesion) }}" class="btn-sesion-ver">
                             <i class="fas fa-eye"></i> Ver detalle
@@ -204,6 +207,7 @@
                             <i class="fas fa-edit"></i> Editar
                         </a>
                     </div>
+                    @endif
                 </div>
                 @endforeach
             @else
@@ -213,10 +217,12 @@
                     </div>
                     <h4>No hay sesiones registradas</h4>
                     <p>Las sesiones clínicas de este paciente aparecerán aquí</p>
+                    @if(Auth::user()->hasPermission('pacientes.show'))
                     <a href="{{ route('sesiones.create') }}" class="btn-empty-tab">
                         <i class="fas fa-plus-circle"></i>
                         Registrar primera sesión
                     </a>
+                    @endif
                 </div>
             @endif
         </div>

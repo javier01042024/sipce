@@ -48,7 +48,7 @@ class RoleSeeder extends Seeder
                     'pacientes.index', 'pacientes.create', 'pacientes.show', 'pacientes.edit', 'pacientes.destroy',
                     'pacientes.ver_publico', 'pacientes.ver_privado',
                     'citas.index', 'citas.create', 'citas.show', 'citas.edit', 'citas.destroy',
-                    'diarios.index', 'diarios.create', 'diarios.show', 'diarios.edit', 'diarios.destroy',
+                    'diarios.index', 'diarios.show',
                     'planes.index', 'planes.create', 'planes.show', 'planes.edit', 'planes.destroy',
                     'sesiones.index', 'sesiones.create', 'sesiones.show', 'sesiones.edit', 'sesiones.destroy',
                     'calendario.index',

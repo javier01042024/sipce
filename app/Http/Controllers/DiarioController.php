@@ -18,12 +18,20 @@ class DiarioController extends Controller
      */
     public function index()
     {
-        // Si es el administrador (ID 1), obtiene todas las entradas con sus usuarios
-        // Si es un usuario normal, solo obtiene sus propias entradas
+        // El administrador ve todas las entradas.
+        // La psicóloga ve todas las entradas escritas por pacientes (solo lectura).
+        // Cualquier otro usuario solo ve sus propias entradas.
         $user = Auth::user();
-        $diarios = $user->isAdmin()
-            ? Diario::with('user')->orderBy('fecha', 'desc')->get()
-            : Diario::where('user_id', Auth::id())->orderBy('fecha', 'desc')->get();
+        if ($user->isAdmin()) {
+            $diarios = Diario::with('user')->orderBy('fecha', 'desc')->get();
+        } elseif ($user->hasRole('psicologa')) {
+            $diarios = Diario::with('user')
+                ->whereHas('user.roles', fn ($q) => $q->where('slug', 'paciente'))
+                ->orderBy('fecha', 'desc')
+                ->get();
+        } else {
+            $diarios = Diario::where('user_id', Auth::id())->orderBy('fecha', 'desc')->get();
+        }
         
         // Retorna la vista con las entradas del diario
         return view('diarios.index', compact('diarios'));
@@ -88,9 +96,10 @@ class DiarioController extends Controller
      */
     public function show(Diario $diario)
     {
-        // Verificar permisos: solo el administrador o el dueño de la entrada pueden verla
+        // Verificar permisos: el administrador y la psicóloga pueden ver cualquier
+        // entrada; los demás usuarios solo su propia entrada.
         $user = Auth::user();
-        if (!$user->isAdmin() && $diario->user_id != Auth::id()) {
+        if (!$user->isAdmin() && !$user->hasRole('psicologa') && $diario->user_id != Auth::id()) {
             abort(403); // Error 403: Acceso prohibido
         }
         

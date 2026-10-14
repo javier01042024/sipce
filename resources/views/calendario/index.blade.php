@@ -48,7 +48,7 @@
             <div id="modalEstado" style="margin-bottom:8px;"></div>
             <div id="modalObjetivo" style="color:#64748b; font-size:13px;"></div>
             <div style="margin-top:20px; text-align:right;">
-                <button onclick="cerrarModal()" style="padding:8px 20px;background:#f1f5f9;color:#475569;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Cerrar</button>
+                <button onclick="cerrarModal()" class="btn-cancel">Cerrar</button>
             </div>
         </div>
     </div>

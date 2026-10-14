@@ -8,9 +8,11 @@
         <p>Administre los estados clínicos de los pacientes</p>
     </div>
     <div class="header-buttons">
+        @if(Auth::user()->hasPermission('estados.create'))
         <button class="btn-nuevo" onclick="abrirModalCrear()">
             <i class="fas fa-plus-circle"></i>
             Nuevo Estado
         </button>
+        @endif
     </div>
 </div>

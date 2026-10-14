@@ -17,10 +17,12 @@
                     <i class="fas fa-book-medical"></i>
                     Diario de {{ $paciente->user->name }}
                 </h3>
+                @if(Auth::user()->hasPermission('diarios.create'))
                 <a href="{{ route('diarios.create') }}?user_id={{ $paciente->user_id }}" class="btn-nuevo-diario">
                     <i class="fas fa-plus-circle"></i>
                     Nuevo Registro
                 </a>
+                @endif
             </div>
 
             <div class="diario-body">
@@ -96,12 +98,16 @@
                                             {{ $diario->created_at->format('H:i') }}
                                         </span>
                                         <div class="diario-item-actions">
+                                            @if(Auth::user()->hasPermission('diarios.show'))
                                             <a href="{{ route('diarios.show', $diario) }}" class="btn-icon-mini view" title="Ver">
                                                 <i class="fas fa-eye"></i>
                                             </a>
+                                            @endif
+                                            @if(Auth::user()->hasPermission('diarios.edit'))
                                             <a href="{{ route('diarios.edit', $diario) }}" class="btn-icon-mini edit" title="Editar">
                                                 <i class="fas fa-pen"></i>
                                             </a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -125,10 +131,12 @@
                         </div>
                         <h4>Sin registros en el diario</h4>
                         <p>{{ $paciente->user->name }} aún no tiene entradas en su diario</p>
+                        @if(Auth::user()->hasPermission('diarios.create'))
                         <a href="{{ route('diarios.create') }}?user_id={{ $paciente->user_id }}" class="btn-empty-tab">
                             <i class="fas fa-plus-circle"></i>
                             Crear primer registro
                         </a>
+                        @endif
                     </div>
                 @endif
             </div>

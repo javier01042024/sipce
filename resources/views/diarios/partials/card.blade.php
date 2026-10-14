@@ -65,18 +65,24 @@
             </div>
 
             <div class="diario-actions">
+                @if(Auth::user()->hasPermission('diarios.show'))
                 <a href="{{ route('diarios.show', $diario) }}" class="btn-icon-small view" title="Ver detalles">
                     <i class="fas fa-eye"></i>
                 </a>
+                @endif
+                @if(Auth::user()->hasPermission('diarios.edit'))
                 <a href="{{ route('diarios.edit', $diario) }}" class="btn-icon-small edit" title="Editar">
                     <i class="fas fa-pen"></i>
                 </a>
+                @endif
+                @if(Auth::user()->hasPermission('diarios.destroy'))
                 <button class="btn-icon-small delete btn-eliminar-diario"
                         data-id="{{ $diario->id }}"
                         data-fecha="{{ \Carbon\Carbon::parse($diario->fecha)->format('d/m/Y') }}"
                         title="Eliminar">
                     <i class="fas fa-trash"></i>
                 </button>
+                @endif
             </div>
         </div>
     </div>
