@@ -405,6 +405,7 @@ Route::middleware('auth')->group(function () {
     // NOTIFICACIONES
     // --------------------------------------------------
     Route::get('/notificaciones', [NotificacionController::class, 'index'])->name('notificaciones.index');
+    Route::get('/notificaciones/recientes', [NotificacionController::class, 'recientes'])->name('notificaciones.recientes');
     Route::get('/notificaciones/no-leidas', [NotificacionController::class, 'noLeidas'])->name('notificaciones.no-leidas');
     Route::patch('/notificaciones/{notificacion}/leer', [NotificacionController::class, 'marcarLeida'])->name('notificaciones.marcar-leida');
     Route::patch('/notificaciones/leer-todas', [NotificacionController::class, 'marcarTodasLeidas'])->name('notificaciones.leer-todas');

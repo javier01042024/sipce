@@ -10,15 +10,44 @@ class NotificacionController extends Controller
 {
     public function index()
     {
+        Notificacion::limpiarVencidas();
+
         $notificaciones = Notificacion::where('user_id', Auth::id())
             ->orderBy('fecha_hora', 'desc')
             ->paginate(20);
 
-        Notificacion::where('user_id', Auth::id())
-            ->where('leida', false)
-            ->update(['leida' => true]);
-
         return view('notificaciones.index', compact('notificaciones'));
+    }
+
+    /**
+     * Últimas notificaciones para el panel del campanilla (topbar).
+     */
+    public function recientes()
+    {
+        Notificacion::limpiarVencidas();
+
+        $notificaciones = Notificacion::where('user_id', Auth::id())
+            ->orderBy('fecha_hora', 'desc')
+            ->limit(15)
+            ->get()
+            ->map(function (Notificacion $notificacion) {
+                return [
+                    'id'      => $notificacion->id,
+                    'tipo'    => $notificacion->tipo,
+                    'titulo'  => $notificacion->titulo,
+                    'mensaje' => $notificacion->mensaje,
+                    'leida'   => (bool) $notificacion->leida,
+                    'fecha'   => optional($notificacion->fecha_hora)->diffForHumans(),
+                    'url'     => $notificacion->url,
+                ];
+            })
+            ->values();
+
+        return response()->json([
+            'notificaciones' => $notificaciones,
+            'no_leidas'      => Notificacion::where('user_id', Auth::id())->where('leida', false)->count(),
+            'retencion'      => Notificacion::DIAS_RETENCION,
+        ]);
     }
 
     public function noLeidas()
