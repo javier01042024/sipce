@@ -23,7 +23,7 @@
     }
 @endphp
 
-<div class="diario-card" data-usuario="{{ $diario->user_id }}" data-fecha="{{ $diario->fecha }}" data-emocion="{{ $emocion }}" id="diario-row-{{ $diario->id }}">
+<div class="diario-card" data-usuario="{{ $diario->user_id }}" data-fecha="{{ $diario->fecha }}" data-emocion="{{ $emocion }}" data-contenido="{{ $diario->contenido }}" data-nombre="{{ $diario->user->name }}" id="diario-row-{{ $diario->id }}">
     <div class="diario-header-card">
         <div class="user-info">
             <div class="user-avatar-small">

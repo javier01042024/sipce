@@ -111,106 +111,6 @@
 }
 
 /* ==========================================
-   FILTRO POR FECHA
-   ========================================== */
-
-.export-filters {
-    background: #f8fafc;
-    border-bottom: 1px solid #e2e8f0;
-    padding: 12px 25px;
-}
-
-.filters-body {
-    display: flex;
-    gap: 12px;
-    align-items: flex-end;
-    flex-wrap: wrap;
-}
-
-.filter-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.filter-group label {
-    font-size: 12px;
-    font-weight: 600;
-    color: #64748b;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.filter-group label i {
-    color: var(--sipce-primary);
-    font-size: 13px;
-}
-
-.filter-input {
-    padding: 7px 10px;
-    border: 2px solid #e2e8f0;
-    border-radius: 8px;
-    font-size: 13px;
-    background: white;
-    width: 140px;
-    transition: all 0.3s;
-}
-
-.filter-input:focus {
-    border-color: var(--sipce-primary);
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(var(--sipce-primary-rgb), 0.1);
-}
-
-.btn-filter {
-    padding: 8px 20px;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.3s;
-    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);
-    color: white;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    box-shadow: 0 4px 12px rgba(var(--sipce-primary-rgb), 0.3);
-}
-
-.btn-filter:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(var(--sipce-primary-rgb), 0.4);
-}
-
-select.filter-input {
-    width: 150px;
-    cursor: pointer;
-}
-
-.btn-filter-clear {
-    background: #e2e8f0;
-    color: #475569;
-    box-shadow: none;
-}
-
-.btn-filter-clear:hover {
-    background: #cbd5e1;
-    box-shadow: none;
-}
-
-/* ==========================================
-   CONTENEDOR DE TABLA - SIN SCROLL
-   ========================================== */
-
-.table-container {
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-}
-
-/* ==========================================
    TABLA - 100% ANCHO SIN SCROLL
    ========================================== */
 
@@ -506,76 +406,6 @@ select.filter-input {
 }
 
 /* ==========================================
-   PAGINACIÓN Y CONTROLES DATATABLES
-   ========================================== */
-
-.dataTables_wrapper {
-    padding: 0 !important;
-    width: 100% !important;
-}
-
-.dataTables_wrapper .dataTables_length,
-.dataTables_wrapper .dataTables_filter {
-    padding: 12px 15px 5px;
-}
-
-.dataTables_wrapper .dataTables_length label,
-.dataTables_wrapper .dataTables_filter label {
-    font-size: 12px !important;
-    color: #64748b !important;
-    font-weight: 600 !important;
-}
-
-.dataTables_wrapper .dataTables_length select,
-.dataTables_wrapper .dataTables_filter input {
-    border-radius: 6px !important;
-    padding: 5px 8px !important;
-    border: 1px solid #e2e8f0 !important;
-    font-size: 12px !important;
-    margin-left: 6px !important;
-}
-
-.dataTables_wrapper .dataTables_filter input:focus {
-    border-color: var(--sipce-primary) !important;
-    outline: none !important;
-    box-shadow: 0 0 0 3px rgba(var(--sipce-primary-rgb), 0.1) !important;
-}
-
-.dataTables_wrapper .dataTables_paginate {
-    padding: 12px 15px !important;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-    border-radius: 6px !important;
-    padding: 4px 9px !important;
-    margin: 0 2px !important;
-    font-size: 12px !important;
-    font-weight: 600 !important;
-    border: 1px solid #e2e8f0 !important;
-    background: white !important;
-    color: #475569 !important;
-    transition: all 0.2s !important;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    background: var(--sipce-primary) !important;
-    color: white !important;
-    border-color: var(--sipce-primary) !important;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%) !important;
-    color: white !important;
-    border-color: var(--sipce-primary) !important;
-}
-
-.dataTables_wrapper .dataTables_info {
-    padding: 5px 15px 12px !important;
-    font-size: 11px !important;
-    color: #64748b !important;
-}
-
-/* ==========================================
    RESPONSIVE - OCULTAR COLUMNAS EN MÓVIL
    ========================================== */
 
@@ -599,19 +429,6 @@ select.filter-input {
     .btn-export {
         padding: 8px 14px;
         font-size: 12px;
-    }
-    
-    .filters-body {
-        flex-direction: column;
-    }
-    
-    .filter-input {
-        width: 100%;
-    }
-    
-    .btn-filter {
-        width: 100%;
-        justify-content: center;
     }
     
     .col-telefono,
@@ -640,13 +457,4 @@ select.filter-input {
         gap: 5px;
     }
     
-    .dataTables_wrapper .dataTables_length,
-    .dataTables_wrapper .dataTables_filter {
-        padding: 10px 10px 5px;
-        text-align: center;
-    }
-    
-    .dataTables_wrapper .dataTables_filter input {
-        width: 130px;
-    }
 }

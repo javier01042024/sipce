@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="estados-container">
+
     <div class="page-header" style="background: linear-gradient(135deg, var(--sipce-primary) 0%, var(--sipce-primary-dark) 100%);">
         <div class="header-content">
             <h1><i class="fas fa-clipboard-list me-2"></i> Planes de Tratamiento</h1>
@@ -18,10 +19,40 @@
 
     <div class="sipce-table-card">
         <div class="sipce-table-header">
-            <div><h3><i class="fas fa-list"></i> Planes Activos</h3></div>
+            <div>
+                <h3><i class="fas fa-list"></i> Planes Registrados</h3>
+                <p>{{ $planes->count() }} plan(es) de tratamiento</p>
+            </div>
         </div>
-        <div class="table-responsive">
-            <table class="sipce-table">
+
+        <div class="export-filters">
+            <div class="filters-body">
+                <div class="filter-group">
+                    <label for="filtroEstado"><i class="fas fa-signal"></i> Estado</label>
+                    <select id="filtroEstado" class="filter-input">
+                        <option value="">Todos</option>
+                        <option value="activo">Activo</option>
+                        <option value="pausado">Pausado</option>
+                        <option value="completado">Completado</option>
+                        <option value="cancelado">Cancelado</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filtroDesde"><i class="far fa-calendar-alt"></i> Inicio desde</label>
+                    <input type="date" id="filtroDesde" class="filter-input">
+                </div>
+                <div class="filter-group">
+                    <label for="filtroHasta"><i class="far fa-calendar-alt"></i> Inicio hasta</label>
+                    <input type="date" id="filtroHasta" class="filter-input">
+                </div>
+                <button type="button" id="filtroLimpiar" class="btn-filter btn-filter-clear">
+                    <i class="fas fa-eraser"></i> Limpiar
+                </button>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table id="tratamientoTable" class="sipce-table" style="width:100%">
                 <thead>
                     <tr>
                         <th>Paciente</th>
@@ -38,8 +69,8 @@
                         <td><span class="sipce-cell-main">{{ $plan->paciente->nombre_completo ?? 'N/A' }}</span></td>
                         <td>{{ $plan->titulo }}</td>
                         <td><span class="sipce-badge sipce-badge-{{ $plan->estado_color }}">{{ $plan->estado_texto }}</span></td>
-                        <td><span class="sipce-cell-date"><i class="far fa-calendar-alt"></i> {{ $plan->fecha_inicio->format('d/m/Y') }}</span></td>
-                        <td><span class="sipce-cell-bold">{{ $plan->objetivos->count() }}</span></td>
+                        <td data-order="{{ $plan->fecha_inicio ? $plan->fecha_inicio->format('Y-m-d') : '' }}"><span class="sipce-cell-date"><i class="far fa-calendar-alt"></i> {{ $plan->fecha_inicio ? $plan->fecha_inicio->format('d/m/Y') : '-' }}</span></td>
+                        <td data-order="{{ $plan->objetivos->count() }}"><span class="sipce-cell-bold">{{ $plan->objetivos->count() }}</span></td>
                         <td>
                             <div class="sipce-actions">
                                 @if(Auth::user()->hasPermission('pacientes.show'))
@@ -55,7 +86,14 @@
                 </tbody>
             </table>
         </div>
-        <div class="sipce-pagination">{{ $planes->links() }}</div>
     </div>
 </div>
+
+@push('styles')
+<link href="{{ asset('css/listado-controles.css') }}" rel="stylesheet">
+@endpush
+
+@push('scripts')
+<script src="{{ asset('js/tratamiento.js') }}"></script>
+@endpush
 @endsection

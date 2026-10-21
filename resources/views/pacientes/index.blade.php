@@ -4,6 +4,7 @@
 {{-- Asegúrate de que estos archivos CSS existan --}}
 <link href="{{ asset('css/pacientes.css') }}" rel="stylesheet">
 <link href="{{ asset('css/pacientes-table.css') }}" rel="stylesheet">
+<link href="{{ asset('css/listado-controles.css') }}" rel="stylesheet">
 
 <div class="pacientes-wrapper" style="max-width:1200px;margin:0 auto;padding:20px;">
     

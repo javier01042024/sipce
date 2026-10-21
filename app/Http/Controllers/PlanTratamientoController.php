@@ -20,7 +20,7 @@ class PlanTratamientoController extends Controller
                 $q->where('paciente_id', $request->paciente_id);
             })
             ->orderBy('created_at', 'desc')
-            ->paginate(15);
+            ->get();
 
         return view('tratamiento.index', compact('planes'));
     }
