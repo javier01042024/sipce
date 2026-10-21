@@ -22,8 +22,6 @@
                     <th>Usuario</th>
                     <th>Rol</th>
                     <th>Paciente Vinculado</th>
-                    <th>Estado</th>
-                    <th>Último Acceso</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -95,18 +93,6 @@
                         @endif
                     </td>
                     <td>
-                        <span class="sipce-badge {{ $user->email_verified_at ? 'sipce-badge-success' : 'sipce-badge-danger' }}">
-                            <i class="fas fa-circle" style="font-size: 6px;"></i>
-                            {{ $user->email_verified_at ? 'Activo' : 'Inactivo' }}
-                        </span>
-                    </td>
-                    <td>
-                        <span class="sipce-cell-date">
-                            <i class="far fa-clock"></i>
-                            {{ $user->last_login_at ? $user->last_login_at->diffForHumans() : 'Nunca' }}
-                        </span>
-                    </td>
-                    <td>
                         <div class="sipce-actions">
                             @if(auth()->check() && auth()->user()->hasPermission('usuarios.edit'))
                             <button class="sipce-btn-icon sipce-btn-edit btn-editar" 
@@ -129,7 +115,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6">
+                    <td colspan="4">
                         <div class="sipce-empty">
                             <i class="fas fa-users sipce-empty-icon"></i>
                             <p class="sipce-empty-title">No hay usuarios registrados</p>
